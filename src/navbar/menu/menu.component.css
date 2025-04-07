@@ -1,120 +1,101 @@
-/* Estilos gerais para a sidebar e navbar */
 .sidebar {
-    background-color: #dfd4bc;
-    height: 100vh;
-    width: 250px;
-    top: 70px; /* Define um espaço abaixo da navbar */
-    position: fixed;
-    padding: 20px;
-    color: white;
-    min-height: 100vh; /* Garante que a sidebar tenha pelo menos a altura total da tela */
-    overflow-y: auto; /* Permite rolagem caso o conteúdo seja maior que a tela */
-}
-
-.nav-link {
-    padding: 10px;
-}
-
-.Sobre-nos {
-    color: #755000;
-}
-
-.nav-link:hover {
-    background-color: #c7c0b4;
-    border-radius: 5px;
-}
-
-.navbar {
-    background-color: #dfd4bc;
-    color: black;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 70px; /* Aumentei a altura para dar mais espaço */
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-}
-
-.logo-container {
+    height: 100%;
+    width: 260px;
+    display: flex;
+    overflow-x: hidden;
+    flex-direction: column;
+    background: #dfd4bc;
+    padding: 25px 20px;
+    transition: all 0.4s ease;
+  }
+  
+  .sidebar:hover {
+    width: 260px;
+  }
+  
+  .sidebar .sidebar-header {
     display: flex;
     align-items: center;
-}
-
-.logo-img {
-    height: 60px; /* Ajustei para melhor proporção */
-    width: auto;
-    margin-right: 20px; /* Reduzi a margem para melhor centralização */
-}
-
-.logo-text {
-    font-family: "Gravitas One", serif;
-  font-size: 30px;
-}
-
-
-.logout-btn {
-    background-color: #d9534f;
-    border: none;
-    color: white;
-    padding: 10px 20px; /* Aumentei o padding para melhor aparência */
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.logout-btn:hover {
-    background-color: #c9302c;
-}
-
-/* Media Queries para Responsividade */
-@media (max-width: 768px) {
-    .sidebar {
-        width: 200px; /* Reduz a largura da sidebar em telas menores */
-    }
-
-    .navbar {
-        flex-direction: column; /* Altera a direção dos itens na navbar */
-        height: auto; /* Permite que a altura da navbar se ajuste ao conteúdo */
-    }
-
-    .logo-img {
-        height: 50px; /* Ajusta a altura do logo */
-    }
-
-    .logo-text {
-        font-size: 18px; /* Ajusta o tamanho do texto do logo */
-    }
-
-    .logout-btn {
-        padding: 8px 16px; /* Reduz o padding do botão de logout */
-        font-size: 12px; /* Reduz o tamanho da fonte do botão */
-    }
-}
-
-@media (max-width: 480px) {
-    .sidebar {
-        width: 100%; /* A sidebar ocupa toda a largura da tela */
-        height: auto; /* Ajusta a altura da sidebar ao conteúdo */
-        position: relative; /* Muda a posição para relativa em telas muito pequenas */
-    }
-
-    .navbar {
-        padding: 5px 10px; /* Ajusta o padding da navbar */
-    }
-
-    .logo-img {
-        height: 40px; /* Ajusta a altura do logo */
-    }
-
-    .logo-text {
-        font-size: 16px; /* Ajusta o tamanho do texto do logo */
-    }
-}
-
-
-
+  }
+  
+  .sidebar .sidebar-header img {
+    width: 42px;
+    border-radius: 50%;
+  }
+  
+  .sidebar .sidebar-header h2 {
+    color: #000000;
+    font-size: 1.25rem;
+    font-weight: 600;
+    white-space: nowrap;
+    margin-left: 23px;
+  }
+  
+  .sidebar-links h4 {
+    color: #000000;
+    font-weight: 500;
+    white-space: nowrap;
+    margin: 10px 0;
+    position: relative;
+  }
+  
+  .sidebar-links h4 span {
+    opacity: 0;
+  }
+  
+  .sidebar:hover .sidebar-links h4 span {
+    opacity: 1;
+  }
+  
+  .sidebar-links .menu-separator {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 1px;
+    transform: scaleX(1);
+    transform: translateY(-50%);
+    background: #000000;
+    transform-origin: right;
+    transition-delay: 0.2s;
+  }
+  
+  .sidebar:hover .sidebar-links .menu-separator {
+    transition-delay: 0s;
+    transform: scaleX(0);
+  }
+  
+  .sidebar-links {
+    list-style: none;
+    margin-top: 20px;
+    height: 80%;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  
+  .sidebar-links::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .sidebar-links li a {
+    display: flex;
+    align-items: center;
+    gap: 0 20px;
+    color: #000000;
+    font-weight: 500;
+    white-space: nowrap;
+    padding: 15px 10px;
+    text-decoration: none;
+    transition: 0.2s ease;
+  }
+  
+  .sidebar-links li a:hover {
+    color: #000000;
+    background: #fff;
+    border-radius: 4px;
+  }
+  
+  
