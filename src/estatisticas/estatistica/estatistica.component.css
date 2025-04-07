@@ -1,0 +1,137 @@
+.content {
+    flex: 1;
+}
+.container-planos {
+    width: calc(100% - 250px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px; /* Reduzi o espaçamento entre os cards */
+    padding: 20px 10px; /* Reduzi o padding lateral */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-left: 250px;
+    background: #f7f1e6;
+    position: relative;
+    top: 50px; /* Ajuste fino na posição */
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.search-bar {
+    position: relative;
+}
+
+.search-bar input {
+    padding: 8px 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-bar i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+.icons i {
+    margin-left: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.icons i:hover {
+    color: #a69e9e;
+}
+
+/* Cards */
+.cards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    flex: 1 1 200px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card i {
+    font-size: 30px;
+    margin-bottom: 10px;
+    color: #ff9800;
+}
+
+.card h3 {
+    font-size: 22px;
+    margin: 5px 0;
+}
+h1{
+  font-family: "Gravitas One", serif;
+  font-size: 36px;
+}
+
+h2{
+  font-family: "Gravitas One", serif;
+  font-size: 30px;
+  
+}
+
+.card span {
+    font-size: 12px;
+    color: #888;
+}
+
+/* Gráfico (simples) */
+.chart {
+    margin-top: 30px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+
+
+
+.chart-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .chart-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+  }
+  
+  .chart-wrapper {
+    margin: 15px 0;
+  }
+  
+  
+  
+ 

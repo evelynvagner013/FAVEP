@@ -1,0 +1,79 @@
+<div class="d-flex">
+    <app-menu></app-menu>
+    <div class="container-fluid p-4">
+        <div class="container-planos ">
+        <main class="content">
+            <header class="header">
+                <h1>Estatísticas</h1>
+                <div class="search-bar">
+                    <input type="text" placeholder="Pesquisar...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="icons">
+                    <i class="fas fa-th"></i>
+                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-cog"></i>
+                </div>
+            </header>
+
+            <section class="cards">
+                <div class="card">
+                    <i class="fa-duotone fa-solid fa-calendar"></i>
+                    <p>Plano</p>
+                    <h3>Mensal</h3>
+                    <span>Valido até: 01/05/2025</span>
+                </div>
+                <div class="card">
+                    <i class="fas fa-dollar-sign"></i>
+                    <p>Entrada</p>
+                    <h3>R$1,345</h3>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <p>Saida</p>
+                    <h3>R$1,345</h3>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <p>Lucro</p>
+                    <h3>R$ 6.220,00</h3>
+                   
+                </div>
+            </section>
+
+            <section class="chart">
+                <div class="chart-card">
+                    <h2>Distribuição de Fertilizantes</h2>
+                    <div class="chart-wrapper">
+                      <canvasjs-chart #chartComponent [options]="chartOptions" [styles]="{ width: '100%', height: '360px' }"></canvasjs-chart>
+                    </div>
+                  </div>                    
+              </section>
+
+            
+            <section class="chart">
+                <div class="chart-card">
+                    <h2>Renda mensal</h2>
+                    <div class="chart-wrapper">
+                      <canvasjs-chart #chartComponent1 [options]="chartOptions1" [styles]="{ width: '100%', height: '360px' }"></canvasjs-chart>
+                    </div>
+                   
+                  </div>                     
+            </section>
+
+            <section class="chart">
+                <div class="chart-card">
+                    <h2>Entrada vs Saída</h2>
+                    <div class="chart-wrapper">
+                      <canvasjs-chart #chartComponent2 [options]="chartOptions2" [styles]="{ width: '100%', height: '360px' }"></canvasjs-chart>
+                    </div>
+                   
+                  </div>
+                                       
+            </section>
+           
+        
+
+        </main>
+    </div>
+</div>
