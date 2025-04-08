@@ -1,22 +1,21 @@
 .content {
     flex: 1;
 }
+
 .container-planos {
     width: calc(100% - 250px);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    gap: 20px; /* Reduzi o espaçamento entre os cards */
-    padding: 20px 10px; /* Reduzi o padding lateral */
+    gap: 20px;
+    padding: 20px 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     margin-left: 250px;
     background: #f7f1e6;
     position: relative;
-    
 }
 
-/* Header */
 .header {
     display: flex;
     justify-content: space-between;
@@ -25,6 +24,18 @@
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 20px;
+    position: relative;
+}
+
+.menu-toggle {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 15px;
 }
 
 .search-bar {
@@ -35,6 +46,7 @@
     padding: 8px 30px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    width: 100%;
 }
 
 .search-bar i {
@@ -49,17 +61,18 @@
     margin-left: 15px;
     cursor: pointer;
     transition: 0.3s;
+    font-size: clamp(16px, 2.5vw, 20px);
 }
 
 .icons i:hover {
     color: #a69e9e;
 }
 
-/* Cards */
 .cards {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .card {
@@ -77,32 +90,31 @@
 }
 
 .card i {
-    font-size: 30px;
+    font-size: clamp(24px, 5vw, 30px);
     margin-bottom: 10px;
     color: #ff9800;
 }
 
 .card h3 {
-    font-size: 22px;
+    font-size: clamp(18px, 3vw, 22px);
     margin: 5px 0;
-}
-h1{
-  font-family: "Gravitas One", serif;
-  font-size: 36px;
-}
-
-h2{
-  font-family: "Gravitas One", serif;
-  font-size: 30px;
-  
 }
 
 .card span {
-    font-size: 12px;
+    font-size: clamp(10px, 2vw, 12px);
     color: #888;
 }
 
-/* Gráfico (simples) */
+h1 {
+    font-family: "Gravitas One", serif;
+    font-size: clamp(24px, 5vw, 36px);
+}
+
+h2 {
+    font-family: "Gravitas One", serif;
+    font-size: clamp(20px, 4vw, 30px);
+}
+
 .chart {
     margin-top: 30px;
     background: white;
@@ -111,27 +123,97 @@ h2{
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-
-
-
 .chart-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     gap: 20px;
     padding: 20px;
-  }
-  
-  .chart-card {
+}
+
+.chart-card {
     background: white;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     padding: 20px;
-  }
-  
-  .chart-wrapper {
+}
+
+.chart-wrapper {
     margin: 15px 0;
-  }
-  
-  
-  
- 
+}
+
+/* Responsividade */
+
+/* Tablet (até 992px) */
+@media (max-width: 992px) {
+    .container-planos {
+        width: 100%;
+        margin-left: 0;
+        padding: 15px 5px;
+        gap: 15px;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .cards {
+        justify-content: center;
+    }
+
+    .card {
+        flex: 1 1 45%;
+    }
+
+    .chart-container {
+        grid-template-columns: 1fr;
+    }
+
+    .nav-menu {
+        flex-direction: column;
+        gap: 10px;
+        display: none;
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+}
+
+/* Mobile grande (até 768px) */
+@media (max-width: 768px) {
+    .card {
+        flex: 1 1 100%;
+        padding: 15px;
+    }
+
+    .container-planos {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+/* Mobile pequeno (até 480px) */
+@media (max-width: 480px) {
+    .header {
+        padding: 10px;
+    }
+
+    .card {
+        padding: 12px;
+    }
+
+    .search-bar input {
+        font-size: 14px;
+    }
+
+    .icons i {
+        margin-left: 10px;
+        font-size: 18px;
+    }
+}

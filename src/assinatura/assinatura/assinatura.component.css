@@ -4,67 +4,71 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    gap: 20px; /* Reduzi o espaçamento entre os cards */
-    padding: 20px 10px; /* Reduzi o padding lateral */
+    gap: 20px;
+    padding: 20px 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     margin-left: 250px;
     background: #f7f1e6;
     position: relative;
 }
 
-h2{
-  font-family: "Gravitas One", serif;
-  font-size: 25px;
+h2 {
+    font-family: "Gravitas One", serif;
+    font-size: 25px;
+    text-align: center; /* Centraliza o título */
 }
-.plan-card-mensal, 
-.plan-card-trimestral, 
-.plan-card-semestral, 
-.plan-card-semanal, 
+
+.plan-card-mensal,
+.plan-card-trimestral,
+.plan-card-semestral,
+.plan-card-semanal,
 .plan-card-anual {
     background-color: rgba(228, 228, 228, 0.819);
-    border-radius: 10px; /* Reduzi um pouco os cantos arredondados */
+    border-radius: 10px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-    padding: 15px; /* Menos espaço interno */
-    width: 48%; /* Aumentei a largura dos cards */
-    height: auto; /* Deixa a altura dinâmica */
+    padding: 15px;
+    width: 48%;
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: left;
+    transition: transform 0.3s, background-color 0.3s;
 }
 
-.plan-card-mensal:hover, 
-.plan-card-trimestral:hover, 
-.plan-card-semestral:hover, 
-.plan-card-semanal:hover, 
+.plan-card-mensal:hover,
+.plan-card-trimestral:hover,
+.plan-card-semestral:hover,
+.plan-card-semanal:hover,
 .plan-card-anual:hover {
     background-color: #ffffff;
-    transform: scale(1.03); /* Reduzi o efeito hover para um ajuste mais sutil */
+    transform: scale(1.03);
 }
 
-.btn-assinar-mensal, 
-.btn-assinar-trimestral, 
-.btn-assinar-semestral, 
-.btn-assinar-semanal, 
+.btn-assinar-mensal,
+.btn-assinar-trimestral,
+.btn-assinar-semestral,
+.btn-assinar-semanal,
 .btn-assinar-anual {
     background-color: #105DFB;
     color: white;
-    padding: 8px 16px; /* Diminuí o padding do botão */
-    border-radius: 6px; /* Ajuste fino no raio do botão */
-    font-size: 14px; /* Texto um pouco menor */
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
     margin-top: 10px;
     cursor: pointer;
-    width: 45%; /* Reduzi um pouco o tamanho do botão */
+    width: 45%;
+    transition: transform 0.3s, background-color 0.3s;
 }
 
-.btn-assinar-mensal:hover, 
-.btn-assinar-trimestral:hover, 
-.btn-assinar-semestral:hover, 
-.btn-assinar-semanal:hover, 
+.btn-assinar-mensal:hover,
+.btn-assinar-trimestral:hover,
+.btn-assinar-semestral:hover,
+.btn-assinar-semanal:hover,
 .btn-assinar-anual:hover {
     background-color: #0d4ed8;
-    transform: scale(1.03); /* Ajuste fino no hover */
+    transform: scale(1.03);
 }
 
 /* Responsividade */
@@ -72,7 +76,16 @@ h2{
     .container-planos {
         width: 100%;
         margin-left: 0;
-        padding: 10px 5px; /* Reduzi ainda mais para telas menores */
+        padding: 10px 5px;
+        gap: 15px;
+    }
+
+    .plan-card-mensal,
+    .plan-card-trimestral,
+    .plan-card-semestral,
+    .plan-card-semanal,
+    .plan-card-anual {
+        width: 48%;
     }
 }
 
@@ -82,8 +95,30 @@ h2{
     .plan-card-semestral,
     .plan-card-semanal,
     .plan-card-anual {
-        width: 75%; /* Ajustei para manter a proporção correta */
-        height: auto; /* Permite que a altura se ajuste melhor */
+        width: 75%;
         padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .plan-card-mensal,
+    .plan-card-trimestral,
+    .plan-card-semestral,
+    .plan-card-semanal,
+    .plan-card-anual {
+        width: 100%;
+        padding: 12px;
+    }
+
+    .btn-assinar-mensal,
+    .btn-assinar-trimestral,
+    .btn-assinar-semestral,
+    .btn-assinar-semanal,
+    .btn-assinar-anual {
+        width: 100%;
+    }
+
+    h2 {
+        font-size: 20px;
     }
 }
