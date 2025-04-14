@@ -51,7 +51,7 @@ export class EstatisticaComponent {
     animationEnabled: true, 
     theme: "light", 
     title: {
-      text: "Renda" 
+      text: "Cotação" 
     },
     axisX: {
       valueFormatString: "DD MMM", 
@@ -61,7 +61,7 @@ export class EstatisticaComponent {
       }
     },
     axisY: { 
-      title: "Renda mensal", 
+      title: "Cotação do café", 
       crosshair: { 
         enabled: true 
       }
@@ -87,7 +87,7 @@ export class EstatisticaComponent {
     data: [{ 
       type: "line", 
       showInLegend: true, 
-      name: "Lucro", 
+      name: "$Venda", 
       lineDashType: "dash", 
       markerType: "square", 
       xValueFormatString: "DD MMM, YYYY", 
@@ -111,7 +111,7 @@ export class EstatisticaComponent {
     {
       type: "line", 
       showInLegend: true, 
-      name: "Despesas", 
+      name: "$Compra", 
       lineDashType: "dot", 
       dataPoints: [ 
         { x: new Date(2022, 0, 3), y: 510 },      

@@ -7,6 +7,10 @@ body {
 	padding: 30px;
 }
 
+.title{
+  font-family: "Big Shoulders Inline", sans-serif;
+}
+
 .container {
 	position: relative;
 	max-width: 850px;

@@ -4,7 +4,6 @@
         <h1>Favep</h1>
     </div>
     <div class="links">
-        <a href="#">Parceiros</a>
         <a id="btn_FaleConosco" href="login">Entrar</a>
     </div>
 </nav>
@@ -20,7 +19,7 @@
 <section class="vantagens">
     <h1>Vantagens em utilizar nosso sistema</h1>
     <div class="container">
-        <div class="card">
+        <div class="card_vantagens">
             Facilitamos o gerenciamento da sua propriedade
             Gráficos de desempenho atualizado
             Contato direto com grandes empresas
@@ -44,10 +43,122 @@
         </div>
         <div class="chart-wrapper">
             <canvasjs-chart #chartComponent [options]="chartOptions" [styles]="{ width: '100%', height: '360px' }"></canvasjs-chart>
-          </div>
+        </div>
     </div>
 </section>
 
+<section class="estatisticas1">
+  <h1>Cotação do café (Valor Compra/Venda)</h1>
+  <div class="container1">
+    <div class="chart-wrapper">
+      <canvasjs-chart #chartComponent [options]="chartOptions1" [styles]="{ width: '100%', height: '360px' }"></canvasjs-chart>
+    </div>
+    <div class="texto">
+      O café é uma das principais atividades econômicas do Brasil, sendo o país o maior produtor e exportador mundial.    </div>
+  </div>
+</section>
+
+<section class="estatisticas2">
+  <h1>Controle de entrada e saída de valores</h1>
+  <div class="container1">
+      <div class="texto">
+        A importância da entrada e saída de valores no controle financeiro:
+        No controle financeiro, o registro adequado da entrada e saída de valores é essencial para manter a saúde das finanças. As entradas representam os ganhos, enquanto as saídas correspondem aos gastos e investimentos. Monitorar esse fluxo permite uma visão clara da situação financeira, facilita a tomada de decisões e ajuda a evitar desequilíbrios, garantindo maior organização, planejamento e segurança econômica. </div>
+      <div class="chart-wrapper">
+          <canvasjs-chart #chartComponent [options]="chartOptions3" [styles]="{ width: '100%', height: '360px' }"></canvasjs-chart>
+      </div>
+  </div>
+</section>
+
+<!-- Texto -->
+<h3>GERENCIAMENTO AGRÍCOLA</h3>
+
+<section class="gerenciamento1">
+  <h1>Um espaço reservado para o gerenciamento da sua propriedade e mais...</h1>
+  <div class="container2"><div class="container">
+
+
+    <div class="card">
+      <h3>Área</h3>
+      <p>4.000,00 ha</p>
+      <h3>Produção</h3>
+      <p>280.000,00 sc60</p>
+      <h3>Produtividade</h3>
+      <p>70,00 sc60/ha</p>
+    </div>
+
+    <div class="card">
+      <h3>Produção vendida</h3>
+      <p>269.319,69 sc60</p>
+      <h3>Produção a vender</h3>
+      <p>10.680,31 sc60</p>
+      <h3>Ponto de equilíbrio</h3>
+      <p>40,74 sc60/ha</p>
+    </div>
+
+    <div class="card">
+      <h3>Plantio <span class="status">FINALIZADO</span></h3>
+      <p>Duração: 22 dias</p>
+      <p>Início: 27/09/2023</p>
+      <p>Final: 14/10/2024</p>
+    </div>
+
+    <div class="card">
+      <h3>Colheita <span class="status">FINALIZADO</span></h3>
+      <p>Duração: 84 dias</p>
+      <p>Início: 02/01/2024</p>
+      <p>Final: 25/03/2024</p>
+    </div>
+
+    <div class="card">
+      <h3>Receita estimada</h3>
+      <p>R$: 37.800.000,00</p>
+      <p>R$/ha: 9.450,00</p>
+      <p>R$/sc60 vendido: 140,00</p>
+      <p>R$/sc60 a vender: 135,00</p>
+    </div>
+
+    <div class="card">
+      <h3>Custos e despesas</h3>
+      <p>R$: 22.000.000,00</p>
+      <p>R$/ha: 5.500,00</p>
+      <p>R$/sc60: 78,57</p>
+    </div>
+
+    <div class="card">
+      <h3>Lucro</h3>
+      <p>R$: 15.800.000,00</p>
+      <p>R$/ha: 3.950,00</p>
+      <p>R$/sc60: 56,43</p>
+    </div>
+
+    <div class="card margin-chart">
+      <h3>Margem</h3>
+      <div class="circle">41,8%</div>
+    </div>
+
+  </div>
+    <div class="texto_gerenciamento">
+      Um bom gerenciamento de propriedade agrícola é fundamental para garantir a produtividade, a sustentabilidade e a rentabilidade do negócio rural. Ele envolve o planejamento eficiente do uso da terra, a gestão dos insumos, a manutenção das máquinas, o controle financeiro e a adoção de boas práticas agrícolas. Além disso, permite acompanhar o desempenho das safras, antecipar riscos climáticos ou de mercado e tomar decisões estratégicas com base em dados. Com uma gestão eficaz, o produtor rural consegue otimizar recursos, reduzir custos, melhorar a qualidade dos produtos e garantir a longevidade da propriedade, promovendo um desenvolvimento sustentável e competitivo no setor.    </div>
+  </div>
+</section>
+
+<!-- Texto -->
+<h3>PARCEIROS</h3>
+
+<!-- Parceiros -->
+<section class="parceiros">
+    <h1>Deixe sua marca aqui conosco</h1>
+    <div class="container3">
+        <div class="card_parceiros">
+            <img src="\assets\img\logo.png" alt="Logo 1">
+            <img src="\assets\img\logo.png" alt="Logo 2">
+            <img src="\assets\img\logo.png" alt="Logo 3">
+            <img src="\assets\img\logo.png" alt="Logo 4">
+            <img src="\assets\img\logo.png" alt="Logo 5">
+        </div>
+    </div>
+</section>
 <!-- Rodapé -->
 <footer>
     <div class="bottom-details">
