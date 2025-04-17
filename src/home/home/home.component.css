@@ -1,133 +1,135 @@
-/* Navbar */
-.navbar {
-  height: 80px;
+/*Navbar*/
+header {
   display: flex;
-  padding: 5px;
-  position: fixed;
-  z-index: 10;
-  width: 100%;
-  top: 0;
   justify-content: space-between;
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(5px);
   align-items: center;
-  text-align: center;
-  flex-wrap: wrap;
-}
-.navbar h1 {
-  font-family: "Gravitas One", serif;
-  font-size: clamp(24px, 5vw, 36px);
+  padding: 20px 40px;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .logo {
-  margin-left: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #000000;
 }
 
-.links {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-right: 20px;
-}
-
-.links a {
+nav a {
+  margin: 0 12px;
   text-decoration: none;
-  padding: 10px 16px;
-  color: #757575;
-  font-size: 16px;
-  font-weight: bolder;
+  color: #000000;
 }
 
-.links a:hover {
-  border-top: #8d8d8d 4px solid;
-  color: #ff9800;
-}
 
-#btn_FaleConosco {
-  padding: 8px 16px;
+.sign-in {
+  background-color: #c9c9c9;
   color: white;
-  background: #757575;
-  border-radius: 4px;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
 }
 
-#btn_FaleConosco:hover {
-  background: #ce800b;
-}
-
-/* Apresentação */
-.apresentacao {
+/*painel principal*/
+.painel {
+  background: url("/assets/img/fundo.jpg") no-repeat center center/cover;
+  height: 60vh;
+  position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  width: 100%;
-  height: auto;
-  min-height: 350px;
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/assets/img/fundo.jpg");
-  background-size: cover;
-  background-position: center;
-  margin-bottom: 5vh;
-  padding: 40px 20px;
+  justify-content: center;
+}
+.overlay {
   text-align: center;
+  color: white;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 40px;
 }
 
-.card-apresentacao {
-  color: #ffffff;
-  width: 90%;
+.overlay h1 {
+  font-size: 3rem;
+  margin: 0;
 }
 
-/* Vantagens */
-.vantagens {
-  background-color: #008c8c;
-  text-align: center;
-  padding: 40px 20px;
-  color: #ffffff;
+.credit {
+  font-size: 0.9rem;
+  margin-bottom: 20px;
 }
 
-.container {
+.btn {
+  text-decoration: none;
+  color: white;
+  border: 2px solid white;
+  padding: 10px 20px;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background: white;
+  color: #333;
+}
+
+/*Cards explicativos*/
+.services {
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-  align-items: center;
-}
-
-.card_vantagens {
-  max-width: 350px;
-  width: 100%;
-  text-align: left;
-  font-size: 1.3em;
-  line-height: 1.6;
-  word-wrap: break-word; /* Garante que palavras muito longas quebrem linha */
-  background-color: transparent; /* Sem fundo */
-  border: none; /* Sem borda */
-  color: #ffffff; /* Texto branco */
-}
-
-.imagem {
-  width: 200px;
-  height: 200px;
-}
-
-/* Texto */
-h3 {
-  text-align: center;
-  font-size: 36px;
-  color: #008c8c;
-  margin: 30px 0;
-  border-bottom: 2px solid black;
-  border-top: 2px solid black;
-  font-family: "Big Shoulders Inline", sans-serif;
-  padding: 10px 0;
-}
-
-/* Estatísticas */
-.estatisticas {
-  background-color: #008c8c;
-  text-align: center;
   padding: 40px 20px;
-  color: #ffffff;
+  background-color: #f8f8f8;
+  gap: 20px;
+}
+
+.card {
+  background-color: white;
+  padding: 20px;
+  width: 220px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card .icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.card h3 {
+  margin: 10px 0;
+  font-size: 1.2rem;
+}
+
+.card p {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.mais {
+  display: inline-block;
+  margin-top: 10px;
+  color: #333;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.mais:hover {
+  text-decoration: underline;
+}
+
+
+
+/*Extras*/
+.comunidade {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #e4ecdf;
+}
+.comunidade1 {
+  padding: 60px 20px;
+  text-align: center;
+ 
 }
 
 .container1 {
@@ -150,129 +152,90 @@ h3 {
   max-width: 500px;
 }
 
-
-.estatisticas1 {
-  background-color: #008c8c;
-  text-align: center;
-  padding: 40px 20px;
-  color: #ffffff;
-  margin: 30px 0;
+.onda {
+  position: relative;
+  top: -5px;
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
-.estatisticas2 {
-  background-color: #008c8c;
-  text-align: center;
-  padding: 40px 20px;
-  color: #ffffff;
-  margin: 30px 0;
-}
 
-.gerenciamento1 {
-  background-color: #ce800b;
-  text-align: center;
-  padding: 40px 20px;
-  color: #ffffff;
-  margin: 30px 0;
-}
 
-.container2 {
+
+
+
+/*Assinatura*/
+.pricing-section {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
   gap: 30px;
-}
-
-.container {
-  max-width: 1200px;
-  margin: auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.header {
-  grid-column: 1 / -1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 60px 20px;
 }
 
 .card {
   background: white;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 24px;
+  padding: 30px;
+  width: 280px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card h2 {
+  font-size: 32px;
+  color: #3da13d;
 }
 
 .card h3 {
-  margin: 0 0 10px;
+  margin: 10px 0 20px;
   font-size: 18px;
-  color: #555;
+  font-weight: bold;
 }
 
-.card p {
-  margin: 4px 0;
+.card ul {
+  list-style: none;
+  margin-bottom: 20px;
+}
+
+.card ul li {
+  margin: 8px 0;
   font-size: 14px;
 }
 
-.status {
-  background-color: #e6f4ea;
-  color: #34a853;
-  border-radius: 5px;
-  padding: 2px 8px;
-  font-size: 12px;
-  margin-left: 10px;
+.card ul li.disabled {
+  color: #ccc;
+  text-decoration: line-through;
 }
 
-.margin-chart {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.card button {
+  padding: 10px 20px;
+  border: 1px solid #43af00;
+  background: none;
+  color: #000000;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
-.circle {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: conic-gradient(#34a853 41.8%, #e0e0e0 0);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  font-weight: bold;
-  color: #34a853;
+.card button:hover {
+  background: #43af00;
+  color: white;
 }
 
-.texto_gerenciamento {
-  max-width: 1200px;
-  text-align: left;
-  font-size: 1.2em;
-  line-height: 1.6;
+.featured {
+  border: 2px solid #43af00;
 }
 
-.parceiros {
-  background-color: #ce800b;
-  text-align: center;
-  padding: 40px 20px;
-  color: #ffffff;
-  margin: 30px 0;
-}
 
-.container3 {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
-}
 
-/* Rodapé */
+
+/*Rodapé*/
 .top {
   display: flex;
   align-items: center;
@@ -343,63 +306,5 @@ h3 {
   margin-right: 10px;
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-  .navbar {
-      flex-direction: column;
-      height: auto;
-      padding: 10px;
-  }
 
-  .links {
-      justify-content: center;
-      margin: 0;
-  }
 
-  h3 {
-      font-size: 28px;
-  }
-
-  .card {
-    font-size: 1.2em;
-    text-align: center;
-}
-
-  .texto {
-      transform: none;
-      text-align: center;
-      font-size: 1em;
-  }
-
-  .chart-wrapper {
-      transform: none;
-      width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .logo h1 {
-      font-size: 20px;
-  }
-
-  .links a {
-      padding: 8px 12px;
-      font-size: 14px;
-  }
-
-  .apresentacao {
-      padding: 20px;
-  }
-
-  h3 {
-      font-size: 24px;
-  }
-
-  .card {
-      font-size: 1em;
-  }
-
-  .texto {
-      font-size: 0.95em;
-  }
-}

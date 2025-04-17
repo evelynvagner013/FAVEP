@@ -1,181 +1,203 @@
- <!-- Navbar -->
- <nav class="navbar">
-    <div class="logo">
-        <h1>Favep</h1>
-    </div>
-    <div class="links">
-        <a id="btn_FaleConosco" href="login">Entrar</a>
-    </div>
-</nav>
+<header>
+  <div class="logo">FAVEP</div>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Serviços</a>
+    <a href="#">Assinaturas</a>
+    <a href="#" >Contato</a>
 
-<!-- Apresentação -->
-<section class="apresentacao">
-    <div class="card-apresentacao">
-        <h1>A FAVEP é um software que ajuda você a gerenciar sua propriedade.</h1>
+   
+  </nav>
+  <button class="sign-in">Sign In Now</button>
+</header>
+
+<header class="painel">
+  <div class="overlay">
+    <h1>Favep</h1>
+    <p class="credit">é um software que ajuda você a gerenciar sua propriedade</p>
+    <a href="#" class="btn">CONTATE-NOS</a>
+  </div>
+</header>
+
+<section class="services">
+  <div class="card">
+    <div class="icon" style="color: #28a745;">
+      <i class="fas fa-chart-line"></i> <!-- Estatísticas -->
     </div>
+    <h3>Estatísticas</h3>
+    <p>Utiliza análise de dados avançada para transformar informações da sua propriedade em insights práticos, você pode:</p>
+    <a href="#" class="mais">SABER MAIS</a>
+  </div>
+
+  <div class="card">
+    <div class="icon" style="color: #ff6347;">
+      <i class="fas fa-cogs"></i> <!-- Gerenciamento -->
+    </div>
+    <h3>Gerenciamento</h3>
+    <p>Oferece ferramentas inteligentes para gerenciar sua propriedade com eficiência e simplicidade.</p>
+    <a href="#" class="mais">MAIS</a>
+  </div>
+
+  <div class="card">
+    <div class="icon" style="color: #007bff;">
+      <i class="fas fa-file-alt"></i> <!-- Relatórios -->
+    </div>
+    <h3>Relatórios</h3>
+    <p>Transforma dados complexos da sua propriedade em informações claras e acionáveis</p>
+    <a href="#" class="mais">MAIS</a>
+  </div>
+
+  <div class="card">
+    <div class="icon" style="color: #ffc107;">
+      <i class="fas fa-handshake"></i> <!-- Parceiros -->
+    </div>
+    <h3>Parceiros</h3>
+    <p>Acredita que parcerias estratégicas são essenciais para oferecer as melhores soluções em gestão agrícola.</p>
+    <a href="#" class="mais">Conheça nossos parceiros</a>
+  </div>
 </section>
 
-<!-- Vantagens -->
-<section class="vantagens">
-    <h1>Vantagens em utilizar nosso sistema</h1>
-    <div class="container">
-        <div class="card_vantagens">
-            Facilitamos o gerenciamento da sua propriedade
-            Gráficos de desempenho atualizado
-            Contato direto com grandes empresas
-            Suporte e segurança
-        </div>
+
+
+
+<section class="comunidade">
+  <h2>ESTATISTICAS</h2>
+  <div class="container1">
+    <div class="texto">
+      O FAVEP utiliza análise de dados avançada para transformar informações da sua propriedade em insights práticos. Com relatórios inteligentes, você pode:
+      <br> <br>
+      📈 Monitorar produtividade (safras, rebanho, custos)
+      <br>
+      🌱 Identificar padrões (melhores épocas para plantio, eficiência de insumos)
+      <br>
+      💰 Tomar decisões estratégicas com base em dados reais
       
-            <img src="\assets\img\shield.png" class="imagem">
-        
+      Tecnologia simples, resultados precisos.
     </div>
+    <div class="chart-wrapper">
+        <canvasjs-chart #chartComponent [options]="chartOptions" [styles]="{ width: '100%', height: '360px' }"></canvasjs-chart>
+    </div>
+</div>
 </section>
 
-<!-- Texto -->
-<h3>ESTATÍSTICAS AGRONÔMICAS</h3>
 
-<!-- Estatísticas -->
-<section class="estatisticas">
-    <h1>Porcentagem de fertilizantes utilizados</h1>
-    <div class="container1">
-        <div class="texto">
-            Os fertilizantes são essenciais para a agricultura no Brasil, impulsionando a produtividade das lavouras. O país depende fortemente da importação, adquirindo cerca de 85% dos fertilizantes utilizados. Os mais comuns são os NPK (Nitrogênio, Fósforo e Potássio), fundamentais para o crescimento das plantas. O uso sustentável e técnicas como a adubação de precisão ajudam a reduzir impactos ambientais e aumentar a eficiência na produção agrícola.
-        </div>
-        <div class="chart-wrapper">
-            <canvasjs-chart #chartComponent [options]="chartOptions" [styles]="{ width: '100%', height: '360px' }"></canvasjs-chart>
-        </div>
-    </div>
-</section>
-
-<section class="estatisticas1">
-  <h1>Cotação do café (Valor Compra/Venda)</h1>
+<section class="comunidade1">
+  <h2>GERENCIAMENTO</h2>
   <div class="container1">
     <div class="chart-wrapper">
-      <canvasjs-chart #chartComponent [options]="chartOptions1" [styles]="{ width: '100%', height: '360px' }"></canvasjs-chart>
-    </div>
+      <canvasjs-chart #chartComponent [options]="chartOptions" [styles]="{ width: '100%', height: '360px' }"></canvasjs-chart>
+  </div>
     <div class="texto">
-      O café é uma das principais atividades econômicas do Brasil, sendo o país o maior produtor e exportador mundial.    </div>
-  </div>
+      O FAVEP oferece ferramentas inteligentes para gerenciar sua propriedade com eficiência e simplicidade. Centralize todas as operações e tome decisões estratégicas com base em dados precisos.
+      <br> <br>
+      ✔ Controle Integrado - acompanhe atividades agrícolas, estoque, finanças e recursos em um único lugar.
+      <br>
+      ✔ Otimização de Recursos
+      <br>
+      ✔ Gestão Financeira
+      <br>
+      ✔ Planejamento Estratégico
+      Programe safras, manejo animal e manutenções com calendários personalizados.
+      <br>
+      ✔ Acesso Remoto
+      Transforme dados em resultados!
+    </div>
+</div>
 </section>
 
-<section class="estatisticas2">
-  <h1>Controle de entrada e saída de valores</h1>
+<svg class="onda" viewBox="0 0 1440 320">
+  <path fill=" #e4ecdf" fill-opacity="1" 
+    d="M0,160L80,176C160,192,320,224,480,213.3C640,203,800,149,960,133.3C1120,117,1280,139,1360,149.3L1440,160L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z">
+  </path>
+</svg>
+
+
+<section class="comunidade">
+  <h2>RELATORIOS</h2>
   <div class="container1">
-      <div class="texto">
-        A importância da entrada e saída de valores no controle financeiro:
-        No controle financeiro, o registro adequado da entrada e saída de valores é essencial para manter a saúde das finanças. As entradas representam os ganhos, enquanto as saídas correspondem aos gastos e investimentos. Monitorar esse fluxo permite uma visão clara da situação financeira, facilita a tomada de decisões e ajuda a evitar desequilíbrios, garantindo maior organização, planejamento e segurança econômica. </div>
-      <div class="chart-wrapper">
-          <canvasjs-chart #chartComponent [options]="chartOptions3" [styles]="{ width: '100%', height: '360px' }"></canvasjs-chart>
-      </div>
+    <div class="texto">
+      O módulo de Relatórios do FAVEP transforma dados complexos da sua propriedade em informações claras e acionáveis, facilitando a análise e a tomada de decisões estratégicas.
+      <br> <br>
+      📊 Relatórios Personalizados - Gere documentos sob medida para acompanhar produtividade, finanças, estoque e mais.
+      <br>
+      📅 Análises Temporais - Compare desempenho entre períodos (safras, meses, anos) e identifique tendências.
+      <br>
+      🌱 Gestão Agrícola Detalhada - Acompanhe custos de insumos, rendimento por cultura e eficiência operacional.
+      <br>
+      💵 Controle Financeiro - Visualize receitas, despesas e lucratividade em gráficos e tabelas intuitivas.
+      <br>
+      🔄 Exportação Simplificada - Compartilhe relatórios em PDF, Excel ou CSV com parceiros e técnicos.
+    </div>
+    <div class="chart-wrapper">
+        <canvasjs-chart #chartComponent [options]="chartOptions" [styles]="{ width: '100%', height: '360px' }"></canvasjs-chart>
+    </div>
+</div>
+</section>
+
+
+
+
+<section class="pricing-section">
+  <div class="card">
+    <h2>$12</h2>
+    <h3>Standard Plan App</h3>
+    <ul>
+      <li>Lorem Ipsum Dolores</li>
+      <li>20 TB of Storage</li>
+      <li class="disabled">Life-time Support</li>
+      <li class="disabled">Premium Add-Ons</li>
+      <li class="disabled">Fastest Network</li>
+      <li class="disabled">More Options</li>
+    </ul>
+    <button>Purchase This Plan Now</button>
+  </div>
+
+  <div class="card featured">
+    <h2>$25</h2>
+    <h3>Business Plan App</h3>
+    <ul>
+      <li>Lorem Ipsum Dolores</li>
+      <li>50 TB of Storage</li>
+      <li>Life-time Support</li>
+      <li>Premium Add-Ons</li>
+      <li class="disabled">Fastest Network</li>
+      <li class="disabled">More Options</li>
+    </ul>
+    <button>Purchase This Plan Now</button>
+  </div>
+
+  <div class="card">
+    <h2>$66</h2>
+    <h3>Premium Plan App</h3>
+    <ul>
+      <li>Lorem Ipsum Dolores</li>
+      <li>120 TB of Storage</li>
+      <li>Life-time Support</li>
+      <li>Premium Add-Ons</li>
+      <li>Fastest Network</li>
+      <li>More Options</li>
+    </ul>
+    <button>Purchase This Plan Now</button>
   </div>
 </section>
 
-<!-- Texto -->
-<h3>GERENCIAMENTO AGRÍCOLA</h3>
 
-<section class="gerenciamento1">
-  <h1>Um espaço reservado para o gerenciamento da sua propriedade e mais...</h1>
-  <div class="container2"><div class="container">
-
-
-    <div class="card">
-      <h3>Área</h3>
-      <p>4.000,00 ha</p>
-      <h3>Produção</h3>
-      <p>280.000,00 sc60</p>
-      <h3>Produtividade</h3>
-      <p>70,00 sc60/ha</p>
-    </div>
-
-    <div class="card">
-      <h3>Produção vendida</h3>
-      <p>269.319,69 sc60</p>
-      <h3>Produção a vender</h3>
-      <p>10.680,31 sc60</p>
-      <h3>Ponto de equilíbrio</h3>
-      <p>40,74 sc60/ha</p>
-    </div>
-
-    <div class="card">
-      <h3>Plantio <span class="status">FINALIZADO</span></h3>
-      <p>Duração: 22 dias</p>
-      <p>Início: 27/09/2023</p>
-      <p>Final: 14/10/2024</p>
-    </div>
-
-    <div class="card">
-      <h3>Colheita <span class="status">FINALIZADO</span></h3>
-      <p>Duração: 84 dias</p>
-      <p>Início: 02/01/2024</p>
-      <p>Final: 25/03/2024</p>
-    </div>
-
-    <div class="card">
-      <h3>Receita estimada</h3>
-      <p>R$: 37.800.000,00</p>
-      <p>R$/ha: 9.450,00</p>
-      <p>R$/sc60 vendido: 140,00</p>
-      <p>R$/sc60 a vender: 135,00</p>
-    </div>
-
-    <div class="card">
-      <h3>Custos e despesas</h3>
-      <p>R$: 22.000.000,00</p>
-      <p>R$/ha: 5.500,00</p>
-      <p>R$/sc60: 78,57</p>
-    </div>
-
-    <div class="card">
-      <h3>Lucro</h3>
-      <p>R$: 15.800.000,00</p>
-      <p>R$/ha: 3.950,00</p>
-      <p>R$/sc60: 56,43</p>
-    </div>
-
-    <div class="card margin-chart">
-      <h3>Margem</h3>
-      <div class="circle">41,8%</div>
-    </div>
-
-  </div>
-    <div class="texto_gerenciamento">
-      Um bom gerenciamento de propriedade agrícola é fundamental para garantir a produtividade, a sustentabilidade e a rentabilidade do negócio rural. Ele envolve o planejamento eficiente do uso da terra, a gestão dos insumos, a manutenção das máquinas, o controle financeiro e a adoção de boas práticas agrícolas. Além disso, permite acompanhar o desempenho das safras, antecipar riscos climáticos ou de mercado e tomar decisões estratégicas com base em dados. Com uma gestão eficaz, o produtor rural consegue otimizar recursos, reduzir custos, melhorar a qualidade dos produtos e garantir a longevidade da propriedade, promovendo um desenvolvimento sustentável e competitivo no setor.    </div>
-  </div>
-</section>
-
-<!-- Texto -->
-<h3>PARCEIROS</h3>
-
-<!-- Parceiros -->
-<section class="parceiros">
-    <h1>Deixe sua marca aqui conosco</h1>
-    <div class="container3">
-        <div class="card_parceiros">
-            <img src="\assets\img\logo.png" alt="Logo 1">
-            <img src="\assets\img\logo.png" alt="Logo 2">
-            <img src="\assets\img\logo.png" alt="Logo 3">
-            <img src="\assets\img\logo.png" alt="Logo 4">
-            <img src="\assets\img\logo.png" alt="Logo 5">
-        </div>
-    </div>
-</section>
-<!-- Rodapé -->
 <footer>
-    <div class="bottom-details">
-      <div class="bottom_text">
-        <span class="copyright_text">FAVEP © 2025 - All rights reserved</span>
-        <span class="policy_terms">
-          <a href="#">Privacy policy</a>
-          <a href="#">Terms & condition</a>
-        </span>
-      </div>
-      <div class="top">
-        <div class="media-icons">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-linkedin-in"></i></a>
-          <a href="#"><i class="fab fa-whatsapp"></i></a>
-        </div>
+  <div class="bottom-details">
+    <div class="bottom_text">
+      <span class="copyright_text">FAVEP © 2025 - All rights reserved</span>
+      <span class="policy_terms">
+        <a href="#">Privacy policy</a>
+        <a href="#">Terms & condition</a>
+      </span>
+    </div>
+    <div class="top">
+      <div class="media-icons">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
       </div>
     </div>
-  </footer>
+  </div>
+</footer>

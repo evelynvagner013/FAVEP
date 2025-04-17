@@ -190,5 +190,6 @@ export class HomeComponent {
         ]
       }]
     };
-  
+
+
 }
