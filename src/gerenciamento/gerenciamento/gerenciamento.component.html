@@ -1,72 +1,228 @@
 <div class="d-flex">
   <app-menu></app-menu>
   <div class="container-fluid p-4">   
-    <div class="container-planos ">
+    <div class="container-planos">
       <div class="container">
 
+        <h1>Propriedade</h1>
+        <li>
+          <a href="registros">Adicionar propriedade</a>
+        </li>
 
-        <div class="card">
-          <h3>Área</h3>
-          <p>4.000,00 ha</p>
-          <h3>Produção</h3>
-          <p>280.000,00 sc60</p>
-          <h3>Produtividade</h3>
-          <p>70,00 sc60/ha</p>
+        <div class="btneditargerar">
+          <button class="editar">EDITAR</button>
+          <button class="gerar">GERAR RELATÓRIO</button>
         </div>
-    
-        <div class="card">
-          <h3>Produção vendida</h3>
-          <p>269.319,69 sc60</p>
-          <h3>Produção a vender</h3>
-          <p>10.680,31 sc60</p>
-          <h3>Ponto de equilíbrio</h3>
-          <p>40,74 sc60/ha</p>
+
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Propriedade</th>
+              <th>Área</th>
+              <th>Localização</th>
+              <th>Produtividade</th>
+              <th>Tipo de cultura</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Fazenda São Francisco lindo</td>
+              <td>4.000,00 ha</td>
+              <td>Casa do chapéu</td>
+              <td>70,00 sc60/ha</td>
+              <td>Soja, milho, algodão</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h1>Produção</h1>
+        <li>
+          <a href="registros">Adicionar produção</a>
+        </li>
+
+        <div class="btneditargerar">
+          <button class="editar">EDITAR</button>
+          <button class="gerar">GERAR RELATÓRIO</button>
         </div>
-    
-        <div class="card">
-          <h3>Plantio <span class="status">FINALIZADO</span></h3>
-          <p>Duração: 22 dias</p>
-          <p>Início: 27/09/2023</p>
-          <p>Final: 14/10/2024</p>
+
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Propriedade</th>
+              <th>Produto</th>
+              <th>Produção vendida</th>
+              <th>Produção a vender</th>
+              <th>Ponto de equilíbrio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Fazenda São Francisco lindo</td>
+              <td>Soja</td>
+              <td>269.319,69 sc60</td>
+              <td>10.680,31 sc60</td>
+              <td>40,74 sc60/ha</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h1>Plantação</h1>
+        <li>
+          <a href="registros">Adicionar plantação</a>
+        </li>
+
+        <div class="btneditargerar">
+          <button class="editar">EDITAR</button>
+          <button class="gerar">GERAR RELATÓRIO</button>
         </div>
-    
-        <div class="card">
-          <h3>Colheita <span class="status">FINALIZADO</span></h3>
-          <p>Duração: 84 dias</p>
-          <p>Início: 02/01/2024</p>
-          <p>Final: 25/03/2024</p>
+
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Popriedade</th>
+              <th>Tipo</th>
+              <th>Início</th>
+              <th>Final</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Fazenda São Francisco lindo</td>
+              <td>Soja</td>
+              <td>27/09/2023</td>
+              <td>14/10/2024</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h1>Colheita</h1>
+        <li>
+          <a href="registros">Adicionar colheita</a>
+        </li>
+
+        <div class="btneditargerar">
+          <button class="editar">EDITAR</button>
+          <button class="gerar">GERAR RELATÓRIO</button>
         </div>
-    
-        <div class="card">
-          <h3>Receita estimada</h3>
-          <p>R$: 37.800.000,00</p>
-          <p>R$/ha: 9.450,00</p>
-          <p>R$/sc60 vendido: 140,00</p>
-          <p>R$/sc60 a vender: 135,00</p>
+
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Popriedade</th>
+              <th>Tipo</th>
+              <th>Início</th>
+              <th>Final</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h1>Maquinário</h1>
+        <li>
+          <a href="registros">Adicionar maquinário</a>
+        </li>
+
+        <div class="btneditargerar">
+          <button class="editar">EDITAR</button>
+          <button class="gerar">GERAR RELATÓRIO</button>
         </div>
-    
-        <div class="card">
-          <h3>Custos e despesas</h3>
-          <p>R$: 22.000.000,00</p>
-          <p>R$/ha: 5.500,00</p>
-          <p>R$/sc60: 78,57</p>
+
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Fabricante</th>
+              <th>Data aquisição</th>
+              <th>Tipo máquinario</th>
+              <th>Custos de manutenção</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>John Deere</td>
+              <td>02/01/2024</td>
+              <td>Colheitadeira</td>
+              <td>R$5.000,00</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h1>Receita</h1>
+        <li>
+          <a href="registros">Adicionar receita</a>
+        </li>
+
+        <div class="btneditargerar">
+          <button class="editar">EDITAR</button>
+          <button class="gerar">GERAR RELATÓRIO</button>
         </div>
-    
-        <div class="card">
-          <h3>Lucro</h3>
-          <p>R$: 15.800.000,00</p>
-          <p>R$/ha: 3.950,00</p>
-          <p>R$/sc60: 56,43</p>
+
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Propriedade</th>
+              <th>Receita estimada</th>
+              <th>Entrada</th>
+              <th>Saída</th>
+              <th>Lucro</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Fazenda São Francisco lindo</td>
+              <td>R$: 37.800.000,00</td>
+              <td>9.450,00</td>
+              <td>35.950,00</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h1>Custos/Despesas</h1>
+        <li>
+          <a href="registros">Adicionar Custos e despesas</a>
+        </li>
+
+        <div class="btneditargerar">
+          <button class="editar">EDITAR</button>
+          <button class="gerar">GERAR RELATÓRIO</button>
         </div>
-    
-        <div class="card margin-chart">
-          <h3>Margem</h3>
-          <div class="circle">41,8%</div>
-        </div>
-    
+
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Propriedade</th>
+              <th>Custos e despesas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Fazenda São Francisco lindo</td>
+              <td>R$: 22.000.000,00</td>
+            </tr>
+          </tbody>
+        </table>
+
+
+        <h1>Margem alcançada</h1>
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Margem</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; font-weight: bold;">41,8%</td>
+            </tr>
+          </tbody>
+        </table>
+
       </div>
+    </div>
   </div>
-  </div>
-  </div>
-
-
+</div>

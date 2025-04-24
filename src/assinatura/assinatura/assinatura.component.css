@@ -8,7 +8,7 @@
     padding: 20px 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     margin-left: 250px;
-    background: #f7f1e6;
+    background: #e4ecdf;
     position: relative;
 }
 
@@ -23,7 +23,7 @@ h2 {
 .plan-card-semestral,
 .plan-card-semanal,
 .plan-card-anual {
-    background-color: rgba(228, 228, 228, 0.819);
+    background-color: rgb(255, 255, 255);
     border-radius: 10px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
     padding: 15px;
@@ -51,11 +51,12 @@ h2 {
 .btn-assinar-semestral,
 .btn-assinar-semanal,
 .btn-assinar-anual {
-    background-color: #105DFB;
-    color: white;
+    background-color: #ffffff;
+    border-color: #43af00;
+    color: #000000;
     padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 14px;
+    border-radius: 64px;
+    font-size: 18px;
     margin-top: 10px;
     cursor: pointer;
     width: 45%;
@@ -67,7 +68,8 @@ h2 {
 .btn-assinar-semestral:hover,
 .btn-assinar-semanal:hover,
 .btn-assinar-anual:hover {
-    background-color: #0d4ed8;
+    background-color: #43af00;
+    color: white;
     transform: scale(1.03);
 }
 

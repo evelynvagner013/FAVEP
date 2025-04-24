@@ -1,0 +1,28 @@
+<div class="container">
+    <h2>Contato por E-mail</h2>
+  
+    <form (submit)="sendEmail($event)">
+      <label for="nome-email">Seu nome:</label>
+      <input type="text" id="nome-email" placeholder="Digite seu nome" required>
+  
+      <label for="mensagem-email">Descreva o problema:</label>
+      <textarea id="mensagem-email" rows="5" placeholder="Explique o que está acontecendo..." required></textarea>
+  
+      <button type="submit">Enviar por E-mail</button>
+    </form>
+  
+    <div class="divider"><span>OU</span></div>
+  
+    <h3>Contato via WhatsApp</h3>
+  
+    <form (submit)="sendWhatsApp($event)">
+      <label for="nome-whatsapp">Seu nome:</label>
+      <input type="text" id="nome-whatsapp" placeholder="Digite seu nome" required>
+  
+      <label for="mensagem-whatsapp">Descreva o problema:</label>
+      <textarea id="mensagem-whatsapp" rows="5" placeholder="Explique o que está acontecendo..." required></textarea>
+  
+      <button type="submit" class="whatsapp-btn">Enviar pelo WhatsApp</button>
+    </form>
+  </div>
+  

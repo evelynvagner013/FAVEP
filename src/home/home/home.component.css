@@ -152,6 +152,24 @@ nav a {
   max-width: 500px;
 }
 
+.chart-wrapper-img {
+  width: auto;
+  max-width: 50%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* impede que ultrapasse o limite */
+}
+
+.chart-wrapper-img img {
+  width: 100%;
+  height: auto;
+  object-fit: contain; /* garante proporção correta */
+  display: block;
+}
+
+
 .onda {
   position: relative;
   top: -5px;
@@ -206,11 +224,6 @@ nav a {
 .card ul li {
   margin: 8px 0;
   font-size: 14px;
-}
-
-.card ul li.disabled {
-  color: #ccc;
-  text-decoration: line-through;
 }
 
 .card button {

@@ -8,6 +8,9 @@ import { AssinaturaComponent } from '../assinatura/assinatura/assinatura.compone
 import { EstatisticaComponent } from '../estatisticas/estatistica/estatistica.component';
 import { RelatorioComponent } from '../relatorio/relatorio/relatorio.component';
 import { GerenciamentoComponent } from '../gerenciamento/gerenciamento/gerenciamento.component';
+import { ContatoComponent } from '../contato/contato.component';
+import { UsuarioComponent } from '../usuario/usuario.component';
+import { RegistrosComponent } from '../registros/registros.component';
 
 
 
@@ -19,7 +22,11 @@ export const routes: Routes = [
   { path: "assinatura", component: AssinaturaComponent},
   { path:"estatistica", component: EstatisticaComponent},
   { path: "relatorio", component: RelatorioComponent  },
-  { path: "gerenciamento", component: GerenciamentoComponent}
+  { path: "gerenciamento", component: GerenciamentoComponent},
+  { path: "contato", component: ContatoComponent},
+  { path: 'usuario', component: UsuarioComponent },
+  { path: 'registros', component: RegistrosComponent }
+
 
 ];
 

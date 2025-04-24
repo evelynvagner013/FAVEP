@@ -1,0 +1,65 @@
+.form-container {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 32px;
+  background: #00695dc4;
+  margin-bottom: 3rem;
+}
+
+.botao-voltar {
+  margin: 2rem;
+}
+
+.botao-voltar a {
+  text-decoration: none;
+  font-size: 2.5rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.material-symbols-outlined{
+  font-size: 3.5rem;
+  color: #333;
+}
+
+select {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.3rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: #b5e0b5;
+  cursor: not-allowed;
+}
