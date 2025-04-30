@@ -1,28 +1,102 @@
-<div class="container">
-    <h2>Contato por E-mail</h2>
+<header >
+    <div class="logo">FAVEP</div>
+    <nav>
+      <a href="home">Home</a>
+      <a href="#services">Serviços</a>
+      <a href="assinatura">Assinaturas</a>
+      <a href="contato">Contato</a>
+     
+    </nav>
+    <button class="sign-in" routerLink="/login">Sign In Now</button>
+  </header>
   
-    <form (submit)="sendEmail($event)">
-      <label for="nome-email">Seu nome:</label>
-      <input type="text" id="nome-email" placeholder="Digite seu nome" required>
-  
-      <label for="mensagem-email">Descreva o problema:</label>
-      <textarea id="mensagem-email" rows="5" placeholder="Explique o que está acontecendo..." required></textarea>
-  
-      <button type="submit">Enviar por E-mail</button>
-    </form>
-  
-    <div class="divider"><span>OU</span></div>
-  
-    <h3>Contato via WhatsApp</h3>
-  
-    <form (submit)="sendWhatsApp($event)">
-      <label for="nome-whatsapp">Seu nome:</label>
-      <input type="text" id="nome-whatsapp" placeholder="Digite seu nome" required>
-  
-      <label for="mensagem-whatsapp">Descreva o problema:</label>
-      <textarea id="mensagem-whatsapp" rows="5" placeholder="Explique o que está acontecendo..." required></textarea>
-  
-      <button type="submit" class="whatsapp-btn">Enviar pelo WhatsApp</button>
-    </form>
-  </div>
+  <header class="painel" id="top">
+    <div class="overlay">
+      <h1>Favep</h1>
+      <p class="credit">é um software que ajuda você a gerenciar sua propriedade</p>
+      <a href="contato" class="btn">CONTATE-NOS</a>
+    </div>
+  </header>
+
+  <section class="contact-section section-padding">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-5 col-12 me-auto mb-lg-0 mb-5">
+                <h2 class="my-3">We're happy to help</h2>
+
+                <p>Best Cleaning Service is ready to serve you. Clean Work is a professional website layout for your business.</p>
+
+                <div class="contact-info bg-white shadow-lg">
+                    <h3 class="mb-4">Informações para contato</h3>
+
+                    <h5 class="d-flex mt-3 mb-3">
+                        <i class="bi-geo-alt-fill custom-icon me-3"></i>
+                        Akershusstranda 20, 0150 Oslo, Norway
+                    </h5>
+
+                    <h5 class="d-flex mb-3">
+                        <i class="bi-telephone-fill custom-icon me-3"></i>
+
+                        <a href="tel: 110-220-9800">
+                            110-220-9800
+                        </a>
+                    </h5>
+
+                    <h5 class="d-flex">
+                        <i class="bi-envelope-fill custom-icon me-3"></i>
+
+                        <a href="mailto:info@company.com">
+                            info.com
+                        </a>
+                    </h5>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <form class="custom-form consulting-form bg-white shadow-lg mb-5 mb-lg-0" action="#" method="post" role="form">
+                    <div class="consulting-form-header d-flex align-items-center">
+                        <h3 class="mb-4">Digite sua dúvida</h3>
+                    </div>
+
+                    <form (submit)="sendEmail($event)">
+                        <label for="nome-email">Seu nome:</label>
+                        <input type="text" id="nome-email" placeholder="Digite seu nome" required>
+
+                        <label for="email">Email:</label>
+                        <input type="text" id="email" placeholder="Digite seu email" required>
+                    
+                        <label for="mensagem-email">Descreva o problema:</label>
+                        <textarea id="mensagem-email" rows="5" placeholder="Explique o que está acontecendo..." required></textarea>
+                    
+                        <button type="submit">Enviar por E-mail</button>
+                      </form>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<footer>
+    <div class="bottom-details">
+      <div class="bottom_text">
+        <span class="copyright_text">FAVEP © 2025 - All rights reserved</span>
+        <span class="policy_terms">
+          <a href="#">Privacy policy</a>
+          <a href="#">Terms & condition</a>
+        </span>
+      </div>
+      <div class="top">
+        <div class="media-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
   

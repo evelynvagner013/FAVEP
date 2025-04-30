@@ -58,10 +58,10 @@
     <form [formGroup]="propriedadeForm" (ngSubmit)="onSubmit()">
       <label>Propriedade</label>
       <input type="text" formControlName="nome">
-      <label>Produto</label>
-      <input type="text" formControlName="nome">
+      <label>Plantio</label>
+      <input type="text" formControlName="Plantio">
       <label>Início plantio</label>
-      <input type="text" formControlName="localizacao">
+      <input type="data" formControlName="DataInicio">
       <label>Área</label>
       <input type="number" formControlName="tamanho">
       <button type="submit" [disabled]="propriedadeForm.invalid">Salvar</button>
@@ -74,7 +74,7 @@
     <form [formGroup]="propriedadeForm" (ngSubmit)="onSubmit()">
       <label>Propriedade</label>
       <input type="text" formControlName="nome">
-      <label>Produto</label>
+      <label>Produção</label>
       <input type="text" formControlName="nome">
       <label>Início plantio</label>
       <input type="text" formControlName="localizacao">

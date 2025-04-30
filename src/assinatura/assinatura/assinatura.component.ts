@@ -10,5 +10,7 @@ import { MenuComponent } from "../../navbar/menu/menu.component";
   styleUrl: './assinatura.component.css'
 })
 export class AssinaturaComponent {
+  usuarioNome: string = 'João Agricultor';
+  usuarioFoto: string = 'assets/user-avatar.jpg';
 
 }

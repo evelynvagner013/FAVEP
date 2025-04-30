@@ -6,7 +6,7 @@ import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterLink, NgxMaskDirective, NgxMaskPipe, FormsModule],
+  imports: [ NgxMaskDirective, NgxMaskPipe, FormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })

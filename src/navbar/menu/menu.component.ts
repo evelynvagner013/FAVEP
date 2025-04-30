@@ -9,6 +9,8 @@ import { Component } from '@angular/core';
   styleUrl: './menu.component.css'
 })
 export class MenuComponent {
+  usuarioNome: string = 'João Agricultor';
+  usuarioFoto: string = 'assets/user-avatar.jpg';
 
   
 }

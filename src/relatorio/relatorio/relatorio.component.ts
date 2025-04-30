@@ -18,4 +18,7 @@ export class RelatorioComponent {
     { name: 'Formulário 5', url: '/assets/form5.pdf' }
   ];
 
+  usuarioNome: string = 'João Agricultor';
+  usuarioFoto: string = 'assets/user-avatar.jpg';
+
 }

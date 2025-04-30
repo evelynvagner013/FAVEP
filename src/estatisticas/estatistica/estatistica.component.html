@@ -1,79 +1,66 @@
-<div class="d-flex">
-    <app-menu></app-menu>
-    <div class="container-fluid p-4">
-        <div class="container-planos ">
-        <main class="content">
-            <header class="header">
-                <h1>Estatísticas</h1>
-                <div class="search-bar">
-                    <input type="text" placeholder="Pesquisar...">
-                    <i class="fas fa-search"></i>
-                </div>
-                <div class="icons">
-                    <i class="fas fa-th"></i>
-                    <i class="fas fa-bell"></i>
-                    <i class="fas fa-cog"></i>
-                </div>
-            </header>
-
-            <section class="cards">
-                <div class="card">
-                    <i class="fa-duotone fa-solid fa-calendar"></i>
-                    <p>Plano</p>
-                    <h3>Mensal</h3>
-                    <span>Valido até: 01/05/2025</span>
-                </div>
-                <div class="card">
-                    <i class="fas fa-dollar-sign"></i>
-                    <p>Entrada</p>
-                    <h3>R$1,345</h3>
-                </div>
-                <div class="card">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <p>Saida</p>
-                    <h3>R$1,345</h3>
-                </div>
-                <div class="card">
-                    <i class="fa-solid fa-briefcase"></i>
-                    <p>Lucro</p>
-                    <h3>R$ 6.220,00</h3>
-                   
-                </div>
-            </section>
-
-            <section class="chart">
-                <div class="chart-card">
-                    <h2>Distribuição de Fertilizantes</h2>
-                    <div class="chart-wrapper">
-                      <canvasjs-chart #chartComponent [options]="chartOptions" [styles]="{ width: '100%', height: '360px' }"></canvasjs-chart>
-                    </div>
-                  </div>                    
-              </section>
-
-            
-            <section class="chart">
-                <div class="chart-card">
-                    <h2>Cotação do café</h2>
-                    <div class="chart-wrapper">
-                      <canvasjs-chart #chartComponent1 [options]="chartOptions1" [styles]="{ width: '100%', height: '360px' }"></canvasjs-chart>
-                    </div>
-                   
-                  </div>                     
-            </section>
-
-            <section class="chart">
-                <div class="chart-card">
-                    <h2>Entrada vs Saída</h2>
-                    <div class="chart-wrapper">
-                      <canvasjs-chart #chartComponent2 [options]="chartOptions2" [styles]="{ width: '100%', height: '360px' }"></canvasjs-chart>
-                    </div>
-                   
-                  </div>
-                                       
-            </section>
-           
+<div class="dashboard-container">
+    <header class="dashboard-header">
+      <h1><i class="fas fa-tractor"></i> FAVEP - Gestão Agronômica</h1>
+      <div class="user-info">
+        <span>Olá, {{usuarioNome}}</span>
+        <img [src]="usuarioFoto" [alt]="'Foto de ' + usuarioNome" class="user-avatar">
+      </div>
+    </header>
+  
+    <nav class="main-menu">
+      <a href="home"><span class="material-symbols-outlined">home</span> Home</a>
+      <a href="gerenciamento" ><span class="material-symbols-outlined"> dashboard </span>Gerenciamento</a>
+      <a href="estatistica" class="active"><span class="material-symbols-outlined"> monitoring </span> estatistica</a>
+      <a href="relatorio" ><span class="material-symbols-outlined"> overview </span> Relatorio geral</a>
+      <a href="assinatura" ><span class="material-symbols-outlined"> move_up </span> Assinatura</a>
+      <a><i class="fas fa-user"></i> Perfil</a>
+    </nav>
+  
+    <main class="dashboard-content">
+      <div class="resumo-cards">
+        <div class="resumo-card">
+          <h3>Propriedades</h3>
+          <p class="valor">{{totalPropriedades}}</p>
+          <p class="info">Área Total: {{areaTotal | number:'1.0-2'}} ha</p>
+        </div>
         
-
-        </main>
-    </div>
-</div>
+        <div class="resumo-card">
+          <h3>Produção Atual</h3>
+          <p class="valor">{{producaoAtual | number}} kg</p>
+          <p class="info">{{culturasAtivas.join(', ')}}</p>
+        </div>
+        
+        <div class="resumo-card">
+          <h3>Resultado Financeiro</h3>
+          <p class="valor" [class.positivo]="resultadoFinanceiro >= 0" [class.negativo]="resultadoFinanceiro < 0">
+            {{resultadoFinanceiro | currency:'BRL'}}
+          </p>
+          <p class="info">Últimos 30 dias</p>
+        </div>
+      </div>
+  
+      <div class="graficos-container">
+        <div class="grafico-card">
+          <h3>Produtividade por Cultura</h3>
+          <canvas #produtividadeChart></canvas>
+        </div>
+        
+        <div class="grafico-card">
+          <h3>Receitas x Despesas</h3>
+          <canvas #financeiroChart></canvas>
+        </div>
+      </div>
+  
+      <div class="atividades-recentes">
+        <h3>Atividades Recentes</h3>
+        <ul>
+          <li *ngFor="let atividade of atividades">
+            <i [class]="'fas ' + atividade.icone"></i>
+            <span>{{atividade.descricao}}</span>
+            <span class="data">{{atividade.data | date:'dd/MM/yyyy'}}</span>
+          </li>
+        </ul>
+      </div>
+    </main>
+  </div>
+  
