@@ -120,7 +120,7 @@
     font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
-    color: #43af00;
+    color: #87c53b;
     margin: 15px 0;
   }
   
@@ -141,9 +141,9 @@
   .btn-assinar-semestral,
   .btn-assinar-semanal,
   .btn-assinar-anual {
-    background-color: white;
-    border: 2px solid #43af00;
-    color: #43af00;
+    background-color: #d6d1d1;
+    border: none;
+    color: #000000;
     padding: 10px;
     border-radius: 64px;
     font-size: 1rem;
@@ -159,6 +159,6 @@
   .btn-assinar-semestral:hover,
   .btn-assinar-semanal:hover,
   .btn-assinar-anual:hover {
-    background-color: #43af00;
-    color: white;
+    background-color: #87c53b;
+    color: rgb(0, 0, 0);
   }

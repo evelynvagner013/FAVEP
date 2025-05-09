@@ -16,6 +16,16 @@
     </div>
   </header>
 
+  <nav class="side-menu">
+    <a href="home"><span class="material-symbols-outlined">home</span> Home</a>
+    <a href="gerenciamento" class="active"><span class="material-symbols-outlined">dashboard</span> Gerenciamento</a>
+    <a href="estatistica"><span class="material-symbols-outlined">monitoring</span> Estatística</a>
+    <a href="relatorio"><span class="material-symbols-outlined">overview</span> Relatório geral</a>
+    <a href="assinatura"><span class="material-symbols-outlined">move_up</span> Assinatura</a>
+    <a><i class="fas fa-user"></i> Perfil</a>
+  </nav>
+  
+
   <!-- Barra de navegação -->
   <nav class="main-nav">
     <button [class.active]="abaAtiva === 'propriedades'" (click)="selecionarAba('propriedades')">

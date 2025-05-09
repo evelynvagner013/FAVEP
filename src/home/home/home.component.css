@@ -4,7 +4,7 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 20px 40px;
-  background-color: white;
+  background-color: #2c3e50;
   box-shadow: 0 2px 10px rgba(0,0,0,0.05);
   position: sticky;
   top: 0;
@@ -14,19 +14,19 @@ header {
 .logo {
   font-size: 24px;
   font-weight: bold;
-  color: #000000;
+  color: #ffffff;
 }
 
 nav a {
   margin: 0 12px;
   text-decoration: none;
-  color: #000000;
+  color: #ffffff;
 }
 
 
 .sign-in {
-  background-color: #c9c9c9;
-  color: white;
+  background-color: #d6d1d1;
+  color: rgb(0, 0, 0);
   border: none;
   padding: 8px 16px;
   border-radius: 20px;
@@ -181,70 +181,40 @@ nav a {
 
 
 
-
-
-/*Assinatura*/
-.pricing-section {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  padding: 60px 20px;
-}
-
-.card {
-  background: white;
-  border-radius: 24px;
-  padding: 30px;
-  width: 280px;
+/* assinatura */
+.cta-final {
+  background: #87c53b; /* verde vibrante */
+  color: rgb(0, 0, 0);
   text-align: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease;
+  padding: 60px 20px;
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  margin: 60px auto;
+  max-width: 900px;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-}
-
-.card h2 {
-  font-size: 32px;
-  color: #3da13d;
-}
-
-.card h3 {
-  margin: 10px 0 20px;
-  font-size: 18px;
+.cta-final h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
   font-weight: bold;
 }
 
-.card ul {
-  list-style: none;
-  margin-bottom: 20px;
-}
-
-.card ul li {
-  margin: 8px 0;
-  font-size: 14px;
-}
-
-.card button {
-  padding: 10px 20px;
-  border: 1px solid #43af00;
-  background: none;
+.cta-final .btn {
+  background-color: #d6d1d1;
   color: #000000;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: background 0.3s;
+  padding: 14px 28px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  display: inline-block;
 }
 
-.card button:hover {
-  background: #43af00;
-  color: white;
+.cta-final .btn:hover {
+  background-color: #f1f1f1;
+  transform: scale(1.05);
+  color: #388E3C;
 }
-
-.featured {
-  border: 2px solid #43af00;
-}
-
 
 
 
@@ -286,7 +256,7 @@ nav a {
 
 .bottom-details {
   width: 100%;
-  background: #afafaf;
+  background: #d6d1d1;
   margin-top: 40px;
 }
 

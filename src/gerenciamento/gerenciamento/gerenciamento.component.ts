@@ -13,6 +13,11 @@ import { Chart, registerables } from 'chart.js';
   styleUrl: './gerenciamento.component.css'
 })
 export class GerenciamentoComponent implements OnInit {
+
+  usuarioNome: string = 'João Agricultor';
+  usuarioFoto: string = 'assets/user-avatar.jpg';
+
+  
   // Controle de interface
   abaAtiva: string = 'propriedades';
   modalAberto: boolean = false;
