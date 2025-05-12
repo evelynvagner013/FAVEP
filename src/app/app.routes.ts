@@ -11,6 +11,7 @@ import { GerenciamentoComponent } from '../gerenciamento/gerenciamento/gerenciam
 import { ContatoComponent } from '../contato/contato.component';
 import { UsuarioComponent } from '../usuario/usuario.component';
 import { RegistrosComponent } from '../registros/registros.component';
+import { ConfiguracaoComponent } from '../configuracao/configuracao.component';
 
 
 
@@ -25,7 +26,8 @@ export const routes: Routes = [
   { path: "gerenciamento", component: GerenciamentoComponent},
   { path: "contato", component: ContatoComponent},
   { path: 'usuario', component: UsuarioComponent },
-  { path: 'registros', component: RegistrosComponent }
+  { path: 'registros', component: RegistrosComponent },
+  { path: 'configuracao', component: ConfiguracaoComponent}
 
 
 ];

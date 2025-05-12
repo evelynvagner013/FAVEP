@@ -124,7 +124,8 @@ nav a {
 .comunidade {
   padding: 60px 20px;
   text-align: center;
-  background-color: #e4ecdf;
+  background-color: #012e5ec2;
+  color: white;
 }
 .comunidade1 {
   padding: 60px 20px;
@@ -172,7 +173,13 @@ nav a {
 
 .onda {
   position: relative;
-  top: -5px;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.onda-inversa {
+  position: relative;
   width: 100%;
   height: auto;
   display: block;
@@ -182,38 +189,73 @@ nav a {
 
 
 /* assinatura */
-.cta-final {
-  background: #87c53b; /* verde vibrante */
-  color: rgb(0, 0, 0);
-  text-align: center;
-  padding: 60px 20px;
-  border-radius: 16px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  margin: 60px auto;
-  max-width: 900px;
+.carousel-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 100%;
+  margin: 40px auto;
 }
 
-.cta-final h2 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-  font-weight: bold;
+.carousel-track-wrapper {
+  overflow: hidden;
+  width: 80%;
 }
 
-.cta-final .btn {
-  background-color: #d6d1d1;
-  color: #000000;
-  padding: 14px 28px;
-  border-radius: 30px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  display: inline-block;
+.carousel-track {
+  display: flex;
+  transition: transform 0.4s ease-in-out;
 }
 
-.cta-final .btn:hover {
+.plan-card {
+  flex: 0 0 300px;
+  height: 400px;
+  margin: 0 8px;
   background-color: #f1f1f1;
-  transform: scale(1.05);
-  color: #388E3C;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.plan-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.plan-card .price {
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.plan-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+}
+
+.plan-card ul li {
+  margin: 5px 0;
+}
+
+.btn-assinar {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button.prev,
+button.next {
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 

@@ -12,8 +12,8 @@
       <a href="gerenciamento" ><span class="material-symbols-outlined"> dashboard </span>Gerenciamento</a>
       <a href="estatistica" class="active"><span class="material-symbols-outlined"> monitoring </span> estatistica</a>
       <a href="relatorio" ><span class="material-symbols-outlined"> overview </span> Relatorio geral</a>
-      <a href="assinatura" ><span class="material-symbols-outlined"> move_up </span> Assinatura</a>
-      <a><i class="fas fa-user"></i> Perfil</a>
+      <a href="usuario" ><span class="material-symbols-outlined"> account_circle </span> Perfil</a>
+      <a href="configuracao" ><span class="material-symbols-outlined"> move_up </span> Configuração</a>
     </nav>
   
     <main class="dashboard-content">
@@ -25,9 +25,8 @@
         </div>
         
         <div class="resumo-card">
-          <h3>Produção Atual</h3>
+          <h3>Produção Total</h3>
           <p class="valor">{{producaoAtual | number}} kg</p>
-          <p class="info">{{culturasAtivas.join(', ')}}</p>
         </div>
         
         <div class="resumo-card">
