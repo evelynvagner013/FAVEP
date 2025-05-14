@@ -161,6 +161,7 @@ nav a {
   align-items: center;
   justify-content: center;
   overflow: hidden; /* impede que ultrapasse o limite */
+  border: 2px solid #012e5ec2;
 }
 
 .chart-wrapper-img img {
@@ -177,15 +178,6 @@ nav a {
   height: auto;
   display: block;
 }
-
-.onda-inversa {
-  position: relative;
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-
 
 
 /* assinatura */

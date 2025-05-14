@@ -25,6 +25,7 @@ export class EstatisticaComponent implements OnInit {
 
   usuarioNome: string = 'João Agricultor';
   usuarioFoto: string = 'assets/user-avatar.jpg';
+
   totalPropriedades: number = 5;
   areaTotal: number = 12500;
   producaoAtual: number = 1250000;
