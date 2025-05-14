@@ -59,6 +59,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+   font-family: Ratio Modern;
 }
 
 .logo i {
@@ -106,6 +107,8 @@
   display: flex;
   background-color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  font-family: Ratio Modern;
+  font-size: 15px;
 }
 
 .main-nav button {
@@ -239,6 +242,7 @@
   color: #7f8c8d;
   font-size: 1rem;
   font-weight: 500;
+   font-family: Ratio Modern;
 }
 
 .summary-card .value {

@@ -8,7 +8,7 @@ body {
 }
 
 .title{
-  font-family: "Big Shoulders Inline", sans-serif;
+   font-family: Ratio Modern;
 }
 
 .container {
@@ -130,7 +130,7 @@ body {
 	bottom: 0;
 	height: 3px;
 	width: 25px;
-	background: #008c8c;
+	background: #012e5e;
 }
 
 .forms .signup-form .title:before {
@@ -164,13 +164,13 @@ body {
 
 .form-content .input-box input:focus,
 .form-content .input-box input:valid {
-	border-color: #008c8c;
+	border-color: #012e5e;
 }
 
 .form-content .input-box i {
 	position: absolute;
 	left: 8px;
-	color: #008c8c;
+	color: #012e5e;
 	font-size: 18px;
 }
 
@@ -182,7 +182,7 @@ body {
 
 .forms .form-content .text a {
 	text-decoration: none;
-	color: #008c8c;
+	color: #012e5e;
 }
 
 .forms .form-content .text a:hover {
@@ -196,7 +196,7 @@ body {
 
 .forms .form-content .button input {
 	color: #fff;
-	background: #008c8c;
+	background: #012e5e;
 	border-radius: 6px;
 	padding: 0;
 	cursor: pointer;
@@ -204,11 +204,11 @@ body {
 }
 
 .forms .form-content .button input:hover {
-	background: #006666;
+	background: #012e5e;
 }
 
 .forms .form-content label {
-	color: #008c8c;
+	color: #012e5e;
 	cursor: pointer;
 }
 

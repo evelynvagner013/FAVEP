@@ -22,6 +22,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
+   font-family: Ratio Modern;
 }
 
  .dashboard-header i {
@@ -84,8 +85,8 @@
   width: 100%;
   text-align: center;
   margin-bottom: 20px;
-  font-family: "Big Shoulders Inline", sans-serif;
-  font-size: 80px;
+  font-family: Ratio Modern;
+  font-size: 50px;
   color: #000000;
   
 }
