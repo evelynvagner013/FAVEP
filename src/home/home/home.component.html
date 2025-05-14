@@ -3,14 +3,14 @@
   <nav>
     <a href="home">Home</a>
     <a href="#services">Serviços</a>
-    <a href="assinatura">Assinaturas</a>
+    <a href="#assinatura">Assinaturas</a>
     <a href="contato">Contato</a>
    
   </nav>
   <button class="sign-in" routerLink="/login">Sign In Now</button>
 </header>
 
-<div class="painel" id="top">
+<div class="painel">
   <div class="overlay">
     <h1>Favep</h1>
     <p class="credit">é um software que ajuda você a gerenciar sua propriedade</p>
@@ -25,7 +25,7 @@
     </div>
     <h3>Estatísticas</h3>
     <p>Utiliza análise de dados avançada para transformar informações da sua propriedade em insights práticos, você pode:</p>
-    <a href="#" class="mais">SABER MAIS</a>
+    <a href="#" class="mais">Analisar Dados</a>
   </div>
 
   <div class="card">
@@ -34,7 +34,7 @@
     </div>
     <h3>Gerenciamento</h3>
     <p>Oferece ferramentas inteligentes para gerenciar sua propriedade com eficiência, simplicidade e agilidade. </p>
-    <a href="#" class="mais">SABER MAIS</a>
+    <a href="#" class="mais">Gerenciar Agora</a>
   </div>
 
   <div class="card">
@@ -43,7 +43,7 @@
     </div>
     <h3>Relatórios</h3>
     <p>Transforma dados complexos da sua propriedade em informações claras e acionáveis.</p>
-    <a href="#" class="mais">SABER MAIS</a>
+    <a href="#" class="mais">Transformar Informações</a>
   </div>
 
   <div class="card">
@@ -52,13 +52,13 @@
     </div>
     <h3>Parceiros</h3>
     <p>Acredita que parcerias estratégicas são essenciais para oferecer as melhores soluções em gestão agrícola.</p>
-    <a href="#" class="mais">CONHEÇA NOSSOS PARCEIROS</a>
+    <a href="#" class="mais">Nossos parceiros</a>
   </div>
 </section>
 
 
 <section class="comunidade">
-  <h2>ESTATISTICAS</h2>
+  <h2>ESTATÍSTICAS</h2>
   <div class="container1">
     <div class="texto">
       O FAVEP utiliza análise de dados avançada para transformar informações da sua propriedade em insights práticos. Com relatórios inteligentes, você pode:
@@ -131,80 +131,90 @@
 </div>
 </section>
 
-<div class="carousel-container">
-  <button class="prev">‹</button>
+<section>
+  <h2 id="assinatura">Escolha o Melhor Plano para Você</h2>
+  <div class="carousel-container">
+    <button class="prev">‹</button>
+    <div class="carousel-track-wrapper">
+      <div class="carousel-track">
+        <!-- Plano Semanal -->
+        <div class="plan-card">
+          <h3>Plano Semanal</h3>
+          <span class="price">R$ 500,00</span>
+          <span class="period">/semana</span>
+          <ul>
+            <li>Acesso completo à plataforma</li>
+            <li>Planilhas de gerenciamento</li>
+            <li>Estatísticas detalhadas</li>
+            <li>Relatórios personalizados</li>
+          </ul>
+          <button class="btn-assinar">Assinar Agora</button>
+        </div>
 
-  <div class="carousel-track-wrapper">
-    <div class="carousel-track">
-      <!-- Plano Semanal -->
-      <div class="plan-card">
-        <h3>Plano Semanal</h3>
-        <p class="price">R$ 500,00/semanal</p>
-        <ul>
-          <li>Acesso a todo conteúdo</li>
-          <li>Acesso à planilha de Gerenciamento</li>
-          <li>1 Semana de acesso às estatísticas</li>
-          <li>1 Semana de acesso aos relatórios</li>
-        </ul>
-        <button class="btn-assinar">Assinar</button>
-      </div>
+        <!-- Plano Mensal -->
+        <div class="plan-card">
+          <h3>Plano Mensal</h3>
+          <span class="price">R$ 2.000,00</span>
+          <span class="period">/mês</span>
+          <ul>
+            <li>Acesso completo à plataforma</li>
+            <li>Planilhas de gerenciamento</li>
+            <li>Estatísticas detalhadas</li>
+            <li>Relatórios personalizados</li>
+            <li>Suporte prioritário</li>
+          </ul>
+          <button class="btn-assinar">Assinar Agora</button>
+        </div>
 
-      <!-- Plano Mensal -->
-      <div class="plan-card">
-        <h3>Plano Mensal</h3>
-        <p class="price">R$ 2.000,00/mês</p>
-        <ul>
-          <li>Acesso a todo conteúdo</li>
-          <li>Acesso à planilha de Gerenciamento</li>
-          <li>1 Mês de acesso às estatísticas</li>
-          <li>1 Mês de acesso aos relatórios</li>
-        </ul>
-        <button class="btn-assinar">Assinar</button>
-      </div>
+        <!-- Plano Trimestral (Destaque) -->
+        <div class="plan-card featured">
+          <h3>Plano Trimestral</h3>
+          <span class="price">R$ 5.400,00</span>
+          <span class="period">/3 meses (economize 10%)</span>
+          <ul>
+            <li>Acesso completo à plataforma</li>
+            <li>Planilhas de gerenciamento</li>
+            <li>Estatísticas detalhadas</li>
+            <li>Relatórios personalizados</li>
+            <li>Suporte prioritário</li>
+          </ul>
+          <button class="btn-assinar">Assinar Agora</button>
+        </div>
 
-      <!-- Plano Trimestral -->
-      <div class="plan-card">
-        <h3>Plano Trimestral</h3>
-        <p class="price">R$ 5.400,00/3 meses</p>
-        <ul>
-          <li>Acesso a todo conteúdo</li>
-          <li>Acesso à planilha de Gerenciamento</li>
-          <li>3 Meses de acesso às estatísticas</li>
-          <li>3 Meses de acesso aos relatórios</li>
-        </ul>
-        <button class="btn-assinar">Assinar</button>
-      </div>
+        <!-- Plano Semestral -->
+        <div class="plan-card">
+          <h3>Plano Semestral</h3>
+          <span class="price">R$ 9.900,00</span>
+          <span class="period">/6 meses (economize 17%)</span>
+          <ul>
+            <li>Acesso completo à plataforma</li>
+            <li>Planilhas de gerenciamento</li>
+            <li>Estatísticas detalhadas</li>
+            <li>Relatórios personalizados</li>
+            <li>Suporte prioritário</li>
+          </ul>
+          <button class="btn-assinar">Assinar Agora</button>
+        </div>
 
-      <!-- Plano Semestral -->
-      <div class="plan-card">
-        <h3>Plano Semestral</h3>
-        <p class="price">R$ 9.900,00/6 meses</p>
-        <ul>
-          <li>Acesso a todo conteúdo</li>
-          <li>Acesso à planilha de Gerenciamento</li>
-          <li>6 Meses de acesso às estatísticas</li>
-          <li>6 Meses de acesso aos relatórios</li>
-        </ul>
-        <button class="btn-assinar">Assinar</button>
-      </div>
-
-      <!-- Plano Anual -->
-      <div class="plan-card">
-        <h3>Plano Anual</h3>
-        <p class="price">R$ 16.800,00/12 meses</p>
-        <ul>
-          <li>Acesso a todo conteúdo</li>
-          <li>Acesso à planilha de Gerenciamento</li>
-          <li>12 Meses de acesso às estatísticas</li>
-          <li>12 Meses de acesso aos relatórios</li>
-        </ul>
-        <button class="btn-assinar">Assinar</button>
+        <!-- Plano Anual -->
+        <div class="plan-card">
+          <h3>Plano Anual</h3>
+          <span class="price">R$ 16.800,00</span>
+          <span class="period">/12 meses (economize 30%)</span>
+          <ul>
+            <li>Acesso completo à plataforma</li>
+            <li>Planilhas de gerenciamento</li>
+            <li>Estatísticas detalhadas</li>
+            <li>Relatórios personalizados</li>
+            <li>Suporte 24/7</li>
+          </ul>
+          <button class="btn-assinar">Assinar Agora</button>
+        </div>
       </div>
     </div>
+    <button class="next">›</button>
   </div>
-
-  <button class="next">›</button>
-</div>
+</section>
 
 
 <footer>

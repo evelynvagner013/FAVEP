@@ -27,7 +27,7 @@ export const routes: Routes = [
   { path: "contato", component: ContatoComponent},
   { path: 'usuario', component: UsuarioComponent },
   { path: 'registros', component: RegistrosComponent },
-  { path: 'configuracao', component: ConfiguracaoComponent}
+  { path: "configuracao", component: ConfiguracaoComponent}
 
 
 ];

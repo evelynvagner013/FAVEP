@@ -11,5 +11,6 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './configuracao.component.css'
 })
 export class ConfiguracaoComponent {
+  
 
 }
