@@ -15,15 +15,15 @@
             <div class="input-boxes">
               <div class="input-box">
                 <i class="fas fa-envelope"></i>
-                <input type="text" placeholder="Digite seu email" required>
+                <input type="text" placeholder="Digite seu email" required name="email">
               </div>
               <div class="input-box">
                 <i class="fas fa-lock"></i>
-                <input type="password" placeholder="Digite sua senha" required>
+               <input type="password" placeholder="Digite a senha" required name="password">
               </div>
               <div class="text"><a href="#">Esqueceu a senha?</a></div>
               <div class="button input-box">
-                <input type="button" onclick="window.location.href='estatistica'" value="Entrar">
+               <input type="button" (click)="login()" value="Entrar">
               </div>
               <div class="text sign-up-text">
                 Não possui conta? <label for="flip">Criar</label>
@@ -39,23 +39,23 @@
             <div class="input-boxes">
               <div class="input-box">
                 <i class="fas fa-user"></i>
-                <input type="text" placeholder="Digite seu nome" required>
+                <input type="text" placeholder="Digite seu nome" required name="nome">
               </div>
               <div class="input-box">
                 <i class="fas fa-envelope"></i>
-                <input type="email" placeholder="Digite seu email" required>
+                <input type="email" placeholder="Digite seu email" required name="email">
               </div>
               <div class="input-box">
                 <i class="fas fa-phone"></i>
-                <input type="text" placeholder="Digite seu telefone" mask="(00) 00000-0000" required>
+                <input type="text" placeholder="Digite seu telefone" mask="(00) 00000-0000" required name="telefone">
               </div>
               <div class="input-box">
                 <i class="fas fa-lock"></i>
-                <input type="password" placeholder="Digite a senha" required>
+               <input type="password" placeholder="Digite a senha" required name="password">
               </div>
               <div class="input-box">
                 <i class="fas fa-lock"></i>
-                <input type="password" placeholder="Confirme a senha" required>
+                <input type="password" placeholder="Confirme a senha" required name="confirmPassword">
               </div>
               <div class="button input-box">
                 <input type="submit" value="Cadastrar">

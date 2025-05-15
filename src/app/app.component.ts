@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LoginComponent } from "../login/login/login.component";
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,13 @@ import { LoginComponent } from "../login/login/login.component";
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
-  title = 'favep';
+export class AppComponent implements OnInit {
+  constructor(private api: ApiService) {}
+
+  ngOnInit(): void {
+    this.api.getProperties().subscribe({
+      next: (data) => console.log(data),
+      error: (err) => console.error(err)
+    });
+  }
 }

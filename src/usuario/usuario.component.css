@@ -42,15 +42,16 @@ h1 {
 }
 
 .general-info {
-  background: #e9fcee;
+  background: #112d4e;
   flex: 2;
   padding: 30px;
   border-radius: 16px 0 0 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  color: #ffffff;
 }
 
 .general-info h2 {
-  color: #112d4e;
+  color: #ffffff;
   margin-bottom: 20px;
   font-size: 1.6rem;
 }
@@ -95,11 +96,11 @@ h1 {
 }
 
 .info-list strong {
-  color: #111;
+  color: #ffffff;
 }
 
 .help-box {
-  background: #a2e4ea;
+  background: #1976d2;
   flex: 1;
   padding: 30px;
   border-radius: 0 16px 0 0;
@@ -136,7 +137,7 @@ h1 {
 }
 
 .card-info {
-  background-color: #f0fdf4;
+  background-color: #112d4e;
   margin-top: 30px;
   padding: 30px;
   border-radius: 0 0 16px 16px;
@@ -146,16 +147,17 @@ h1 {
 .card-info h2 {
   font-size: 1.5rem;
   margin-bottom: 20px;
-  color: #112d4e;
+  color: #ffffff;
 }
 
 .card-info p {
   margin: 10px 0;
   font-size: 1rem;
+  color: #ffffff;
 }
 
 .card-info strong {
-  color: #000;
+  color: #ffffff;
 }
 
 /* Responsivo */
