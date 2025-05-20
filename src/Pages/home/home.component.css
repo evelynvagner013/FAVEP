@@ -1,0 +1,174 @@
+
+
+/*painel principal*/
+.painel {
+  background: url("/assets/img/fundo.jpg") no-repeat center center/cover;
+  height: 60vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.overlay {
+  text-align: center;
+  color: white;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 40px;
+}
+
+.overlay h1 {
+  font-size: 3rem;
+  font-family: Ratio Modern;
+  margin: 0;
+}
+
+.credit {
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.btn {
+  text-decoration: none;
+  color: white;
+  border: 2px solid white;
+  padding: 10px 20px;
+  transition: background 0.3s;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.btn:hover {
+  background: white;
+  color: #333;
+}
+
+/*Cards explicativos*/
+.services {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 40px 20px;
+  background-color: #f8f8f8;
+  gap: 20px;
+}
+
+.card {
+  background-color: white;
+  padding: 20px;
+  width: 220px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  
+}
+
+.card .icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.card h3 {
+  margin: 10px 0;
+  font-size: 25px;
+  font-family: Ratio Modern;
+}
+
+.card p {
+  font-size: 0.9rem;
+  color: #555;
+  text-align:left;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.mais {
+  display: inline-block;
+  margin-top: 10px;
+  color: #333;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.mais:hover {
+  text-decoration: underline;
+}
+
+
+
+/*Extras*/
+.comunidade {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #012e5ec2;
+  color: white;
+  font-family: Ratio Modern;
+}
+.comunidade1 {
+  padding: 60px 20px;
+  text-align: center;
+  font-family: Ratio Modern;
+ 
+}
+
+.container1 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.texto {
+  max-width: 500px;
+  text-align: left;
+  font-size: 1.2em;
+  line-height: 1.6;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.texto ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+} 
+
+.chart-wrapper {
+  width: 100%;
+  max-width: 500px;
+}
+
+.chart-wrapper-img {
+  width: auto;
+  max-width: 50%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* impede que ultrapasse o limite */
+  border: 2px solid #012e5ec2;
+}
+
+.chart-wrapper-img img {
+  width: 100%;
+  height: auto;
+  object-fit: contain; /* garante proporção correta */
+  display: block;
+}
+
+
+.onda {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+
+
+
+
+
+
+
+
+
+

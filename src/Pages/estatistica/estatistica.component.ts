@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { MenuComponent } from "../../navbar/menu/menu.component";
+
 import { RouterLink } from '@angular/router';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { Chart, registerables } from 'chart.js';
 import { CommonModule } from '@angular/common';
+import { MenuComponent } from '../navbar/menu/menu.component';
 
 interface Atividade {
   icone: string;

@@ -1,0 +1,70 @@
+/*Rodapé*/
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  padding-bottom: 20px;
+}
+
+.top .media-icons {
+  display: flex;
+  gap: 12px;
+}
+
+.top .media-icons a {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 40px;
+  color: #fff;
+  font-size: 17px;
+  text-decoration: none;
+  transition: all 0.4s ease;
+}
+
+/* Cores dos ícones */
+.top .media-icons a:nth-child(1) { background: #4267B2; }
+.top .media-icons a:nth-child(1):hover { color: #4267B2; background: #fff; }
+.top .media-icons a:nth-child(2) { background: #E1306C; }
+.top .media-icons a:nth-child(2):hover { color: #E1306C; background: #fff; }
+.top .media-icons a:nth-child(3) { background: #1DA1F2; }
+.top .media-icons a:nth-child(3):hover { color: #1DA1F2; background: #fff; }
+.top .media-icons a:nth-child(4) { background: #20ad13; }
+.top .media-icons a:nth-child(4):hover { color: #229928; background: #fff; }
+
+.bottom-details {
+  width: 100%;
+  background: #d6d1d1;
+  margin-top: 40px;
+}
+
+.bottom-details .bottom_text {
+  max-width: 1250px;
+  margin: auto;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.bottom-details .bottom_text span,
+.bottom-details .bottom_text a {
+  font-size: 14px;
+  font-weight: 300;
+  color: #000000;
+  opacity: 0.8;
+  text-decoration: none;
+}
+
+.bottom-details .bottom_text a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.bottom-details .bottom_text a {
+  margin-right: 10px;
+}

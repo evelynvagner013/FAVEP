@@ -1,0 +1,147 @@
+/* Estilo para a seção de assinaturas */
+#assinatura {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #000000;
+  font-size: 35px;
+  font-family: Ratio Modern;
+}
+
+
+
+.carousel-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 100%;
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 30px;
+}
+
+.carousel-track-wrapper {
+  overflow: hidden;
+  width: 100%;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 15px;
+  transition: transform 0.5s ease-in-out;
+}
+
+.plan-card {
+  flex: 0 0 220px; /* Tamanho reduzido */
+  min-height: 450px; /* Altura reduzida */
+  margin: 0 5px;
+  background: white;
+  text-align: center;
+  padding: 1.5rem 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.plan-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(41, 128, 185, 0.2);
+  border-color: #2980b9;
+}
+
+.plan-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+  color: #2c3e50;
+  transition: color 0.3s ease;
+}
+
+.plan-card:hover h3 {
+  color: #2980b9;
+}
+
+.plan-card .price {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #2980b9; /* Azul */
+  margin-bottom: 1rem;
+  display: block;
+  transition: color 0.3s ease;
+}
+
+.plan-card:hover .price {
+  color: #1a5276;
+}
+
+.plan-card .period {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  display: block;
+  margin-top: 3px;
+}
+
+.plan-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  text-align: left;
+}
+
+.plan-card ul li {
+  margin: 10px 0;
+  padding-left: 22px;
+  position: relative;
+  color: #34495e;
+  font-size: 0.9rem;
+   font-family: Arial, Helvetica, sans-serif;
+}
+
+.plan-card ul li:before {
+  content: "✓";
+  color: #2980b9; /* Azul */
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+.btn-assinar {
+  background-color: #2980b9; /* Azul */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+}
+
+.btn-assinar:hover {
+  background-color: #1a5276;
+  transform: translateX(-50%) scale(1.05);
+}
+
+button.prev,
+button.next {
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #2980b9; /* Azul */
+  padding: 0 10px;
+  transition: color 0.3s ease;
+}
+
+button.prev:hover,
+button.next:hover {
+  color: #1a5276;
+}

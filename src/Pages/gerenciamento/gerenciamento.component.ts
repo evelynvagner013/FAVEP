@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuComponent } from '../../navbar/menu/menu.component';
+
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
+import { MenuComponent } from '../navbar/menu/menu.component';
 
 @Component({
   selector: 'app-gerenciamento',
