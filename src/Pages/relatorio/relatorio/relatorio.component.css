@@ -3,7 +3,7 @@
   grid-template-columns: 250px 1fr;
   grid-template-rows: auto 1fr;
   min-height: 100vh;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  
 }
 
 .dashboard-header {
@@ -22,7 +22,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-   font-family: Ratio Modern;
+  
 }
 
  .dashboard-header i {

@@ -21,7 +21,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-     font-family: Ratio Modern;
+    
   }
 
   .dashboard-header i {
@@ -93,7 +93,7 @@
     margin-top: 0;
     color: #7f8c8d;
     font-size: 1rem;
-     font-family: Ratio Modern;
+    
   }
   
   .resumo-card .valor {
@@ -135,7 +135,7 @@
     margin-bottom: 20px;
     color: #7f8c8d;
     font-size: 1rem;
-     font-family: Ratio Modern;
+   
   }
   
   .atividades-recentes {
@@ -149,7 +149,7 @@
     margin-top: 0;
     color: #7f8c8d;
     font-size: 1rem;
-     font-family: Ratio Modern;
+    
   }
   
   .atividades-recentes ul {

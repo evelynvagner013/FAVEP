@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MenuCimaComponent } from '../navbar/menu-cima/menu-cima.component';
 import { FooterComponent } from '../footer/footer.component';
 
@@ -7,7 +7,7 @@ import { FooterComponent } from '../footer/footer.component';
 @Component({
   selector: 'app-contato',
    standalone: true,
-  imports: [RouterLink, MenuCimaComponent, FooterComponent],
+  imports: [RouterLink, MenuCimaComponent, FooterComponent, RouterLinkActive],
   templateUrl: './contato.component.html',
   styleUrls: ['./contato.component.css']
 })

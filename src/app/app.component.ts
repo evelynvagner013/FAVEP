@@ -11,13 +11,8 @@ import { LoginComponent } from '../Pages/Auth/login/login.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit {
+export class AppComponent  {
   constructor(private api: ApiService) {}
 
-  ngOnInit(): void {
-    this.api.getProperties().subscribe({
-      next: (data) => console.log(data),
-      error: (err) => console.error(err)
-    });
-  }
+ 
 }
