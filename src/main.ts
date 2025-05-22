@@ -8,6 +8,6 @@ bootstrapApplication(AppComponent, {
   ...appConfig,
   providers: [
     ...(appConfig.providers || []),
-    provideNgxMask(), provideAnimationsAsync()
+    provideNgxMask(), provideAnimationsAsync(), provideAnimationsAsync()
   ]
 }).catch((err) => console.error(err));

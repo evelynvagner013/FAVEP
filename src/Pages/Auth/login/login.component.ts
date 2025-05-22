@@ -13,11 +13,29 @@ import { User } from '../../../Models/user.model';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-user: User = { username: '', email: '', password: '', role: 'user' };
+user: User = { username: '', email: '', password: '',telefone:'', role: 'user' };
   successMessage: string = '';
   errorMessage: string = '';
 
   constructor(private apiService: ApiService, private router: Router) {}
+   mostrarForm = false;
+
+  rememberMe: boolean = false;
+
+  email: string = '';
+  password: string = '';
+
+
+    mostrarFormulario() {
+    this.mostrarForm = true;
+    this.email = '';
+    this.password = '';
+    this.errorMessage = '';
+    this.rememberMe = false;
+  }
+    fecharFormulario() {
+    this.mostrarForm = false;
+  }
 
   onSubmit() {
     console.log('Formulário enviado', this.user);
