@@ -12,6 +12,7 @@ import { FooterComponent } from '../footer/footer.component';
   styleUrls: ['./contato.component.css']
 })
 export class ContatoComponent {
+  
   sendEmail(event: Event) {
     event.preventDefault();
     const nome = (document.getElementById("nome-email") as HTMLInputElement).value;

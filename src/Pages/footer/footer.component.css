@@ -1,4 +1,5 @@
 /*Rodapé*/
+
 .top {
   display: flex;
   align-items: center;
@@ -36,7 +37,7 @@
 
 .bottom-details {
   width: 100%;
-  background: #d6d1d1;
+  background: #243241;
   margin-top: 40px;
 }
 
@@ -55,7 +56,7 @@
 .bottom-details .bottom_text a {
   font-size: 14px;
   font-weight: 300;
-  color: #000000;
+  color: #ffffff;
   opacity: 0.8;
   text-decoration: none;
 }

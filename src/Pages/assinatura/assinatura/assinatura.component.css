@@ -7,7 +7,12 @@
   
 }
 
+section h2{
+  font-size: 2.5rem;
+  color: #2b2c34;
+  margin-top: 30px;
 
+}
 
 .carousel-container {
   position: relative;
@@ -34,7 +39,9 @@
 
 .plan-card {
   flex: 0 0 220px; /* Tamanho reduzido */
-  min-height: 450px; /* Altura reduzida */
+  min-height: 350px; /* Altura reduzida */
+  min-width: 230px; /* Largura reduzida */
+  flex-shrink: 0;
   margin: 0 5px;
   background: white;
   text-align: center;
@@ -129,18 +136,22 @@
   transform: translateX(-50%) scale(1.05);
 }
 
-button.prev,
-button.next {
-  font-size: 2rem;
-  background: none;
+.carousel-container button.prev,
+.carousel-container button.next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
   border: none;
+  font-size: 2rem;
   cursor: pointer;
-  color: #2980b9; /* Azul */
-  padding: 0 10px;
-  transition: color 0.3s ease;
+  z-index: 2;
 }
 
-button.prev:hover,
-button.next:hover {
-  color: #1a5276;
+.carousel-container button.prev {
+  left: 10px;
+}
+
+.carousel-container button.next {
+  right: 10px;
 }

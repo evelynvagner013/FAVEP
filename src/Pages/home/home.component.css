@@ -19,8 +19,7 @@
 
 .overlay h1 {
   font-size: 3rem;
- 
-  margin: 0;
+  margin: 10;
 }
 
 .credit {
@@ -71,14 +70,12 @@
 .card h3 {
   margin: 10px 0;
   font-size: 25px;
-  
 }
 
 .card p {
   font-size: 0.9rem;
   color: #555;
   text-align:left;
-  
 }
 
 .mais {
@@ -154,6 +151,7 @@
   max-width: 500px;
   width: 100%;
   height: auto;
+  border: #2c3e50 2px solid;
 }
 
 

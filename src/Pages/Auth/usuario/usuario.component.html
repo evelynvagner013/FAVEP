@@ -1,11 +1,22 @@
-<div class="botao-voltar">
-  <a href="gerenciamento">
-    <span class="material-symbols-outlined"></span> 🔙
-  </a>
-</div>
+<div class="dashboard-container">
+    <header class="dashboard-header">
+      <h1><i class="fas fa-tractor"></i> FAVEP - Gestão Agronômica</h1>
+      <div class="user-info">
+        <span>Olá, {{usuarioNome}}</span>
+        <img [src]="usuarioFoto" [alt]="'Foto de ' + usuarioNome" class="user-avatar">
+      </div>
+    </header>
+  
+    <nav class="main-menu">
+      <a href="home"><span class="material-symbols-outlined">home</span> Home</a>
+      <a href="gerenciamento" ><span class="material-symbols-outlined"> dashboard </span>Gerenciamento</a>
+      <a href="estatistica" ><span class="material-symbols-outlined"> monitoring </span> Estatistica</a>
+      <a href="relatorio" ><span class="material-symbols-outlined"> overview </span> Relatorio geral</a>
+      <a href="usuario" class="active" ><span class="material-symbols-outlined"> account_circle </span> Perfil</a>
+    </nav>
+    
 
 <div class="container">
-    <h1>Usuário</h1>
   
     <div class="profile-section">
       <div class="general-info">
@@ -19,20 +30,17 @@
           <p><strong>Nome:</strong> <span>Thomas Edison</span></p>
           <p><strong>Email:</strong> <span>thomas&#64;site.com</span></p>
           <p><strong>Telefone:</strong> <span>(60) 12 345 6789</span></p>
-          <p><strong>Endereço:</strong> <span>551 Swanston Street,<br>Melbourne</span></p>
         </div>
       </div>
   
       <div class="help-box">
         <h2>Ainda precisa de ajuda?<br>Nos procure!</h2>
         <p><strong>Telefone:</strong> (60) 305-240-9671</p>
-        <button class="chat-btn" routerLink="/contato">Entre em contato</button>
-      </div>
+        <a href="contato" class="chat-btn">CONTATE-NOS</a>      </div>
     </div>
   
     <div class="card-info">
       <h2>Informações adicionais</h2>
-      <p><strong>User ID:</strong> <span>012 395 8647</span></p>
       <p><strong>Plano:</strong> <span>Anual</span></p>
       <p><strong>Data assinatura do plano:</strong> <span>July 19, 2025</span></p>
       <p><strong>Data Validade do plano:</strong> <span>July 19, 2026</span></p>

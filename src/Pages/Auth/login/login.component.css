@@ -27,7 +27,7 @@
   cursor: pointer;
 }
 body{
-    background-color: rgba(189, 189, 189, 0.674);
+    background-color: rgba(218, 218, 218, 0.674);
 }
 
 
@@ -87,7 +87,7 @@ body{
     height: auto;
     justify-content: space-between;
 } #register-form button {
-    background-color:  #459fd7;
+    background-color:  #b0b0b0;
     border: none;
     width: 20vw;
     height: 8vh;
@@ -97,6 +97,6 @@ body{
     margin-top: 2%;
     transition: 0.5s ease;
 } #register-form button:hover {
-    background-color: #124d72;
+    background-color: #3499d8;
     transform: scale(1.05);
 }

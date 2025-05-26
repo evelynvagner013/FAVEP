@@ -9,5 +9,6 @@ import { Component } from '@angular/core';
 })
 export class UsuarioComponent {
   
-
+ usuarioNome: string = 'João Agricultor';
+  usuarioFoto: string = 'assets/user-avatar.jpg';
 }

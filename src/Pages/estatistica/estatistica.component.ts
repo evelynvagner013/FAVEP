@@ -24,8 +24,8 @@ export class EstatisticaComponent implements OnInit {
   @ViewChild('produtividadeChart', { static: true }) produtividadeChart!: ElementRef;
   @ViewChild('financeiroChart', { static: true }) financeiroChart!: ElementRef;
 
-  usuarioNome: string = 'João Agricultor';
-  usuarioFoto: string = 'assets/user-avatar.jpg';
+ usuarioNome: string = 'João Agricultor';
+  usuarioFoto: string = 'assets/user-avatar.jpg'; 
 
   totalPropriedades: number = 5;
   areaTotal: number = 12500;

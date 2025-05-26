@@ -75,12 +75,6 @@
   overflow-y: auto;
 }
 
-
-
-
-
-
-
 .titulo {
   width: 100%;
   text-align: center;
@@ -106,6 +100,6 @@ th, td {
 }
 
 th {
-  background: #87c53b;
+  background: #238af1;
   color: rgb(0, 0, 0);
 }
