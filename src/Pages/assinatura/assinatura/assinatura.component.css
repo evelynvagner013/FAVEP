@@ -3,15 +3,11 @@
   text-align: center;
   margin-bottom: 2rem;
   color: #000000;
-  font-size: 35px;
-  
-}
-
-section h2{
-  font-size: 2.5rem;
-  color: #2b2c34;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 45px;
   margin-top: 30px;
-
+  
 }
 
 .carousel-container {
@@ -38,8 +34,8 @@ section h2{
 }
 
 .plan-card {
-  flex: 0 0 220px; /* Tamanho reduzido */
-  min-height: 350px; /* Altura reduzida */
+  flex: 0 0 250px; /* Tamanho reduzido */
+  min-height: 380px; /* Altura reduzida */
   min-width: 230px; /* Largura reduzida */
   flex-shrink: 0;
   margin: 0 5px;
@@ -61,10 +57,12 @@ section h2{
 }
 
 .plan-card h3 {
-  font-size: 1.3rem;
+  font-size: 25px;
   margin-bottom: 0.8rem;
   color: #2c3e50;
   transition: color 0.3s ease;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
 }
 
 .plan-card:hover h3 {
@@ -72,7 +70,7 @@ section h2{
 }
 
 .plan-card .price {
-  font-weight: bold;
+  font-weight: 500;
   font-size: 1.5rem;
   color: #2980b9; /* Azul */
   margin-bottom: 1rem;
@@ -104,6 +102,9 @@ section h2{
   position: relative;
   color: #34495e;
   font-size: 0.9rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  
 }
 
 .plan-card ul li:before {
@@ -121,7 +122,7 @@ section h2{
   padding: 10px 20px;
   border-radius: 50px;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 500;
   font-size: 0.9rem;
   transition: all 0.3s ease;
   position: absolute;

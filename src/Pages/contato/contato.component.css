@@ -23,7 +23,9 @@
 .contact-info h5,
 .contact-info h5 a {
   color: var(--p-color);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 20px;
 }
 
 .team-info a:hover,
@@ -32,15 +34,22 @@
 }
 
 .row h2{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 40px;
   
 }
 
 .row p{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 18px;
   
 }
 .text{
-
-  font-size: 30px;
+  font-size: 40px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
 }
 
 form {
@@ -54,8 +63,8 @@ form {
   label {
     display: block;
     margin-top: 15px;
-    font-weight: bold;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
   }
   
   input, textarea {

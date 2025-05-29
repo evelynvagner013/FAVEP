@@ -21,6 +21,8 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    font-family: 'Merriweather', serif;
+    font-weight: 500;
     
   }
 

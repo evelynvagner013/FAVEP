@@ -20,11 +20,16 @@
 .overlay h1 {
   font-size: 3rem;
   margin: 10;
+  font-family: 'Merriweather', serif;
+  font-weight: 500;
+  
 }
 
 .credit {
   font-size: 0.9rem;
   margin-bottom: 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
  
 }
 
@@ -34,6 +39,8 @@
   border: 2px solid white;
   padding: 10px 20px;
   transition: background 0.3s;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
 
 }
 
@@ -70,12 +77,17 @@
 .card h3 {
   margin: 10px 0;
   font-size: 25px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
 }
 
 .card p {
   font-size: 0.9rem;
   color: #555;
   text-align:left;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  
 }
 
 .mais {
@@ -85,6 +97,8 @@
   text-decoration: none;
   font-weight: bold;
   font-size: 15px;
+   font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
 }
 
 .mais:hover {
@@ -100,17 +114,24 @@
   justify-content: space-around;
   padding: 60px 20px;
   background-color: #012e5ec2;
-  flex-wrap: wrap;
 }
 .texto {
   max-width: 500px;
   color: #000000;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1.1;
 }
 
 .texto h1 {
   font-size: 36px;
   color: #000000;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 55px;
+  text-align: center;
 }
 
 .texto ul {
@@ -130,12 +151,20 @@
 .texto1 {
   max-width: 500px;
   color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1.1;
 }
 
 .texto1 h1 {
-  font-size: 36px;
   color: #ffffff;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 55px;
+  text-align: center;
+
 }
 
 .texto1 ul {
@@ -156,12 +185,6 @@
 
 
 
-.onda {
-  position: relative;
-  width: 100%;
-  height: auto;
-  display: block;
-}
 
 
 

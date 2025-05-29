@@ -9,6 +9,7 @@
     <a (click)="mostrarFormulario()" class="sign-in">Entrar</a>
 </header>
 
+
 <form [ngStyle]="{ display: mostrarForm ? 'block' : 'none' }" (ngSubmit)="onSubmit()" #loginForm="ngForm" >
   <div class="container">
       <h2 class="title">Logar</h2>
