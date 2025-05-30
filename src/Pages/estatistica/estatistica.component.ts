@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 
 import { RouterLink } from '@angular/router';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { Chart, registerables } from 'chart.js';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from '../navbar/menu/menu.component';
+
 
 interface Atividade {
   icone: string;
@@ -21,6 +22,23 @@ interface Atividade {
 })
 
 export class EstatisticaComponent implements OnInit {
+   menuAberto = false;
+
+  alternarMenu() {
+    this.menuAberto = !this.menuAberto;
+  }
+
+  // Opcional: fecha o menu ao clicar fora
+  @HostListener('document:click', ['$event'])
+  fecharMenuFora(event: MouseEvent) {
+    const alvo = event.target as HTMLElement;
+    const clicouNoBotao = alvo.closest('.menu-toggle');
+    const clicouNoMenu = alvo.closest('.main-menu');
+
+    if (!clicouNoBotao && !clicouNoMenu) {
+      this.menuAberto = false;
+    }}
+
   @ViewChild('produtividadeChart', { static: true }) produtividadeChart!: ElementRef;
   @ViewChild('financeiroChart', { static: true }) financeiroChart!: ElementRef;
 

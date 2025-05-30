@@ -45,6 +45,36 @@
   object-fit: cover;
 }
 
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .main-menu {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 200px;
+    height: calc(100% - 70px);
+    background-color: #34495e;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+  }
+
+  .main-menu.open {
+    transform: translateX(0);
+  }
+}
 .main-menu {
   background-color: #34495e;
   color: white;
@@ -81,9 +111,10 @@
   width: 100%;
   text-align: center;
   margin-bottom: 20px;
-  font-family: Ratio Modern;
-  font-size: 50px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
   color: #000000;
+  font-size: 55px;
   
 }
 
@@ -102,6 +133,80 @@ th, td {
 }
 
 th {
-  background: #238af1;
-  color: rgb(0, 0, 0);
+  background: #2c3e50;
+  color: rgb(255, 255, 255);
+}
+
+@media (max-width: 1024px) {
+  .dashboard-container {
+    grid-template-columns: 200px 1fr;
+  }
+
+  .dashboard-header h1 {
+    font-size: 2rem;
+  }
+
+  .titulo {
+    font-size: 45px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+  }
+
+  .main-menu {
+    order: 2;
+    padding: 10px 0;
+  }
+
+  .main-menu a {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .user-info {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .titulo {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .main-menu a {
+    font-size: 0.9rem;
+    padding: 8px 15px;
+  }
+
+  .dashboard-content {
+    padding: 15px;
+  }
+
+  .titulo {
+    font-size: 28px;
+  }
+
+  th, td {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
 }

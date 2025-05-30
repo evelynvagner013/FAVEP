@@ -22,6 +22,8 @@
     align-items: center;
     gap: 10px;
     color: #ffffff;
+    font-family: 'Merriweather', serif;
+    font-weight: 500;
   }
 
   .dashboard-header i {
@@ -246,31 +248,137 @@ h1 {
   color: #ffffff;
 }
 
-/* Responsivo */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+
+/* ========= RESPONSIVIDADE ========= */
+@media (max-width: 1024px) {
+  .dashboard-container {
+    grid-template-columns: 200px 1fr;
+  }
+
+  .dashboard-header h1 {
+    font-size: 2rem;
+  }
+
+  .user-avatar {
+    width: 35px;
+    height: 35px;
+  }
+}
+
 @media (max-width: 768px) {
+  .dashboard-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dashboard-header {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .menu-toggle {
+    display: block;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: white;
+    cursor: pointer;
+  }
+
+  .main-menu {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 220px;
+    height: calc(100% - 70px);
+    background-color: #34495e;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+  }
+
+  .main-menu.open {
+    transform: translateX(0);
+  }
+
+  .dashboard-content {
+    padding: 15px;
+  }
+
+  .titulo,
+  .container h1 {
+    font-size: 2rem;
+  }
+
   .profile-section {
     flex-direction: column;
   }
 
-  .general-info, .help-box, .card-info {
-    border-radius: 16px !important;
+  .general-info,
+  .help-box,
+  .card-info {
+    border-radius: 16px;
+    height: auto;
   }
 
-  h1 {
-    font-size: 2rem;
-    text-align: center;
+  .profile-photo img {
+    width: 60px;
+    height: 60px;
   }
 
-  .profile-photo {
-    justify-content: center;
+  .botao-voltar a {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-header h1 {
+    font-size: 1.5rem;
   }
 
-  .info-list {
-    text-align: center;
+  .main-menu {
+    width: 100%;
+  }
+
+  .dashboard-content {
+    padding: 10px;
+  }
+
+  .container h1 {
+    font-size: 1.8rem;
+  }
+
+  .profile-photo img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .edit-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
+  }
+
+  .info-list p,
+  .card-info p {
+    font-size: 0.9rem;
   }
 
   .chat-btn {
-    display: block;
-    margin: 0 auto;
+    padding: 8px 15px;
+    font-size: 0.9rem;
   }
 }

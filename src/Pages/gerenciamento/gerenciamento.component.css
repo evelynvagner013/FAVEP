@@ -1,120 +1,147 @@
-.gerenciamento-container {
+
+/* ---------------------------------------------------- */
+/* GRID PRINCIPAL DO DASHBOARD */
+/* ---------------------------------------------------- */
+.dashboard-container {
   display: grid;
-  grid-template-areas:
-    "header header"
-    "side-menu main-nav"
-    "side-menu main-content";
+  /* Em telas maiores: 250px para o menu lateral, 1fr (o restante) para o conteúdo */
   grid-template-columns: 250px 1fr;
-  grid-template-rows: auto auto 1fr;
-  min-height: 100vh;
+  /* Duas linhas: auto para o cabeçalho, 1fr para o restante (menu + conteúdo) */
+  grid-template-rows: auto 1fr;
+  min-height: 100vh; /* Garante que o container ocupe a altura total da viewport */
+  overflow: hidden; /* Crucial para evitar barras de rolagem estranhas com o menu fixo/deslizante */
 }
 
-/* Cabeçalho */
-.app-header {
-    grid-column: 1 / -1;
-    background-color: #2c3e50;
-    color: white;
-    padding: 0.8rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-
-.side-menu {
-  grid-area: side-menu;
-  background-color: #34495e;
+/* ---------------------------------------------------- */
+/* CABEÇALHO DO DASHBOARD */
+/* ---------------------------------------------------- */
+.dashboard-header {
+  grid-column: 1 / -1; /* Ocupa todas as colunas do grid principal (da primeira à última) */
+  grid-row: 1; /* Fica na primeira linha */
+  background-color: #2c3e50;
   color: white;
-  padding: 20px 0;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100; /* Garante que o cabeçalho fique acima de outros elementos */
+  position: sticky; /* O cabeçalho permanece no topo ao rolar a página */
+  top: 0;
+  left: 0;
+  width: 100%; /* Garante que o cabeçalho ocupe 100% da largura do grid */
+  box-sizing: border-box; /* Inclui padding e border no cálculo da largura/altura */
 }
 
-
-/* Estilos do menu lateral (novo) */
-.side-menu a {
-  display: block;
-  color: white;
-  text-decoration: none;
-  padding: 12px 25px;
-  transition: background-color 0.3s;
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 2.5rem;
   display: flex;
   align-items: center;
   gap: 10px;
-}
-
-.side-menu a:hover {
-  background-color: #2c3e50;
-}
-
-.side-menu a.active {
-  background-color: #3498db;
-  border-left: 4px solid #f1c40f;
-}
-
-.side-menu i, .side-menu .material-symbols-outlined {
-  width: 24px;
-  text-align: center;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  font-family: 'Merriweather', serif;
+  font-family: 'Merriweather', serif; /* Fonte específica para o título */
   font-weight: 500;
-  
+  white-space: nowrap; /* Evita que o texto do título quebre em várias linhas */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
 }
 
-.logo i {
+.dashboard-header i {
   font-size: 2.5rem;
-  color: #27ae60;
-}
-
-.user-menu {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
+  color: #27ae60; /* Cor verde para o ícone do trator */
 }
 
 .user-info {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 15px;
+  white-space: nowrap; /* Impede que as informações do usuário quebrem linha */
 }
 
 .user-avatar {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #27ae60;
+  border-radius: 50%; /* Torna a imagem de perfil redonda */
+  object-fit: cover; /* Garante que a imagem preencha o espaço sem distorcer */
+  border: 2px solid #27ae60; /* Borda verde na foto de perfil */
 }
 
-.btn-config {
+/* Botão de alternância do menu (hambúrguer) - visível apenas em telas pequenas */
+.menu-toggle {
   background: none;
   border: none;
   color: white;
-  font-size: 1.25rem;
+  font-size: 1.8rem;
   cursor: pointer;
-  transition: color 0.3s;
+  padding: 0.5rem;
+  display: none; /* Escondido por padrão em telas grandes */
 }
 
-.btn-config:hover {
-  color: #27ae60;
+/* ---------------------------------------------------- */
+/* MENU LATERAL PRINCIPAL */
+/* ---------------------------------------------------- */
+.main-menu {
+  grid-column: 1; /* Ocupa a primeira coluna do grid principal */
+  grid-row: 2; /* Fica na segunda linha (abaixo do cabeçalho) */
+  background-color: #34495e;
+  color: white;
+  padding: 20px 0;
+  overflow-y: auto; /* Permite rolagem interna se o menu for muito longo */
+  transition: transform 0.3s ease-in-out; /* Transição para o efeito de deslize */
+  z-index: 90; /* Um pouco abaixo do cabeçalho */
 }
 
+.main-menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  text-decoration: none;
+  padding: 12px 25px;
+  transition: background-color 0.3s;
+  white-space: nowrap; /* Evita que os itens de menu quebrem linha */
+}
 
+.main-menu a:hover {
+  background-color: #2c3e50; /* Fundo mais escuro ao passar o mouse */
+}
 
-/* Navegação */
+.main-menu .material-symbols-outlined {
+  font-size: 24px; /* Tamanho dos ícones do Material Symbols */
+  margin-right: 5px;
+}
+
+/* ---------------------------------------------------- */
+/* CONTEÚDO PRINCIPAL (área que se estende ao lado do menu) */
+/* ---------------------------------------------------- */
+.main-content {
+  grid-column: 2; /* Ocupa a segunda coluna do grid principal */
+  grid-row: 2; /* Fica na segunda linha (abaixo do cabeçalho) */
+  padding: 2rem;
+  background-color: #f4f7f6; /* Fundo levemente cinza para o conteúdo */
+  overflow-y: auto; /* Permite rolagem interna se o conteúdo for muito longo */
+
+  /* NOVO: Faz do main-content um container flex para seus próprios filhos */
+  display: flex;
+  flex-direction: column; /* Organiza os filhos verticalmente */
+  gap: 1.5rem; /* Adiciona espaçamento entre os elementos filhos diretos (main-nav, toolbar, sections) */
+}
+
+/* ---------------------------------------------------- */
+/* BARRA DE NAVEGAÇÃO INTERNA (Propriedades, Produção, Financeiro) */
+/* ---------------------------------------------------- */
 .main-nav {
   display: flex;
   background-color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  
-  font-size: 15px;
+  border-radius: 8px; /* Cantos arredondados */
+  overflow-x: auto; /* Permite rolagem horizontal se os botões não couberem */
+  white-space: nowrap; /* Impede que os botões quebrem linha */
+  margin-top: 0; /* Garante que não haja margem superior extra */
 }
 
 .main-nav button {
-  flex: 1;
+  flex: 1; /* Faz os botões ocuparem o mesmo espaço */
+  min-width: 120px; /* Largura mínima para cada botão */
   padding: 1rem;
   border: none;
   background: none;
@@ -134,25 +161,24 @@
 }
 
 .main-nav button.active {
-  color: #27ae60;
-  border-bottom: 3px solid #27ae60;
+  color: #27ae60; /* Cor verde para o botão ativo */
+  border-bottom: 3px solid #27ae60; /* Borda inferior verde */
   font-weight: 600;
+  background-color: #eaf7ed; /* Fundo levemente verde para o ativo */
 }
 
 .main-nav button i {
   font-size: 1.1rem;
 }
 
-/* Conteúdo principal */
-.main-content {
-  padding: 2rem;
-}
+/* ---------------------------------------------------- */
+/* ESTILOS PARA OUTRAS SEÇÕES (toolbar, cards, tables, modals, forms) */
+/* ---------------------------------------------------- */
 
-/* Barra de ferramentas */
 .toolbar {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1.5rem;
+  /* margin-bottom: 1.5rem; Removido pois o gap do .main-content já cuida do espaçamento */
   flex-wrap: wrap;
   gap: 1rem;
 }
@@ -228,7 +254,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; Removido, o gap do .main-content já cuida do espaçamento */
 }
 
 .summary-card {
@@ -244,7 +270,6 @@
   color: #7f8c8d;
   font-size: 1rem;
   font-weight: 500;
-  
 }
 
 .summary-card .value {
@@ -267,7 +292,7 @@
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  overflow-x: auto;
+  overflow-x: auto; /* Permite rolagem horizontal para tabelas grandes */
 }
 
 table {
@@ -360,7 +385,7 @@ tr:hover {
 .report-controls {
   display: flex;
   gap: 1.5rem;
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; Removido, o gap do .main-content já cuida do espaçamento */
   flex-wrap: wrap;
 }
 
@@ -405,7 +430,7 @@ tr:hover {
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  margin-top: 1.5rem;
+  margin-top: 0; /* Removido, o gap do .main-content já cuida do espaçamento */
 }
 
 /* Modais */
@@ -476,6 +501,7 @@ tr:hover {
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
+  box-sizing: border-box; /* Garante que padding não aumente a largura */
 }
 
 .form-row {
@@ -545,44 +571,105 @@ tr:hover {
   margin-top: 2rem;
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-  .app-header {
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
+/* ---------------------------------------------------- */
+/* RESPONSIVIDADE */
+/* ---------------------------------------------------- */
+@media (max-width: 992px) { /* Ponto de interrupção para tablets em modo paisagem */
+  .dashboard-header h1 {
+    font-size: 2rem; /* Reduz o tamanho do título */
   }
-  
-  .main-nav {
-    flex-wrap: wrap;
+  .dashboard-header i {
+    font-size: 2rem;
   }
-  
-  .main-nav button {
-    flex: 1 0 45%;
-    padding: 0.75rem;
+  .user-info span {
+    font-size: 0.9rem; /* Reduz o tamanho do texto "Olá, João Agricultor" */
   }
-  
+}
+
+@media (max-width: 768px) { /* Ponto de interrupção para celulares e tablets em modo retrato */
+  .dashboard-container {
+    grid-template-columns: 1fr; /* Em telas pequenas, ocupe apenas 1 coluna */
+    /* grid-template-rows: auto 1fr; (mantém o cabeçalho no topo, conteúdo abaixo) */
+  }
+
+  /* Mostra o botão de alternância do menu (hambúrguer) */
+  .menu-toggle {
+    display: block;
+  }
+
+  .main-menu {
+    position: fixed; /* Fixa o menu lateral fora da tela */
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    transform: translateX(-100%); /* Esconde o menu para a esquerda */
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3); /* Sombra para destacar quando aberto */
+    z-index: 1001; /* Fica acima de tudo quando aberto */
+    padding-top: 80px; /* Ajuste para o padding do cabeçalho */
+    box-sizing: border-box; /* Inclui padding no cálculo da altura */
+  }
+
+  /* Estado do menu quando aberto */
+  .main-menu.open {
+    transform: translateX(0); /* Desliza o menu para dentro da tela */
+  }
+
+  /* Oculta a área principal do menu lateral quando o menu responsivo está ativo */
+  /* Isso é se o seu HTML fosse: <div class="dashboard-container"> <nav class="main-menu"></nav> <main class="main-content"></main> </div> */
+  /* Se o main-menu está dentro de um app-root, ele não precisa ser escondido aqui */
+  /* Apenas o menu responsivo deve aparecer */
+
+
   .main-content {
-    padding: 1rem;
+    grid-column: 1; /* Ocupa a única coluna em telas pequenas */
+    padding: 1rem; /* Reduz o padding para economizar espaço */
   }
-  
+
+  .toolbar {
+    flex-direction: column; /* Empilha elementos da barra de ferramentas */
+    gap: 1rem;
+  }
+
   .filtros {
-    flex-direction: column;
-    gap: 1rem;
+    flex-direction: column; /* Empilha grupos de filtros */
     width: 100%;
   }
-  
+
   .search-group input {
-    width: 100%;
+    width: 100%; /* Campo de busca ocupa toda a largura */
   }
-  
+
   .form-row {
-    flex-direction: column;
+    flex-direction: column; /* Campos de formulário em linha se tornam coluna */
     gap: 1rem;
   }
-  
+
   .modal-content {
-    width: 95%;
+    width: 95%; /* Modais ocupam mais largura em telas menores */
     padding: 1.5rem;
+  }
+}
+
+/* Estilos para telas muito pequenas (smartphones) */
+@media (max-width: 480px) {
+  .dashboard-header h1 {
+    font-size: 1.5rem; /* Título ainda menor */
+  }
+  .dashboard-header i {
+    font-size: 1.5rem;
+  }
+  .user-info span {
+    display: none; /* Esconde o nome do usuário para telas muito pequenas */
+  }
+  .dashboard-header {
+    padding: 1rem; /* Padding menor no cabeçalho */
+  }
+  .main-menu a {
+    padding: 12px 15px; /* Padding menor nos itens do menu lateral */
+  }
+  .main-nav button {
+    padding: 0.75rem; /* Padding menor nos botões da aba interna */
+    font-size: 0.8rem;
   }
 }

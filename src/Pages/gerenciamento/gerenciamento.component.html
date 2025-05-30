@@ -1,47 +1,51 @@
-<div class="gerenciamento-container"> 
-  <!-- Cabeçalho -->
-  <header class="app-header">
-    <div class="logo">
-      <i class="fas fa-tractor"></i>
-      <h1>FAVEP - Gestão Agronômica</h1>
-    </div>
-    <div class="user-menu">
-      <div class="user-info">
-        <span>{{usuario.nome}}</span>
-        <img [src]="usuario.foto" alt="Foto do usuário" class="user-avatar">
-      </div>
-      <button class="btn-config" (click)="abrirConfiguracoes()">
-        <i class="fas fa-cog"></i>
-      </button>
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <button class="menu-toggle" aria-label="Abrir menu" (click)="alternarMenu()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <h1><i class="fas fa-tractor"></i> FAVEP - Gestão Agronômica</h1>
+    <div class="user-info">
+      <span>Olá, {{usuarioNome}}</span>
+      <img [src]="usuarioFoto" [alt]="'Foto de ' + usuarioNome" class="user-avatar">
     </div>
   </header>
 
-  <nav class="side-menu">
-    <a href="home"><span class="material-symbols-outlined">home</span> Home</a>
-    <a href="gerenciamento" class="active"><span class="material-symbols-outlined"> dashboard </span>Gerenciamento</a>
-    <a href="estatistica" ><span class="material-symbols-outlined"> monitoring </span> Estatistica</a>
-    <a href="relatorio" ><span class="material-symbols-outlined"> overview </span> Relatorio geral</a>
-    <a href="usuario" ><span class="material-symbols-outlined"> account_circle </span> Perfil</a>
+  <nav class="main-menu" [class.open]="menuAberto">
+    <a routerLink="/home" routerLinkActive="active" >
+      <span class="material-symbols-outlined">home</span> Home
+    </a>
+
+    <a routerLink="/gerenciamento" routerLinkActive="active" >
+      <span class="material-symbols-outlined">dashboard</span> Gerenciamento
+    </a>
+
+    <a routerLink="/estatistica" routerLinkActive="active" >
+      <span class="material-symbols-outlined">monitoring</span> Estatística
+    </a>
+
+    <a routerLink="/relatorio" routerLinkActive="active" >
+      <span class="material-symbols-outlined">overview</span> Relatório geral
+    </a>
+
+    <a routerLink="/usuario" routerLinkActive="active" >
+      <span class="material-symbols-outlined">account_circle</span> Perfil
+    </a>
   </nav>
-  
 
-  <!-- Barra de navegação -->
-  <nav class="main-nav">
-    <button [class.active]="abaAtiva === 'propriedades'" (click)="selecionarAba('propriedades')">
-      <i class="fas fa-map-marked"></i> Propriedades
-    </button>
-    <button [class.active]="abaAtiva === 'producao'" (click)="selecionarAba('producao')">
-      <i class="fas fa-wheat-awn"></i> Produção
-    </button>
-    <button [class.active]="abaAtiva === 'financeiro'" (click)="selecionarAba('financeiro')">
-      <i class="fas fa-money-bill-wave"></i> Financeiro
-    </button>
-
-  </nav>
-
-  <!-- Conteúdo principal -->
   <main class="main-content">
-    <!-- Barra de ferramentas -->
+
+    <nav class="main-nav">
+      <button [class.active]="abaAtiva === 'propriedades'" (click)="selecionarAba('propriedades')">
+        <i class="fas fa-map-marked"></i> Propriedades
+      </button>
+      <button [class.active]="abaAtiva === 'producao'" (click)="selecionarAba('producao')">
+        <i class="fas fa-wheat-awn"></i> Produção
+      </button>
+      <button [class.active]="abaAtiva === 'financeiro'" (click)="selecionarAba('financeiro')">
+        <i class="fas fa-money-bill-wave"></i> Financeiro
+      </button>
+    </nav>
+
     <div class="toolbar">
       <div class="filtros">
         <div class="filtro-group" *ngIf="abaAtiva !== 'financeiro'">
@@ -73,8 +77,8 @@
         <i class="fas fa-plus"></i> Adicionar
       </button>
     </div>
+    
 
-    <!-- Seção de Propriedades -->
     <section *ngIf="abaAtiva === 'propriedades'" class="content-section">
       <div class="summary-cards">
         <div class="summary-card">
@@ -122,7 +126,6 @@
       </div>
     </section>
 
-    <!-- Seção de Produção -->
     <section *ngIf="abaAtiva === 'producao'" class="content-section">
       <div class="summary-cards">
         <div class="summary-card">
@@ -172,7 +175,6 @@
       </div>
     </section>
 
-    <!-- Seção Financeira -->
     <section *ngIf="abaAtiva === 'financeiro'" class="content-section">
       <div class="summary-cards">
         <div class="summary-card">
@@ -228,7 +230,6 @@
       </div>
     </section>
 
-    <!-- Seção de Relatórios -->
     <section *ngIf="abaAtiva === 'relatorios'" class="content-section">
       <div class="report-controls">
         <div class="control-group">
@@ -260,16 +261,15 @@
         <canvas id="reportChart"></canvas>
       </div>
     </section>
+
   </main>
 
-  <!-- Modal de Edição/Adição -->
   <div class="modal" *ngIf="modalAberto">
     <div class="modal-content">
       <span class="close" (click)="fecharModal()">&times;</span>
       <h3>{{modalTitulo}}</h3>
 
       <form (ngSubmit)="salvar()">
-        <!-- Formulário de Propriedade -->
         <div *ngIf="tipoEdicao === 'propriedade'">
           <div class="form-group">
             <label>Nome da Propriedade</label>
@@ -294,15 +294,14 @@
             <div class="culturas-list">
               <div *ngFor="let cultura of todasCulturas" class="cultura-item">
                 <input type="checkbox" [id]="'cultura-'+cultura" 
-                       [checked]="propriedadeEditada.culturas.includes(cultura)"
-                       (change)="toggleCultura(cultura)">
+                        [checked]="propriedadeEditada.culturas.includes(cultura)"
+                        (change)="toggleCultura(cultura)">
                 <label [for]="'cultura-'+cultura">{{cultura}}</label>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Formulário de Produção -->
         <div *ngIf="tipoEdicao === 'producao'">
           <div class="form-group">
             <label>Propriedade</label>
@@ -338,7 +337,6 @@
           </div>
         </div>
 
-        <!-- Formulário Financeiro -->
         <div *ngIf="tipoEdicao === 'movimentacao'">
           <div class="form-group">
             <label>Tipo</label>
@@ -390,7 +388,6 @@
     </div>
   </div>
 
-  <!-- Modal de Confirmação -->
   <div class="modal" *ngIf="confirmacaoAberta">
     <div class="modal-content confirm-modal">
       <h3>Confirmar Exclusão</h3>
@@ -402,7 +399,6 @@
     </div>
   </div>
 
-  <!-- Modal de Configurações -->
   <div class="modal" *ngIf="configAberto">
     <div class="modal-content config-modal">
       <span class="close" (click)="fecharConfig()">&times;</span>

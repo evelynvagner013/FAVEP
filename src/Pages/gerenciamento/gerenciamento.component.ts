@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
@@ -9,11 +9,27 @@ import { MenuComponent } from '../navbar/menu/menu.component';
 @Component({
   selector: 'app-gerenciamento',
   standalone: true,
-  imports: [MenuComponent, RouterLink, CommonModule, FormsModule],
+  imports: [MenuComponent, RouterModule,  CommonModule, FormsModule],
   templateUrl: './gerenciamento.component.html',
   styleUrl: './gerenciamento.component.css'
 })
 export class GerenciamentoComponent implements OnInit {
+   menuAberto = false;
+  
+    alternarMenu() {
+      this.menuAberto = !this.menuAberto;
+    }
+  
+    // Opcional: fecha o menu ao clicar fora
+    @HostListener('document:click', ['$event'])
+    fecharMenuFora(event: MouseEvent) {
+      const alvo = event.target as HTMLElement;
+      const clicouNoBotao = alvo.closest('.menu-toggle');
+      const clicouNoMenu = alvo.closest('.main-menu');
+  
+      if (!clicouNoBotao && !clicouNoMenu) {
+        this.menuAberto = false;
+      }}
 
   usuarioNome: string = 'João Agricultor';
   usuarioFoto: string = 'assets/user-avatar.jpg';
