@@ -5,8 +5,8 @@
     </button>
     <h1><i class="fas fa-tractor"></i> FAVEP - Gestão Agronômica</h1>
     <div class="user-info">
-      <span>Olá, {{usuarioNome}}</span>
-      <img [src]="usuarioFoto" [alt]="'Foto de ' + usuarioNome" class="user-avatar">
+      <span>Olá, {{ headerUsuarioNome }}</span>
+      <img [src]="headerUsuarioFoto" [alt]="'Foto de ' + headerUsuarioNome" class="user-avatar">
     </div>
   </header>
 
@@ -202,8 +202,6 @@
               <th>Descrição</th>
               <th>Propriedade</th>
               <th>Valor</th>
-              <th>Categoria</th>
-              <th>Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -280,25 +278,10 @@
               <label>Área Total (ha)</label>
               <input type="number" step="0.01" [(ngModel)]="propriedadeEditada.area" name="areaPropriedade" required>
             </div>
-            <div class="form-group">
-              <label>Produtividade (kg/ha)</label>
-              <input type="number" step="0.01" [(ngModel)]="propriedadeEditada.produtividade" name="produtividade">
-            </div>
           </div>
           <div class="form-group">
             <label>Localização</label>
             <input type="text" [(ngModel)]="propriedadeEditada.localizacao" name="localizacao" required>
-          </div>
-          <div class="form-group">
-            <label>Culturas</label>
-            <div class="culturas-list">
-              <div *ngFor="let cultura of todasCulturas" class="cultura-item">
-                <input type="checkbox" [id]="'cultura-'+cultura" 
-                        [checked]="propriedadeEditada.culturas.includes(cultura)"
-                        (change)="toggleCultura(cultura)">
-                <label [for]="'cultura-'+cultura">{{cultura}}</label>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -322,10 +305,6 @@
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group">
-              <label>Quantidade (kg)</label>
-              <input type="number" step="0.01" [(ngModel)]="producaoEditada.quantidade" name="quantidadeProducao" required>
-            </div>
             <div class="form-group">
               <label>Área (ha)</label>
               <input type="number" step="0.01" [(ngModel)]="producaoEditada.area" name="areaProducao" required>
@@ -399,37 +378,5 @@
     </div>
   </div>
 
-  <div class="modal" *ngIf="configAberto">
-    <div class="modal-content config-modal">
-      <span class="close" (click)="fecharConfig()">&times;</span>
-      <h3>Configurações do Usuário</h3>
-      
-      <form (ngSubmit)="salvarConfig()">
-        <div class="form-group">
-          <label>Nome</label>
-          <input type="text" [(ngModel)]="usuario.nome" name="nomeUsuario" required>
-        </div>
-        
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" [(ngModel)]="usuario.email" name="emailUsuario" required>
-        </div>
-        
-        <div class="form-group">
-          <label>Foto (URL)</label>
-          <input type="text" [(ngModel)]="usuario.foto" name="fotoUsuario">
-        </div>
-        
-        <div class="form-group">
-          <label>Alterar Senha</label>
-          <input type="password" [(ngModel)]="novaSenha" name="novaSenha" placeholder="Nova senha">
-        </div>
-        
-        <div class="form-actions">
-          <button type="button" class="btn-cancel" (click)="fecharConfig()">Cancelar</button>
-          <button type="submit" class="btn-save">Salvar</button>
-        </div>
-      </form>
-    </div>
-  </div>
+  
 </div>

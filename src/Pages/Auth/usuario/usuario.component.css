@@ -1,100 +1,123 @@
 .dashboard-container {
-    display: grid;
-    grid-template-columns: 250px 1fr;
-    grid-template-rows: auto 1fr;
-    min-height: 100vh;
-  }
-  
-  .dashboard-header {
-    grid-column: 1 / -1;
-    background-color: #2c3e50;
-    color: white;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .dashboard-header h1 {
-    margin: 0;
-    font-size: 2.5rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #ffffff;
-    font-family: 'Merriweather', serif;
-    font-weight: 500;
-  }
+  display: flex; /* Alterado para flex para melhor controle do menu e conteúdo */
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative; /* Para posicionamento absoluto/fixo de filhos como o menu */
+}
 
-  .dashboard-header i {
-    font-size: 2.5rem;
-    color: #27ae60;
-  }
-  
-  .user-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-  
-  .user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  
-  .main-menu {
-    background-color: #34495e;
-    color: white;
-    padding: 20px 0;
-  }
-  
-  .main-menu a {
-    display: block;
-    color: white;
-    text-decoration: none;
-    padding: 12px 25px;
-    transition: background-color 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .main-menu a:hover {
-    background-color: #2c3e50;
-  }
-  
-  .main-menu a.active {
-    background-color: #3498db;
-    border-left: 4px solid #f1c40f;
-  }
-  
-  .dashboard-content {
-    padding: 25px;
-    background-color: #f5f7fa;
-  }
-  
+.dashboard-header {
+  background-color: #2c3e50;
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1001;
+  height: 78px; /* Definir altura explícita para cálculos de posicionamento */
+  box-sizing: border-box;
+}
 
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #e2e2e2;
+.dashboard-header h1 {
   margin: 0;
-  padding: 40px;
-  color: #333;
+  font-size: 2.2rem; /* Levemente reduzido para caber melhor */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  font-family: 'Merriweather', serif;
+  font-weight: 500;
+}
+
+.dashboard-header i { /* Ícone do trator no título */
+  font-size: 2.2rem; /* Consistente com h1 */
+  color: #27ae60;
+}
+
+.dashboard-header .menu-toggle i { /* Ícone de menu hamburguer */
+    font-size: 1.8rem; /* Tamanho específico para o ícone do toggle */
+}
+
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.main-menu {
+  background-color: #34495e;
+  color: white;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  position: fixed;
+  left: 0;
+  top: 78px; /* Abaixo do header */
+  bottom: 0;
+  width: 250px;
+  overflow-y: auto;
+  z-index: 1000;
+  transform: translateX(-100%); /* Começa fechado em todas as telas por padrão */
+  transition: transform 0.3s ease-in-out;
+}
+
+.main-menu.open {
+  transform: translateX(0); /* Abre o menu */
+}
+
+.main-menu a {
+  display: flex; /* Alterado para flex */
+  align-items: center;
+  gap: 12px; /* Espaço entre ícone e texto */
+  color: white;
+  text-decoration: none;
+  padding: 14px 25px; /* Aumentado padding vertical */
+  transition: background-color 0.2s ease-in-out, padding-left 0.2s ease-in-out;
+  font-size: 0.95rem;
+}
+.main-menu a .material-symbols-outlined {
+    font-size: 22px; /* Tamanho dos ícones do menu */
+}
+
+
+.main-menu a:hover {
+  background-color: #2c3e50;
+}
+
+.main-menu a.active {
+  background-color: #3498db;
+  border-left: 4px solid #f1c40f;
+  padding-left: 21px;
+  font-weight: 600;
+}
+
+.main-content-perfil {
+  padding: 25px;
+  background-color: #f5f7fa;
+  flex-grow: 1; /* Para ocupar o espaço restante na coluna flex do dashboard-container */
+  /* margin-top: 78px;  Removido, pois o header é sticky e o main-content flui abaixo */
+  /* A lógica de margin-left será para telas grandes onde o menu não é overlay */
 }
 
 .botao-voltar {
-  margin: 2rem;
+  margin: 1.5rem 0; /* Ajustado */
 }
 
 .botao-voltar a {
   text-decoration: none;
-  font-size: 1.8rem;
-  color: #444;
+  font-size: 1.5rem; /* Ajustado */
+  color: #4a5568; /* Cor mais suave */
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 8px;
   transition: color 0.2s ease;
 }
 
@@ -102,51 +125,69 @@ body {
   color: #1976d2;
 }
 
-.container {
+.container-perfil {
   max-width: 1100px;
   margin: 0 auto;
+  padding: 0 15px; /* Padding lateral para conteúdo em telas menores */
 }
 
-.container h1 {
-  font-size: 3rem;
+.container-perfil > h1 { /* Título principal da página de perfil, se houver */
+  font-size: 2.5rem; /* Ajustado */
   color: #2b2c34;
   text-align: center;
-}
-
-h1 {
-  font-size: 2.5rem;
-  color: #2b2c34;
-  margin-bottom: 30px;
+  margin-bottom: 35px;
 }
 
 .profile-section {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha */
+  gap: 25px; /* Espaçamento entre os cards */
+  margin-bottom: 25px;
 }
+
+.card-perfil { /* Classe base para os cards de perfil */
+  background: #ffffff; /* Fundo branco padrão para os cards */
+  padding: 25px;
+  border-radius: 12px; /* Bordas mais suaves */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  color: #333; /* Cor de texto padrão para os cards */
+  display: flex;
+  flex-direction: column;
+}
+.card-perfil h2 {
+    color: #1a202c; /* Cor de título mais escura */
+    margin-top: 0; /* Remove margem de cima do título do card */
+    margin-bottom: 20px;
+    font-size: 1.4rem; /* Tamanho do título do card */
+    border-bottom: 1px solid #e2e8f0; /* Linha sutil abaixo do título */
+    padding-bottom: 10px;
+}
+
 
 .general-info {
-  background: #112d4e;
-  margin-top: 10px;
-  flex: 2;
-  padding: 30px;
-  border-radius: 16px 0 0 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: #112d4e; /* Mantendo seu estilo original */
   color: #ffffff;
-  height: 310px;
+  flex: 2 1 500px; /* Flex-grow, flex-shrink, flex-basis */
+  min-width: 300px; /* Largura mínima */
+}
+.general-info .card-header { /* Para alinhar título e botão Editar */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: none; /* Remove a borda duplicada se h2 já tem */
+    padding-bottom: 0;
+    margin-bottom: 15px; /* Espaço antes dos detalhes */
+}
+.general-info .card-header h2 {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
-.general-info h2 {
-  color: #ffffff;
-  margin-bottom: 20px;
-  font-size: 1.6rem;
-}
-
-.profile-photo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
+.profile-details { /* Novo container para foto e info-list */
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
 .profile-photo img {
@@ -154,231 +195,376 @@ h1 {
   height: 80px;
   border-radius: 50%;
   object-fit: cover;
+  border: 3px solid #34495e;
 }
 
-.edit-btn {
-  background-color: #1976d2;
+.general-info .edit-main-btn { /* Estilo do seu botão "Editar" original */
+  background-color: #3498db; /* Cor azul mais clara */
   color: white;
   border: none;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  padding: 8px 15px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease, transform 0.1s ease;
 }
-
-.edit-btn:hover {
-  background-color: #0d47a1;
-  transform: scale(1.1);
+.general-info .edit-main-btn:hover {
+  background-color: #2980b9;
+}
+.general-info .edit-main-btn:active {
+  transform: scale(0.97);
+}
+.general-info .edit-main-btn .fas {
+  margin-right: 6px;
 }
 
 .info-list p {
-  margin: 8px 0;
+  margin: 10px 0;
   font-size: 1rem;
+  line-height: 1.5;
 }
 
 .info-list strong {
-  color: #ffffff;
+  color: #bdc3c7; /* Cor para o strong no fundo escuro */
+  margin-right: 5px;
 }
+.info-list span {
+    color: #ffffff;
+}
+
 
 .help-box {
-  background: #1976d2;
-  margin-top: 10px;
-  flex: 1;
-  padding: 30px;
-  border-radius: 0 16px 0 0;
-  color: #1e1e2f;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: #3498db; /* Cor do seu botão "Editar" */
+  color: #ffffff;
+  flex: 1 1 300px; /* Flex-grow, flex-shrink, flex-basis */
+  min-width: 280px;
 }
-
 .help-box h2 {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  color: #1e1e2f;
+  color: #ffffff;
 }
-
 .help-box p {
-  font-weight: bold;
-  margin-bottom: 20px;
+  color: #ecf0f1;
+  line-height: 1.6;
+}
+.help-box p strong {
+  color: #ffffff;
 }
 
 .chat-btn {
   background-color: white;
-  color: black;
-  border: 2px solid white;
-  padding: 10px 20px;
+  color: #2980b9; /* Cor do texto para combinar com fundo do help-box */
+  border: none;
+  padding: 12px 25px;
   font-weight: bold;
   border-radius: 30px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 10px;
 }
-
 .chat-btn:hover {
-  background-color: #f0f0f0;
-  color: #1e1e2f;
+  background-color: #f8f9fa;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
-.card-info {
-  background-color: #112d4e;
-  margin-top: 20px;
-  padding: 30px;
-  border-radius: 0 0 16px 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  height: 200px;
-}
-
-.card-info h2 {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
+.additional-info { /* Mudado para .additional-info */
+  background-color: #112d4e; /* Mantendo seu estilo original */
   color: #ffffff;
+  flex-basis: 100%; /* Ocupa a linha inteira abaixo dos outros cards */
+}
+.additional-info p {
+    margin: 12px 0;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+.additional-info strong {
+    color: #bdc3c7;
+    margin-right: 5px;
+}
+.additional-info span {
+    color: #ffffff;
 }
 
-.card-info p {
-  margin: 10px 0;
-  font-size: 1rem;
-  color: #ffffff;
-}
-
-.card-info strong {
-  color: #ffffff;
-}
 
 .menu-toggle {
-  display: none;
+  display: none; /* Começa escondido em telas grandes */
   background: none;
   border: none;
   color: white;
-  font-size: 2rem;
+  font-size: 1.8rem; /* Ajustado */
   cursor: pointer;
+  padding: 5px; /* Área de clique */
 }
-
 
 /* ========= RESPONSIVIDADE ========= */
-@media (max-width: 1024px) {
+/* Telas Grandes (Desktop) - Menu Lateral Fixo à Esquerda */
+@media (min-width: 769px) {
   .dashboard-container {
-    grid-template-columns: 200px 1fr;
+    display: grid; /* Volta para Grid em telas maiores */
+    grid-template-columns: 250px 1fr; /* Menu e Conteúdo */
+    grid-template-rows: 78px 1fr; /* Header e (Menu + Conteúdo) */
+    grid-template-areas:
+      "header header"
+      "menu content";
   }
-
-  .dashboard-header h1 {
-    font-size: 2rem;
+  .dashboard-header {
+    grid-area: header;
   }
-
-  .user-avatar {
-    width: 35px;
-    height: 35px;
+  .main-menu {
+    grid-area: menu;
+    transform: translateX(0); /* Menu sempre visível e fixo */
+    position: sticky; /* Para rolar com o conteúdo da área do menu, se necessário */
+    top: 78px; /* Alinhado abaixo do header */
+    height: calc(100vh - 78px); /* Altura total menos o header */
+  }
+  .main-content-perfil {
+    grid-area: content;
+    /* margin-left: 0; Removido, grid cuida do posicionamento */
+    /* margin-top: 0; Removido, grid cuida do posicionamento */
+  }
+  .menu-toggle {
+    display: none !important; /* Garante que o toggle não apareça */
   }
 }
 
+
+/* Telas Médias e Pequenas (Tablets e Celulares) - Menu Deslizante */
 @media (max-width: 768px) {
-  .dashboard-container {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .dashboard-header {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
   .dashboard-header h1 {
-    font-size: 1.8rem;
+    font-size: 1.6rem; /* Reduzido para caber com o toggle */
   }
+   .dashboard-header i {font-size: 1.6rem;}
+
 
   .menu-toggle {
     display: block;
-    background: none;
-    border: none;
-    font-size: 1.8rem;
-    color: white;
-    cursor: pointer;
   }
 
-  .main-menu {
-    position: absolute;
-    top: 70px;
-    left: 0;
-    width: 220px;
-    height: calc(100% - 70px);
-    background-color: #34495e;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    z-index: 1000;
-  }
-
-  .main-menu.open {
-    transform: translateX(0);
-  }
-
-  .dashboard-content {
-    padding: 15px;
-  }
-
-  .titulo,
-  .container h1 {
-    font-size: 2rem;
+  .main-content-perfil {
+    padding: 20px; /* Menor padding em telas menores */
   }
 
   .profile-section {
-    flex-direction: column;
+    flex-direction: column; /* Cards empilhados */
   }
 
   .general-info,
   .help-box,
-  .card-info {
-    border-radius: 16px;
-    height: auto;
+  .additional-info { /* Renomeado de .card-info */
+    flex-basis: auto; /* Reset flex-basis para empilhamento */
+    min-width: unset; /* Reset min-width */
   }
 
-  .profile-photo img {
-    width: 60px;
-    height: 60px;
-  }
-
-  .botao-voltar a {
-    font-size: 1.4rem;
+  .profile-details {
+      flex-direction: column;
+      align-items: flex-start;
   }
 }
 
 @media (max-width: 480px) {
-  .dashboard-header h1 {
-    font-size: 1.5rem;
+  .dashboard-header {
+    padding: 0.8rem 1rem;
+    height: auto; /* Altura automática para caber o título e toggle */
   }
+  .dashboard-header h1 {
+    font-size: 1.2rem; /* Ainda menor */
+  }
+  .dashboard-header i {font-size: 1.2rem;}
+
 
   .main-menu {
-    width: 100%;
+    width: 220px; /* Menu um pouco mais estreito */
+    top: 66px; /* Ajustar se a altura do header mudar */
+    height: calc(100vh - 66px);
   }
 
-  .dashboard-content {
-    padding: 10px;
+  .main-content-perfil {
+    padding: 15px;
   }
 
-  .container h1 {
+  .container-perfil > h1 {
     font-size: 1.8rem;
   }
 
-  .profile-photo img {
-    width: 50px;
-    height: 50px;
-  }
-
-  .edit-btn {
-    width: 30px;
-    height: 30px;
-    font-size: 0.9rem;
-  }
+  .card-perfil { padding: 20px; }
+  .card-perfil h2 { font-size: 1.2rem; margin-bottom: 15px; }
 
   .info-list p,
-  .card-info p {
+  .additional-info p {
     font-size: 0.9rem;
   }
 
   .chat-btn {
-    padding: 8px 15px;
+    padding: 10px 20px;
     font-size: 0.9rem;
   }
+}
+
+/* ========= ESTILOS DO MODAL DE EDIÇÃO ========= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.65); /* Overlay um pouco mais escuro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease-out, visibility 0.25s step-end 0.25s; /* Step-end para visibilidade */
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.25s ease-out, visibility 0s; /* Transição imediata para visível */
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 25px 30px;
+  border-radius: 10px; /* Bordas um pouco mais arredondadas */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  max-width: 500px;
+  transform: translateY(20px) scale(0.98); /* Começa um pouco abaixo e menor */
+  opacity: 0;
+  transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.25s ease-out;
+}
+
+.modal-overlay.active .modal-content {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e9ecef;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #343a40;
+  font-weight: 600;
+}
+
+.modal-header .close-btn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #6c757d;
+  padding: 5px;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+.modal-header .close-btn:hover {
+  color: #343a40;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500; /* Menos bold */
+  color: #495057;
+  font-size: 0.9rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="date"],
+.form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 0.95rem;
+  background-color: #fff; /* Garante fundo branco */
+  color: #495057; /* Cor do texto do input */
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.form-group input::placeholder {
+    color: #adb5bd;
+}
+
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #3498db;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+/* Estilos para mensagens de validação */
+.validation-error {
+    margin-top: 5px;
+}
+.validation-error small {
+    color: #e74c3c; /* Cor vermelha para erro */
+    font-size: 0.85rem;
+}
+
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 20px;
+  border-top: 1px solid #e9ecef;
+  margin-top: 25px;
+}
+
+.btn-cancel, .btn-save {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.btn-cancel:active, .btn-save:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+.btn-cancel {
+  background-color: #6c757d;
+  color: white;
+}
+.btn-cancel:hover {
+  background-color: #5a6268;
+}
+
+.btn-save {
+  background-color: #3498db;
+  color: white;
+}
+.btn-save:hover {
+  background-color: #2980b9;
+}
+.btn-save:disabled {
+  background-color: #adb5bd;
+  cursor: not-allowed;
+  opacity: 0.65;
+  box-shadow: none;
 }

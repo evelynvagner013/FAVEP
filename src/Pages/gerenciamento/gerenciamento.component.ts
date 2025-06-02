@@ -31,8 +31,8 @@ export class GerenciamentoComponent implements OnInit {
         this.menuAberto = false;
       }}
 
-  usuarioNome: string = 'João Agricultor';
-  usuarioFoto: string = 'assets/user-avatar.jpg';
+      headerUsuarioNome: string = '';
+      headerUsuarioFoto: string = '';
 
   
   // Controle de interface
@@ -437,14 +437,6 @@ export class GerenciamentoComponent implements OnInit {
     this.aplicarFiltros();
   }
 
-  // Configurações do usuário
-  salvarConfig(): void {
-    if (this.novaSenha) {
-      // Aqui você implementaria a lógica para alterar a senha
-      console.log('Senha alterada para:', this.novaSenha);
-    }
-    this.fecharConfig();
-  }
 
   // Relatórios
   gerarRelatorio(): void {
