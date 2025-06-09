@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common'; // CommonModule para *ngIf, etc., DatePipe para formatar datas
-import { FormsModule } from '@angular/forms';             // FormsModule para [(ngModel)]
-import { RouterLink } from '@angular/router';              // RouterLink para navegação
+import { FormsModule } from '@angular/forms';           // FormsModule para [(ngModel)]
+import { Router, RouterLink } from '@angular/router'; // RouterLink para navegação e Router para navegação programática
 
 // Interface para tipar o objeto de usuário
 interface Usuario {
@@ -20,7 +20,7 @@ interface Usuario {
   imports: [
     CommonModule,
     FormsModule,
-    RouterLink
+    RouterLink // Necessário se você usar routerLink em outros lugares no template
   ],
   providers: [DatePipe], // DatePipe precisa ser provido
   templateUrl: './usuario.component.html',
@@ -51,7 +51,11 @@ export class UsuarioComponent implements OnInit {
   // Controle de visibilidade do modal de edição
   editModalAberto = false;
 
-  constructor(private datePipe: DatePipe) { } // Injetar DatePipe para uso, se necessário no TS
+  // 1. Injete o Router no construtor
+  constructor(
+    private datePipe: DatePipe,
+    private router: Router // Injetar o serviço Router
+  ) { }
 
   ngOnInit(): void {
     // Inicializa as informações do cabeçalho com os dados do perfil
@@ -81,10 +85,9 @@ export class UsuarioComponent implements OnInit {
   // --- Métodos para o modal de edição do perfil ---
   abrirModalEdicao(): void {
     // Cria uma cópia nova dos dados atuais do usuário para edição
-    // Se for usar <input type="date">, pode ser necessário formatar as datas aqui
     this.usuarioEditavel = {
       ...this.usuario,
-      // Exemplo para input date:
+      // Se for usar <input type="date">, pode ser necessário formatar as datas aqui
       // dataAssinatura: this.datePipe.transform(this.usuario.dataAssinatura, 'yyyy-MM-dd') || '',
       // dataValidade: this.datePipe.transform(this.usuario.dataValidade, 'yyyy-MM-dd') || ''
     };
@@ -97,11 +100,10 @@ export class UsuarioComponent implements OnInit {
 
   salvarAlteracoesPerfil(): void {
     // Salva as alterações no objeto principal do usuário
-    // Se as datas foram formatadas para string no modal, converta-as de volta para Date aqui se necessário
     this.usuario = {
         ...this.usuarioEditavel,
-        // Exemplo para input date:
-        // dataAssinatura: new Date(this.usuarioEditavel.dataAssinatura + 'T00:00:00'), // Adiciona T00:00:00 para evitar problemas de fuso horário ao converter
+        // Se as datas foram formatadas para string no modal, converta-as de volta para Date aqui se necessário
+        // dataAssinatura: new Date(this.usuarioEditavel.dataAssinatura + 'T00:00:00'),
         // dataValidade: new Date(this.usuarioEditavel.dataValidade + 'T00:00:00')
     };
 
@@ -118,5 +120,17 @@ export class UsuarioComponent implements OnInit {
   private atualizarHeaderInfo(): void {
     this.headerUsuarioNome = this.usuario.nome;
     this.headerUsuarioFoto = this.usuario.fotoUrl;
+  }
+
+  // 2. Adicione o método para navegação
+  /**
+   * Navega para a página de contato.
+   * Este método é chamado quando o botão "CONTATE-NOS" é clicado.
+   */
+  navegarParaContato(): void {
+    // Certifique-se de que a rota '/contato' está definida
+    // no seu ficheiro de configuração de rotas (ex: app.routes.ts).
+    this.router.navigate(['/contato']);
+    console.log('Tentativa de navegação para /contato'); // Para depuração
   }
 }

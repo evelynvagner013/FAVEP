@@ -1,57 +1,47 @@
 /* Estilo para a seção de assinaturas */
 #assinatura {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 4rem;
   color: #000000;
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
   font-size: 45px;
-  margin-top: 30px;
-  
+  margin-top: 40px;
 }
 
-.carousel-container {
-  position: relative;
+/* Container for the static plan cards */
+.plans-container {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  width: 100%;
-  max-width: 1000px;
-  margin: 40px auto;
-  padding: 0 30px;
-}
-
-.carousel-track-wrapper {
-  overflow: hidden;
-  width: 100%;
-}
-
-.carousel-track {
-  display: flex;
-  gap: 15px;
-  transition: transform 0.5s ease-in-out;
+  flex-wrap: wrap; /* Allow cards to wrap to the next line */
+  justify-content: center; /* Center cards horizontally */
+  gap: 15px; /* Spacing between cards */
+  max-width: 1550px; /* Retain a max-width for the section */
+  margin: 40px auto; /* Center the container on the page */
+  padding: 0 15px; /* Optional: add some padding to the sides */
 }
 
 .plan-card {
-  flex: 0 0 250px; /* Tamanho reduzido */
-  min-height: 380px; /* Altura reduzida */
-  min-width: 230px; /* Largura reduzida */
-  flex-shrink: 0;
-  margin: 0 5px;
+  flex: 0 1 250px; /* Allow cards to grow slightly if space, shrink if needed, base width 250px */
+  max-height: 380px; /* Adjusted slightly to accommodate content consistently */
+  min-width: 230px;
   background: white;
   text-align: center;
   padding: 1.5rem 1rem;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border: 1px solid #e0e0e0;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  position: relative; /* Keep for potential future pseudo-elements if needed */
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+              box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+              border-color 0.3s ease;
+  display: flex; /* Make card a flex container */
+  flex-direction: column; /* Stack content vertically */
+  justify-content: space-between; /* Distribute space, helps push button down */
 }
 
+/* General hover style for all plan cards */
 .plan-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-5px); /* Consistent lift effect */
   box-shadow: 0 8px 20px rgba(41, 128, 185, 0.2);
   border-color: #2980b9;
 }
@@ -79,21 +69,22 @@
 }
 
 .plan-card:hover .price {
-  color: #1a5276;
+  color: #1a5276; /* Cor do preço no hover */
 }
 
 .plan-card .period {
   font-size: 0.9rem;
   color: #7f8c8d;
   display: block;
-  margin-top: 3px;
+  margin-top: 3px; /* Adjusted from margin-top: 3px; */
 }
 
 .plan-card ul {
   list-style: none;
   padding: 0;
-  margin: 0 0 20px;
+  margin: 0 0 1.5rem; /* Provide some margin at the bottom of the list */
   text-align: left;
+  flex-grow: 1; /* Allows the ul to take available space, pushing button down */
 }
 
 .plan-card ul li {
@@ -104,7 +95,6 @@
   font-size: 0.9rem;
   font-family: 'Montserrat', sans-serif;
   font-weight: 300;
-  
 }
 
 .plan-card ul li:before {
@@ -124,35 +114,14 @@
   cursor: pointer;
   font-weight: 500;
   font-size: 0.9rem;
-  transition: all 0.3s ease;
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  transition: background-color 0.3s ease, transform 0.3s ease;
   width: 80%;
+  align-self: center; /* Center button within the card (since it's a flex item) */
+  margin-top: auto; /* Ensures button is at the bottom if content above varies */
+  /* Removed: position: absolute, bottom, left, transform: translateX */
 }
 
 .btn-assinar:hover {
-  background-color: #1a5276;
-  transform: translateX(-50%) scale(1.05);
-}
-
-.carousel-container button.prev,
-.carousel-container button.next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: white;
-  border: none;
-  font-size: 2rem;
-  cursor: pointer;
-  z-index: 2;
-}
-
-.carousel-container button.prev {
-  left: 10px;
-}
-
-.carousel-container button.next {
-  right: 10px;
+  background-color: #1a5276; /* Cor de fundo no hover */
+  transform: scale(1.05); /* Simpler transform for static button */
 }

@@ -1,41 +1,71 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-
-import { RouterLink, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
 import { MenuComponent } from '../navbar/menu/menu.component';
 
+// Definição de uma interface para Propriedade para melhor tipagem
+export interface Propriedade {
+  id: number;
+  nome: string;
+  area: number;
+  localizacao: string;
+  produtividade: number;
+  culturas: string[];
+  ativo: boolean; // Propriedade para o status
+}
+
+export interface Producao {
+  id: number;
+  propriedadeId: number;
+  cultura: string;
+  safra: string;
+  quantidade: number;
+  area: number;
+  data: Date;
+}
+
+export interface Movimentacao {
+  id: number;
+  tipo: 'receita' | 'despesa';
+  descricao: string;
+  valor: number;
+  data: Date;
+  propriedade?: string;
+  categoria?: string;
+}
+
+
 @Component({
   selector: 'app-gerenciamento',
   standalone: true,
-  imports: [MenuComponent, RouterModule,  CommonModule, FormsModule],
+  imports: [MenuComponent, RouterModule, CommonModule, FormsModule],
   templateUrl: './gerenciamento.component.html',
   styleUrl: './gerenciamento.component.css'
 })
 export class GerenciamentoComponent implements OnInit {
-   menuAberto = false;
-  
-    alternarMenu() {
-      this.menuAberto = !this.menuAberto;
+  // ... (outras propriedades como menuAberto, headerUsuarioNome, etc. permanecem as mesmas) ...
+  menuAberto = false;
+
+  alternarMenu() {
+    this.menuAberto = !this.menuAberto;
+  }
+
+  @HostListener('document:click', ['$event'])
+  fecharMenuFora(event: MouseEvent) {
+    const alvo = event.target as HTMLElement;
+    const clicouNoBotao = alvo.closest('.menu-toggle');
+    const clicouNoMenu = alvo.closest('.main-menu');
+
+    if (!clicouNoBotao && !clicouNoMenu) {
+      this.menuAberto = false;
     }
-  
-    // Opcional: fecha o menu ao clicar fora
-    @HostListener('document:click', ['$event'])
-    fecharMenuFora(event: MouseEvent) {
-      const alvo = event.target as HTMLElement;
-      const clicouNoBotao = alvo.closest('.menu-toggle');
-      const clicouNoMenu = alvo.closest('.main-menu');
-  
-      if (!clicouNoBotao && !clicouNoMenu) {
-        this.menuAberto = false;
-      }}
+  }
 
-      headerUsuarioNome: string = '';
-      headerUsuarioFoto: string = '';
+  headerUsuarioNome: string = '';
+  headerUsuarioFoto: string = '';
 
-  
-  // Controle de interface
   abaAtiva: string = 'propriedades';
   modalAberto: boolean = false;
   confirmacaoAberta: boolean = false;
@@ -46,14 +76,12 @@ export class GerenciamentoComponent implements OnInit {
   itemParaExcluir: any = null;
   tipoExclusao: string = '';
 
-  // Filtros
   filtroAtivo: string = 'todos';
   filtroPeriodo: string = '30';
   termoBusca: string = '';
   tipoRelatorio: string = 'produtividade';
   periodoRelatorio: string = '30';
 
-  // Opções de filtro
   opcoesFiltro: any[] = [
     { valor: 'todos', texto: 'Todos' },
     { valor: 'Soja', texto: 'Soja' },
@@ -61,7 +89,6 @@ export class GerenciamentoComponent implements OnInit {
     { valor: 'Algodão', texto: 'Algodão' }
   ];
 
-  // Dados do usuário
   usuario: any = {
     nome: 'João Agricultor',
     email: 'joao@fazenda.com',
@@ -69,15 +96,15 @@ export class GerenciamentoComponent implements OnInit {
   };
   novaSenha: string = '';
 
-  // Dados das propriedades
-  propriedades: any[] = [
+  propriedades: Propriedade[] = [
     {
       id: 1,
       nome: 'Fazenda São Francisco',
       area: 4000,
       localizacao: 'Casa do Chapéu, BA',
       produtividade: 70.5,
-      culturas: ['Soja', 'Milho', 'Algodão']
+      culturas: ['Soja', 'Milho', 'Algodão'],
+      ativo: true
     },
     {
       id: 2,
@@ -85,14 +112,24 @@ export class GerenciamentoComponent implements OnInit {
       area: 250,
       localizacao: 'Barreiras, BA',
       produtividade: 65.2,
-      culturas: ['Milho', 'Feijão']
+      culturas: ['Milho', 'Feijão'],
+      ativo: false
+    },
+    { // Adicionando mais uma propriedade para testar os cálculos
+      id: 3,
+      nome: 'Chácara Bela Vista',
+      area: 100,
+      localizacao: 'Luís Eduardo Magalhães, BA',
+      produtividade: 60.0,
+      culturas: ['Soja'],
+      ativo: true
     }
   ];
-  propriedadesFiltradas: any[] = [];
-  propriedadeEditada: any = { culturas: [] };
+  propriedadesFiltradas: Propriedade[] = [];
+  propriedadeEditada: Partial<Propriedade> & { culturas: string[] } = { culturas: [], ativo: true };
 
-  // Dados de produção
-  producoes: any[] = [
+  // ... (arrays de producoes, movimentacoes, etc. permanecem os mesmos) ...
+  producoes: Producao[] = [
     {
       id: 1,
       propriedadeId: 1,
@@ -112,11 +149,10 @@ export class GerenciamentoComponent implements OnInit {
       data: new Date('2023-06-20')
     }
   ];
-  producoesFiltradas: any[] = [];
-  producaoEditada: any = {};
+  producoesFiltradas: Producao[] = [];
+  producaoEditada: Partial<Producao> = {};
 
-  // Dados financeiros
-  movimentacoes: any[] = [
+  movimentacoes: Movimentacao[] = [
     {
       id: 1,
       tipo: 'receita',
@@ -135,25 +171,27 @@ export class GerenciamentoComponent implements OnInit {
       categoria: 'Insumos'
     }
   ];
-  movimentacoesFiltradas: any[] = [];
-  movimentacaoEditada: any = { tipo: 'receita' };
+  movimentacoesFiltradas: Movimentacao[] = [];
+  movimentacaoEditada: Partial<Movimentacao> = { tipo: 'receita' };
 
-  // Listas auxiliares
   todasCulturas: string[] = ['Soja', 'Milho', 'Algodão', 'Feijão', 'Trigo', 'Café'];
   safras: string[] = ['2022/23', '2021/22', '2020/21'];
 
-  // Gráfico
   relatorioChart: any;
+
 
   constructor() {
     Chart.register(...registerables);
   }
 
   ngOnInit(): void {
+    this.headerUsuarioNome = this.usuario.nome;
+    this.headerUsuarioFoto = this.usuario.foto;
     this.aplicarFiltros();
   }
 
-  // Controles de interface
+  // ... (selecionarAba, abrirModalAdicionar, etc. permanecem os mesmos) ...
+
   selecionarAba(aba: string): void {
     this.abaAtiva = aba;
     this.aplicarFiltros();
@@ -161,21 +199,22 @@ export class GerenciamentoComponent implements OnInit {
 
   abrirModalAdicionar(): void {
     this.modalAberto = true;
-    this.tipoEdicao = this.abaAtiva === 'financeiro' ? 'movimentacao' : this.abaAtiva;
+    this.tipoEdicao = this.abaAtiva === 'financeiro' ? 'movimentacao' : 
+                      (this.abaAtiva === 'propriedades' ? 'propriedade' : this.abaAtiva);
     this.modalTitulo = `Adicionar ${this.getTituloModal()}`;
-    
+
     switch (this.tipoEdicao) {
       case 'propriedade':
-        this.propriedadeEditada = { culturas: [] };
+        this.propriedadeEditada = { culturas: [], ativo: true };
         break;
       case 'producao':
         this.producaoEditada = { data: new Date() };
         break;
       case 'movimentacao':
-        this.movimentacaoEditada = { 
-          tipo: 'receita', 
+        this.movimentacaoEditada = {
+          tipo: 'receita',
           data: new Date(),
-          propriedade: this.propriedades[0]?.nome || ''
+          propriedade: this.propriedades.length > 0 ? this.propriedades[0].nome : ''
         };
         break;
     }
@@ -192,7 +231,7 @@ export class GerenciamentoComponent implements OnInit {
 
   fecharModal(): void {
     this.modalAberto = false;
-    this.propriedadeEditada = { culturas: [] };
+    this.propriedadeEditada = { culturas: [], ativo: true };
     this.producaoEditada = {};
     this.movimentacaoEditada = { tipo: 'receita' };
   }
@@ -206,7 +245,6 @@ export class GerenciamentoComponent implements OnInit {
     this.novaSenha = '';
   }
 
-  // Filtros e busca
   aplicarFiltros(): void {
     switch (this.abaAtiva) {
       case 'propriedades':
@@ -223,45 +261,49 @@ export class GerenciamentoComponent implements OnInit {
 
   filtrarPropriedades(): void {
     this.propriedadesFiltradas = this.propriedades.filter(prop => {
-      const filtro = this.filtroAtivo === 'todos' || prop.culturas.includes(this.filtroAtivo);
-      const busca = !this.termoBusca || 
-        prop.nome.toLowerCase().includes(this.termoBusca.toLowerCase()) || 
+      const filtroCultura = this.filtroAtivo === 'todos' || prop.culturas.includes(this.filtroAtivo);
+      const busca = !this.termoBusca ||
+        prop.nome.toLowerCase().includes(this.termoBusca.toLowerCase()) ||
         prop.localizacao.toLowerCase().includes(this.termoBusca.toLowerCase());
-      return filtro && busca;
+      return filtroCultura && busca;
     });
   }
 
   filtrarProducoes(): void {
     this.producoesFiltradas = this.producoes.filter(prod => {
-      const filtro = this.filtroAtivo === 'todos' || prod.cultura === this.filtroAtivo;
-      const busca = !this.termoBusca || 
+      const filtroCultura = this.filtroAtivo === 'todos' || prod.cultura === this.filtroAtivo;
+      const busca = !this.termoBusca ||
         this.getNomePropriedade(prod.propriedadeId).toLowerCase().includes(this.termoBusca.toLowerCase()) ||
         prod.cultura.toLowerCase().includes(this.termoBusca.toLowerCase());
-      return filtro && busca;
+      return filtroCultura && busca;
     });
   }
 
   filtrarMovimentacoes(): void {
-    const dias = parseInt(this.filtroPeriodo) || 0;
+    const dias = parseInt(this.filtroPeriodo);
     const dataLimite = new Date();
-    dataLimite.setDate(dataLimite.getDate() - dias);
+    if (!isNaN(dias)) {
+        dataLimite.setDate(dataLimite.getDate() - dias);
+    }
     
     this.movimentacoesFiltradas = this.movimentacoes.filter(mov => {
-      const periodo = this.filtroPeriodo === 'todos' || mov.data >= dataLimite;
-      const busca = !this.termoBusca || 
-        mov.descricao.toLowerCase().includes(this.termoBusca.toLowerCase()) || 
+      const periodo = this.filtroPeriodo === 'todos' || (mov.data instanceof Date && mov.data >= dataLimite);
+      const busca = !this.termoBusca ||
+        mov.descricao.toLowerCase().includes(this.termoBusca.toLowerCase()) ||
         (mov.propriedade && mov.propriedade.toLowerCase().includes(this.termoBusca.toLowerCase()));
       return periodo && busca;
     });
   }
 
-  // Métodos auxiliares
   getNomePropriedade(id: number): string {
     const prop = this.propriedades.find(p => p.id === id);
     return prop ? prop.nome : 'Desconhecida';
   }
 
   toggleCultura(cultura: string): void {
+    if (!this.propriedadeEditada.culturas) {
+      this.propriedadeEditada.culturas = [];
+    }
     const index = this.propriedadeEditada.culturas.indexOf(cultura);
     if (index === -1) {
       this.propriedadeEditada.culturas.push(cultura);
@@ -270,19 +312,39 @@ export class GerenciamentoComponent implements OnInit {
     }
   }
 
-  // Cálculos
+  // --- MODIFICAÇÕES AQUI ---
+  /**
+   * Calcula a área total SOMENTE das propriedades ATIVAS.
+   */
   calcularAreaTotal(): number {
-    return this.propriedades.reduce((total, prop) => total + prop.area, 0);
+    return this.propriedades
+      .filter(prop => prop.ativo) // Filtra apenas propriedades ativas
+      .reduce((total, prop) => total + prop.area, 0);
   }
 
+  /**
+   * Retorna o número total de propriedades ATIVAS.
+   * Usado como um getter para ser reativo no template.
+   */
+  get totalPropriedadesAtivas(): number {
+    return this.propriedades.filter(prop => prop.ativo).length;
+  }
+  // --- FIM DAS MODIFICAÇÕES DIRETAS PARA ESTA SOLICITAÇÃO ---
+
+  /**
+   * Conta o número de culturas únicas presentes SOMENTE nas propriedades ATIVAS.
+   */
   contarCulturasAtivas(): number {
-    const culturasUnicas = new Set();
+    const culturasUnicas = new Set<string>();
     this.propriedades.forEach(prop => {
-      prop.culturas.forEach((c: string) => culturasUnicas.add(c));
+      if (prop.ativo) { // Considera apenas propriedades ativas
+        prop.culturas.forEach(c => culturasUnicas.add(c));
+      }
     });
     return culturasUnicas.size;
   }
 
+  // ... (outras funções de cálculo como calcularProducaoTotal, etc. permanecem as mesmas) ...
   calcularProducaoTotal(): number {
     return this.producoes.reduce((total, prod) => total + prod.quantidade, 0);
   }
@@ -313,48 +375,54 @@ export class GerenciamentoComponent implements OnInit {
     return this.calcularTotalReceitas() - this.calcularTotalDespesas();
   }
 
-  // Edição de itens
-  editarPropriedade(prop: any): void {
+  // ... (funções de edição, exclusão, salvamento permanecem as mesmas) ...
+  editarPropriedade(prop: Propriedade): void {
     this.propriedadeEditada = { ...prop };
     this.modalTitulo = 'Editar Propriedade';
     this.tipoEdicao = 'propriedade';
     this.modalAberto = true;
   }
 
-  editarProducao(prod: any): void {
-    this.producaoEditada = { ...prod };
+  editarProducao(prod: Producao): void {
+    this.producaoEditada = { ...prod, data: new Date(prod.data) };
     this.modalTitulo = 'Editar Produção';
     this.tipoEdicao = 'producao';
     this.modalAberto = true;
   }
 
-  editarMovimentacao(mov: any): void {
-    this.movimentacaoEditada = { ...mov };
+  editarMovimentacao(mov: Movimentacao): void {
+    this.movimentacaoEditada = { ...mov, data: new Date(mov.data) };
     this.modalTitulo = 'Editar Movimentação';
     this.tipoEdicao = 'movimentacao';
     this.modalAberto = true;
   }
 
-  // Confirmação de exclusão
   confirmarExclusao(item: any, tipo: string): void {
     this.itemParaExcluir = item;
     this.tipoExclusao = tipo;
-    this.mensagemConfirmacao = `Confirmar exclusão deste ${tipo}?`;
+    this.mensagemConfirmacao = `Confirmar exclusão de "${tipo === 'propriedade' ? item.nome : (item.descricao || item.cultura)}"?`;
     this.confirmacaoAberta = true;
   }
-  
+
   cancelarExclusao(): void {
     this.confirmacaoAberta = false;
     this.itemParaExcluir = null;
     this.tipoExclusao = '';
   }
-  
+
   executarExclusao(): void {
+    if (!this.itemParaExcluir) return;
+
     switch (this.tipoExclusao) {
       case 'propriedade':
         this.propriedades = this.propriedades.filter(p => p.id !== this.itemParaExcluir.id);
-        // Remover produções relacionadas
         this.producoes = this.producoes.filter(p => p.propriedadeId !== this.itemParaExcluir.id);
+        this.movimentacoes = this.movimentacoes.map(m => {
+            if (m.propriedade === this.itemParaExcluir.nome) {
+                return { ...m, propriedade: undefined };
+            }
+            return m;
+        });
         break;
       case 'producao':
         this.producoes = this.producoes.filter(p => p.id !== this.itemParaExcluir.id);
@@ -363,18 +431,19 @@ export class GerenciamentoComponent implements OnInit {
         this.movimentacoes = this.movimentacoes.filter(m => m.id !== this.itemParaExcluir.id);
         break;
     }
-  
+
     this.confirmacaoAberta = false;
-    this.aplicarFiltros();
+    this.itemParaExcluir = null;
+    this.tipoExclusao = '';
+    this.aplicarFiltros(); // Reaplicar filtros para atualizar a lista principal se necessário
   }
   
-  // Geração de novo ID
   gerarNovoId(lista: any[]): number {
-    const ids = lista.map(item => item.id);
+    if (!lista || lista.length === 0) return 1;
+    const ids = lista.map(item => item.id).filter(id => typeof id === 'number');
     return ids.length > 0 ? Math.max(...ids) + 1 : 1;
   }
 
-  // Métodos de salvamento
   salvar(): void {
     switch (this.tipoEdicao) {
       case 'propriedade':
@@ -390,79 +459,119 @@ export class GerenciamentoComponent implements OnInit {
   }
 
   salvarPropriedade(): void {
-    if (this.propriedadeEditada.id) {
-      // Edição
-      const index = this.propriedades.findIndex(p => p.id === this.propriedadeEditada.id);
+    const propriedadeParaSalvar: Propriedade = {
+        id: this.propriedadeEditada.id!,
+        nome: this.propriedadeEditada.nome!,
+        area: Number(this.propriedadeEditada.area) || 0,
+        localizacao: this.propriedadeEditada.localizacao!,
+        produtividade: Number(this.propriedadeEditada.produtividade) || 0,
+        culturas: this.propriedadeEditada.culturas || [],
+        ativo: this.propriedadeEditada.ativo === undefined ? true : this.propriedadeEditada.ativo
+    };
+
+    if (propriedadeParaSalvar.id) {
+      const index = this.propriedades.findIndex(p => p.id === propriedadeParaSalvar.id);
       if (index !== -1) {
-        this.propriedades[index] = { ...this.propriedadeEditada };
+        this.propriedades[index] = propriedadeParaSalvar;
       }
     } else {
-      // Novo
-      this.propriedadeEditada.id = this.gerarNovoId(this.propriedades);
-      this.propriedades.push({ ...this.propriedadeEditada });
+      propriedadeParaSalvar.id = this.gerarNovoId(this.propriedades);
+      this.propriedades.push(propriedadeParaSalvar);
     }
     this.fecharModal();
     this.aplicarFiltros();
   }
 
   salvarProducao(): void {
-    if (this.producaoEditada.id) {
-      // Edição
-      const index = this.producoes.findIndex(p => p.id === this.producaoEditada.id);
+    const producaoParaSalvar: Producao = {
+        id: this.producaoEditada.id!,
+        propriedadeId: Number(this.producaoEditada.propriedadeId),
+        cultura: this.producaoEditada.cultura!,
+        safra: this.producaoEditada.safra!,
+        quantidade: Number(this.producaoEditada.quantidade) || 0,
+        area: Number(this.producaoEditada.area) || 0,
+        data: this.producaoEditada.data ? new Date(this.producaoEditada.data) : new Date()
+    };
+
+    if (producaoParaSalvar.id) {
+      const index = this.producoes.findIndex(p => p.id === producaoParaSalvar.id);
       if (index !== -1) {
-        this.producoes[index] = { ...this.producaoEditada };
+        this.producoes[index] = producaoParaSalvar;
       }
     } else {
-      // Novo
-      this.producaoEditada.id = this.gerarNovoId(this.producoes);
-      this.producoes.push({ ...this.producaoEditada });
+      producaoParaSalvar.id = this.gerarNovoId(this.producoes);
+      this.producoes.push(producaoParaSalvar);
     }
     this.fecharModal();
     this.aplicarFiltros();
   }
 
   salvarMovimentacao(): void {
-    if (this.movimentacaoEditada.id) {
-      // Edição
-      const index = this.movimentacoes.findIndex(m => m.id === this.movimentacaoEditada.id);
+    const movimentacaoParaSalvar: Movimentacao = {
+        id: this.movimentacaoEditada.id!,
+        tipo: this.movimentacaoEditada.tipo === 'despesa' ? 'despesa' : 'receita',
+        descricao: this.movimentacaoEditada.descricao!,
+        valor: Number(this.movimentacaoEditada.valor) || 0,
+        data: this.movimentacaoEditada.data ? new Date(this.movimentacaoEditada.data) : new Date(),
+        propriedade: this.movimentacaoEditada.propriedade,
+        categoria: this.movimentacaoEditada.categoria
+    };
+
+    if (movimentacaoParaSalvar.id) {
+      const index = this.movimentacoes.findIndex(m => m.id === movimentacaoParaSalvar.id);
       if (index !== -1) {
-        this.movimentacoes[index] = { ...this.movimentacaoEditada };
+        this.movimentacoes[index] = movimentacaoParaSalvar;
       }
     } else {
-      // Novo
-      this.movimentacaoEditada.id = this.gerarNovoId(this.movimentacoes);
-      this.movimentacoes.push({ ...this.movimentacaoEditada });
+      movimentacaoParaSalvar.id = this.gerarNovoId(this.movimentacoes);
+      this.movimentacoes.push(movimentacaoParaSalvar);
     }
     this.fecharModal();
     this.aplicarFiltros();
   }
-
-
-  // Relatórios
+  
+  // ... (gerarRelatorio permanece o mesmo) ...
   gerarRelatorio(): void {
-    // Destruir gráfico anterior se existir
     if (this.relatorioChart) {
       this.relatorioChart.destroy();
     }
-    
-    const ctx = document.getElementById('reportChart') as HTMLCanvasElement;
-    
-    // Dados de exemplo para o gráfico - você deve substituir por seus dados reais
+
+    const canvasElement = document.getElementById('reportChart') as HTMLCanvasElement | null;
+    if (!canvasElement) {
+        console.error('Elemento canvas do gráfico não encontrado!');
+        return;
+    }
+    const ctx = canvasElement.getContext('2d');
+    if (!ctx) {
+        console.error('Contexto 2D do canvas não pôde ser obtido!');
+        return;
+    }
+
     let labels: string[] = [];
     let data: number[] = [];
-    
+    let chartTitle = '';
+
     switch (this.tipoRelatorio) {
       case 'produtividade':
-        labels = this.todasCulturas;
+        chartTitle = 'Produtividade Média por Cultura (kg/ha)';
+        const produtividadePorCultura: { [key: string]: { totalProducao: number, totalArea: number, count: number } } = {};
+        this.producoes.forEach(p => {
+            if (!produtividadePorCultura[p.cultura]) {
+                produtividadePorCultura[p.cultura] = { totalProducao: 0, totalArea: 0, count: 0 };
+            }
+            produtividadePorCultura[p.cultura].totalProducao += p.quantidade;
+            produtividadePorCultura[p.cultura].totalArea += p.area;
+            produtividadePorCultura[p.cultura].count++;
+        });
+        labels = Object.keys(produtividadePorCultura);
         data = labels.map(cultura => {
-          const producoesCultura = this.producoes.filter(p => p.cultura === cultura);
-          if (producoesCultura.length === 0) return 0;
-          const total = producoesCultura.reduce((sum, p) => sum + (p.quantidade / p.area), 0);
-          return total / producoesCultura.length;
+            const p = produtividadePorCultura[cultura];
+            return p.totalArea > 0 ? p.totalProducao / p.totalArea : 0;
         });
         break;
-        
+
       case 'financeiro':
+        chartTitle = 'Resultado Financeiro (R$)';
         labels = ['Receitas', 'Despesas', 'Resultado'];
         data = [
           this.calcularTotalReceitas(),
@@ -470,38 +579,84 @@ export class GerenciamentoComponent implements OnInit {
           this.calcularResultadoFinanceiro()
         ];
         break;
-        
+
       case 'producao':
-        labels = this.safras;
-        data = labels.map(safra => {
-          return this.producoes
-            .filter(p => p.safra === safra)
-            .reduce((sum, p) => sum + p.quantidade, 0);
+        chartTitle = 'Produção Total por Safra (kg)';
+        const producaoPorSafra: { [key: string]: number } = {};
+        this.producoes.forEach(p => {
+            if (!producaoPorSafra[p.safra]) {
+                producaoPorSafra[p.safra] = 0;
+            }
+            producaoPorSafra[p.safra] += p.quantidade;
         });
+        labels = Object.keys(producaoPorSafra).sort();
+        data = labels.map(safra => producaoPorSafra[safra]);
         break;
     }
-    
+
     this.relatorioChart = new Chart(ctx, {
       type: 'bar',
       data: {
         labels: labels,
         datasets: [{
-          label: this.tipoRelatorio === 'financeiro' ? 'Valor (R$)' : 
-                (this.tipoRelatorio === 'produtividade' ? 'Produtividade (kg/ha)' : 'Produção (kg)'),
+          label: chartTitle, // Usar o título do gráfico como label do dataset para clareza
           data: data,
-          backgroundColor: this.tipoRelatorio === 'financeiro' ? 
-            ['#4CAF50', '#F44336', '#2196F3'] : '#4CAF50',
+          backgroundColor: this.tipoRelatorio === 'financeiro' ?
+            ['#4CAF50', '#F44336', (this.calcularResultadoFinanceiro() >= 0 ? '#2196F3' : '#FF9800')] :
+            '#4CAF50',
+          borderColor: this.tipoRelatorio === 'financeiro' ?
+            ['#388E3C', '#D32F2F', (this.calcularResultadoFinanceiro() >= 0 ? '#1976D2' : '#F57C00')] :
+            '#388E3C',
           borderWidth: 1
         }]
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                text: chartTitle,
+                font: { size: 16 }
+            },
+            legend: {
+                display: this.tipoRelatorio !== 'financeiro' && this.tipoRelatorio !== 'produtividade' && this.tipoRelatorio !== 'producao'
+            }
+        },
         scales: {
           y: {
-            beginAtZero: true
+            beginAtZero: true,
+            title: {
+                display: true,
+                text: this.tipoRelatorio === 'financeiro' ? 'Valor (R$)' : 
+                     (this.tipoRelatorio === 'produtividade' ? 'Produtividade (kg/ha)' : 'Produção (kg)')
+            }
+          },
+          x: {
+            title: {
+                display: true,
+                text: this.tipoRelatorio === 'produtividade' ? 'Culturas' : 
+                     (this.tipoRelatorio === 'producao' ? 'Safras' : '')
+            }
           }
         }
       }
     });
   }
-}
+
+
+  /**
+   * Alterna o status de ativação de uma propriedade.
+   * @param propriedade A propriedade a ter seu status alterado.
+   */
+  toggleStatusPropriedade(propriedade: Propriedade): void {
+    propriedade.ativo = !propriedade.ativo;
+    console.log(`Propriedade '${propriedade.nome}' agora está ${propriedade.ativo ? 'ATIVA' : 'INATIVA'}.`);
+    
+    // Os getters (totalPropriedadesAtivas) e chamadas de função (calcularAreaTotal, contarCulturasAtivas)
+    // no template serão reavaliados automaticamente pelo Angular quando a detecção de mudanças ocorrer
+    // após a alteração em 'propriedade.ativo'.
+    // Não é estritamente necessário chamar this.aplicarFiltros() aqui, a menos que a
+    // lista 'propriedadesFiltradas' (a tabela) também precise ser refiltrada com base no status 'ativo'.
+  }
+}  

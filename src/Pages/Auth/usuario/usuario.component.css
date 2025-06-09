@@ -30,10 +30,12 @@
   font-weight: 500;
 }
 
-.dashboard-header i { /* Ícone do trator no título */
-  font-size: 2.2rem; /* Consistente com h1 */
-  color: #27ae60;
-}
+  .header-logo-img { /* Logo no header */
+    height: 3.5rem; /* Define a altura da imagem. Ajuste este valor conforme necessário. */
+    width: auto;    /* Mantém a proporção da imagem. */
+    /* O display:flex e align-items:center no .dashboard-header h1 pai já devem cuidar do alinhamento vertical. */
+    /* Você pode adicionar 'vertical-align: middle;' se necessário, mas geralmente não é preciso com flexbox. */
+  }
 
 .dashboard-header .menu-toggle i { /* Ícone de menu hamburguer */
     font-size: 1.8rem; /* Tamanho específico para o ícone do toggle */
@@ -182,6 +184,7 @@
     border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
+    color: #ffffff;
 }
 
 .profile-details { /* Novo container para foto e info-list */
@@ -286,6 +289,13 @@
     margin-right: 5px;
 }
 .additional-info span {
+    color: #ffffff;
+}
+
+.additional-info h2 {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
     color: #ffffff;
 }
 

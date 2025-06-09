@@ -1,106 +1,168 @@
-<app-menu-cima></app-menu-cima>
+<div class="estilos-fundo">
+ <app-menu-cima></app-menu-cima>
 
-<div class="painel">
-  <div class="overlay">
-    <h1>Favep</h1>
-    <p class="credit">Um site para gerenciar sua propriedade com facilidade</p>
-    <a href="contato" class="btn">CONTATE-NOS</a>
-  </div>
-</div>  
-
-<section class="services" id="services">
-  <div class="card">
-    <div class="icon" style="color: #28a745;">
-      <i class="fas fa-chart-line"></i> <!-- Estatísticas -->
+  <div class="painel">
+    <div class="overlay">
+      <h1>FAVEP</h1>
+      <p class="credit">Um site para gerenciar sua propriedade com facilidade</p>
+      <a href="contato" class="btn">CONTATE-NOS</a>
     </div>
-    <h3>Estatísticas</h3>
-    <p>Utiliza análise de dados avançada para transformar informações da sua propriedade em insights práticos.</p>
-    <a href="#" class="mais">Analisar Dados</a>
-  </div>
+  </div>  
 
-  <div class="card">
-    <div class="icon" style="color: #ff6347;">
-      <i class="fas fa-cogs"></i> <!-- Gerenciamento -->
+  <section class="services" id="services">
+    <div class="card">
+      <div class="icon" style="color: #28a745;">
+        <i class="fas fa-chart-line"></i>
+      </div>
+      <h3>Estatísticas</h3>
+      <p>Utiliza análise de dados avançada para transformar informações da sua propriedade em insights práticos.</p>
+      <a routerLink="/estatistica" class="mais">Analisar dados</a>
     </div>
-    <h3>Gerenciamento</h3>
-    <p>Oferece ferramentas inteligentes para gerenciar sua propriedade com eficiência, simplicidade e agilidade. </p>
-    <a href="#" class="mais">Gerenciar Agora</a>
-  </div>
 
-  <div class="card">
-    <div class="icon" style="color: #007bff;">
-      <i class="fas fa-file-alt"></i> <!-- Relatórios -->
+    <div class="card">
+      <div class="icon" style="color: #ff6347;">
+        <i class="fas fa-cogs"></i>
+      </div>
+      <h3>Gerenciamento</h3>
+      <p>Oferece ferramentas inteligentes para gerenciar sua propriedade com eficiência, simplicidade e agilidade. </p>
+      <a routerLink="/gerenciamento" class="mais">Gerenciar agora</a>
     </div>
-    <h3>Relatórios</h3>
-    <p>Transforma dados complexos da sua propriedade em informações claras e acionáveis.</p>
-    <a href="#" class="mais">Transformar Informações</a>
-  </div>
 
-  <div class="card">
-    <div class="icon" style="color: #ffc107;">
-      <i class="fas fa-handshake"></i> <!-- Parceiros -->
+    <div class="card">
+      <div class="icon" style="color: #007bff;">
+        <i class="fas fa-file-alt"></i>
+      </div>
+      <h3>Relatórios</h3>
+      <p>Transforma dados complexos da sua propriedade em informações claras e acionáveis.</p>
+      <a routerLink="/relatorio" class="mais">Transformar agora</a>
     </div>
-    <h3>Parceiros</h3>
-    <p>Acredita que parcerias estratégicas são essenciais para oferecer as melhores soluções em gestão agrícola.</p>
-    <a href="#" class="mais">Nossos parceiros</a>
 
-    
-  </div>
-</section>
+    <div class="card">
+      <div class="icon" style="color: #ffc107;">
+        <i class="fas fa-handshake"></i>
+      </div>
+      <h3>Parceiros</h3>
+      <p>Acredita que parcerias estratégicas são essenciais para oferecer as melhores soluções em gestão agrícola.</p>
+      <a routerLink="/parceiros" class="mais">Nossos parceiros</a>    
+    </div>
+  </section>
+
+    <section class="servico">
+      <div class="texto1">
+        <h1>Estatísticas</h1>
+        <ul>
+          <li>O FAVEP utiliza análise de dados avançada para transformar informações da sua propriedade em insights práticos. Com relatórios inteligentes, você pode:</li>
+          <li> 📈 Monitorar produtividade (safras, rebanho, custos)</li>
+          <li>🌱 Identificar padrões (melhores épocas para plantio, eficiência de insumos)</li>
+          <li>💰 Tomar decisões estratégicas com base em dados reais</li>
+        </ul>
+      </div>
+      <div class="imagem">
+        <img src="assets/img/telaesta.jpg" alt="Dashboard em notebook">
+      </div>
+    </section>
+
+    <section class="servico1">
+      <div class="imagem">
+        <img src="assets/img/telager.jpg" alt="Dashboard em notebook">
+      </div>
+      <div class="texto">
+        <h1>Gerenciamento</h1>
+      <ul>
+          <li>O FAVEP oferece ferramentas inteligentes para gerenciar sua propriedade com eficiência e simplicidade. Centralize todas as operações e tome decisões estratégicas com base em dados precisos.</li>
+          <li> ✅ Controle Integrado - acompanhe atividades agrícolas, estoque, finanças e recursos em um único lugar.</li>
+          <li> ✅ Otimização de Recursos</li>
+          <li> ✅ Gestão Financeira</li>
+          <li> ✅ Planejamento Estratégico Programe safras, manejo animal e manutenções com calendários personalizados. </li>
+          <li> ✅ Acesso Remoto Transforme dados em resultados!</li>
+        </ul>
+      </div>
+    </section>
 
   <section class="servico">
-    <div class="texto1">
-      <h1>Estatísticas</h1>
-      <ul>
-        <li>O FAVEP utiliza análise de dados avançada para transformar informações da sua propriedade em insights práticos. Com relatórios inteligentes, você pode:</li>
-        <li> 📈 Monitorar produtividade (safras, rebanho, custos)</li>
-        <li>🌱 Identificar padrões (melhores épocas para plantio, eficiência de insumos)</li>
-        <li>💰 Tomar decisões estratégicas com base em dados reais</li>
-      </ul>
-    </div>
-    <div class="imagem">
-      <img src="assets/img/telaesta.jpg" alt="Dashboard em notebook">
+      <div class="texto1">
+        <h1>Relatórios</h1>
+        <ul>
+          <li>O módulo de Relatórios do FAVEP transforma dados complexos da sua propriedade em informações claras e acionáveis, facilitando a análise e a tomada de decisões estratégicas.</li>
+          <li> 📊 Relatórios Personalizados - Gere documentos sob medida para acompanhar produtividade, finanças, estoque e mais.</li>
+          <li>📅 Análises Temporais - Compare desempenho entre períodos (safras, meses, anos) e identifique tendências.</li>
+          <li>🌱 Gestão Agrícola Detalhada - Acompanhe custos de insumos, rendimento por cultura e eficiência operacional.</li>
+          <li>💵 Controle Financeiro - Visualize receitas, despesas e lucratividade em gráficos e tabelas intuitivas.</li>
+          <li>🔄 Exportação Simplificada - Compartilhe relatórios em PDF, Excel ou CSV com parceiros e técnicos.</li>
+        </ul>
+      </div>
+      <div class="imagem">
+        <img src="assets/img/telarela.jpg" alt="Dashboard em notebook">
+      </div>
+    </section>
+
+  <section class="parceiros-section">
+    <div class="container">
+      <div class="parceiros-home-titulo">
+        <h1>Parceiros em Destaque</h1>
+        <p>Colaboramos com os melhores para impulsionar seus resultados.</p>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 col-md-12 mb-4 d-flex">
+          <div class="partner-card">
+            <div class="partner-card-header">
+              <img src="../../assets/img/Baner projeto FAVEP_ME.png" alt="Logo AgroTech Solutions" class="partner-logo img-fluid">
+            </div>
+            <div class="partner-card-body">
+              <h3 class="partner-name">AgroTech Solutions</h3>
+              <p class="partner-description">Líder em soluções tecnológicas para o agronegócio, oferecendo softwares de gestão e monitoramento de precisão para otimizar a produção agrícola e pecuária.</p>
+              <div class="partner-contact-info">
+                <h4>Contato:</h4>
+                <ul class="list-unstyled">
+                  <li><i class="fas fa-globe"></i> <a href="https://www.agrotech.com" target="_blank" rel="noopener noreferrer">Website</a></li>
+                  <li><i class="fas fa-envelope"></i> <a href="mailto:contato&#64;agrotech.com">contato&#64;agrotech.com</a></li>
+                  <li><i class="fas fa-phone"></i> <a href="tel:(16) 99999-0001">(16) 99999-0001</a></li>
+                </ul>
+              </div>
+              <div class="partner-social-media">
+                <h4>Redes Sociais:</h4>
+                <ul class="list-inline">
+                  <li class="list-inline-item"><a href="https://facebook.com/agrotech" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a></li>
+                  <li class="list-inline-item"><a href="https://instagram.com/agrotech" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a></li>
+                  <li class="list-inline-item"><a href="https://linkedin.com/company/agrotech" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-12 mb-4 d-flex">
+          <div class="partner-card">
+            <div class="partner-card-header">
+              <img src="../../assets/img/Baner projeto FAVEP_ME.png" alt="Logo BioFertilizantes Campo Verde" class="partner-logo img-fluid">
+            </div>
+            <div class="partner-card-body">
+              <h3 class="partner-name">BioFertilizantes Campo Verde</h3>
+              <p class="partner-description">Especializada no desenvolvimento e produção de fertilizantes orgânicos e biológicos, promovendo uma agricultura sustentável e de alta produtividade.</p>
+              <div class="partner-contact-info">
+                <h4>Contato:</h4>
+                <ul class="list-unstyled">
+                  <li><i class="fas fa-globe"></i> <a href="https://www.campoverdebio.com.br" target="_blank" rel="noopener noreferrer">Website</a></li>
+                  <li><i class="fas fa-envelope"></i> <a href="mailto:vendas&#64;campoverdebio.com.br">vendas&#64;campoverdebio.com.br</a></li>
+                </ul>
+              </div>
+              <div class="partner-social-media">
+                <h4>Redes Sociais:</h4>
+                <ul class="list-inline">
+                  <li class="list-inline-item"><a href="https://facebook.com/campoverdebio" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a></li>
+                  <li class="list-inline-item"><a href="https://instagram.com/campoverdebio" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ver-todos-container">
+        <a routerLink="/parceiros" class="btn btn-parceiros">Ver Todos os Parceiros</a>
+      </div>
     </div>
   </section>
 
+  <app-assinatura></app-assinatura>
 
-  
-  <section class="servico1">
-    <div class="imagem">
-      <img src="assets/img/telager.jpg" alt="Dashboard em notebook">
-    </div>
-    <div class="texto">
-      <h1>Gerenciamento</h1>
-     <ul>
-        <li>O FAVEP oferece ferramentas inteligentes para gerenciar sua propriedade com eficiência e simplicidade. Centralize todas as operações e tome decisões estratégicas com base em dados precisos.</li>
-        <li> ✅ Controle Integrado - acompanhe atividades agrícolas, estoque, finanças e recursos em um único lugar.</li>
-        <li> ✅ Otimização de Recursos</li>
-        <li> ✅ Gestão Financeira</li>
-        <li> ✅ Planejamento Estratégico Programe safras, manejo animal e manutenções com calendários personalizados. </li>
-        <li> ✅ Acesso Remoto Transforme dados em resultados!</li>
-      </ul>
-    </div>
-  </section>
-
- <section class="servico">
-    <div class="texto1">
-      <h1>Relatórios</h1>
-      <ul>
-        <li>O módulo de Relatórios do FAVEP transforma dados complexos da sua propriedade em informações claras e acionáveis, facilitando a análise e a tomada de decisões estratégicas.</li>
-        <li> 📊 Relatórios Personalizados - Gere documentos sob medida para acompanhar produtividade, finanças, estoque e mais.</li>
-        <li>📅 Análises Temporais - Compare desempenho entre períodos (safras, meses, anos) e identifique tendências.</li>
-        <li>🌱 Gestão Agrícola Detalhada - Acompanhe custos de insumos, rendimento por cultura e eficiência operacional.</li>
-        <li>💵 Controle Financeiro - Visualize receitas, despesas e lucratividade em gráficos e tabelas intuitivas.</li>
-        <li>🔄 Exportação Simplificada - Compartilhe relatórios em PDF, Excel ou CSV com parceiros e técnicos.</li>
-      </ul>
-    </div>
-    <div class="imagem">
-      <img src="assets/img/telaesta.jpg" alt="Dashboard em notebook">
-    </div>
-  </section>
-
-
-
-<app-assinatura></app-assinatura>
-
-<app-footer></app-footer>
+  <app-footer></app-footer>
+</div>

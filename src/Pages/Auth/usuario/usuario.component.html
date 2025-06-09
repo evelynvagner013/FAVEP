@@ -2,7 +2,7 @@
   <header class="dashboard-header">
     <button class="menu-toggle" aria-label="Abrir menu" (click)="alternarMenu()">
       <i class="fas fa-bars"></i> </button>
-    <h1><i class="fas fa-tractor"></i> FAVEP - Gestão Agronômica</h1>
+    <h1><img src="../../../assets/img/FAVEP_LOGO_nobg.png" alt="Logo FAVEP" class="header-logo-img"> FAVEP - Gestão Agronômica</h1>
     <div class="user-info">
       <span>Olá, {{ headerUsuarioNome }}</span>
       <img [src]="headerUsuarioFoto" [alt]="'Foto de ' + headerUsuarioNome" class="user-avatar">
@@ -49,7 +49,10 @@
 
         <div class="help-box card-perfil"> <h2>Ainda precisa de ajuda?<br>Nos procure!</h2>
           <p><strong>Telefone:</strong> (60) 305-240-9671</p>
-          <a href="#" class="chat-btn" (click)="$event.preventDefault()">CONTATE-NOS</a> </div>
+          <div>
+            <button type="button" class="chat-btn" (click)="navegarParaContato()">CONTATE-NOS</button>
+          </div> 
+        </div>
       </div>
 
       <div class="additional-info card-perfil"> <h2>Informações adicionais</h2>

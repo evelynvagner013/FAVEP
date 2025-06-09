@@ -1,18 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core'; 
 import { RouterOutlet } from '@angular/router';
 
-import { ApiService } from '../services/api.service';
-import { LoginComponent } from '../Pages/Auth/login/login.component';
+import { ApiService } from '../services/api.service'; 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, LoginComponent],
+  imports: [
+    RouterOutlet 
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent  {
+export class AppComponent { 
   constructor(private api: ApiService) {}
 
- 
+
 }
