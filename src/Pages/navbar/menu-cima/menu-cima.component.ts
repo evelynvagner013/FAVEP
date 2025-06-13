@@ -1,47 +1,47 @@
+// Imports...
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { User } from '../../../Models/user.model'; // Make sure this path is correct
+import { User } from '../../../Models/user.model';
 
 @Component({
+  // ... selector, standalone, etc.
   selector: 'app-menu-cima',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Removed LoginComponent as it's being integrated
+  imports: [CommonModule, FormsModule],
   templateUrl: './menu-cima.component.html',
   styleUrl: './menu-cima.component.css'
 })
 export class MenuCimaComponent implements OnInit {
-  user: any = null; // For currently logged-in user display
-
-  // Login Modal State & Form Fields
+  // ... (outras propriedades permanecem as mesmas) ...
+  user: any = null;
   mostrarLoginModal = false;
   loginEmail: string = '';
   loginPassword: string = '';
   loginRememberMe: boolean = false;
   loginErrorMessage: string = '';
-
-  // Registration Modal State & Form Fields
   mostrarRegisterModal = false;
-  registerUser: User = { username: '', email: '', password: '', telefone: '', role: 'user' };
+  registerUser: any = { username: '', email: '', password: '', telefone: '', confirmarSenha: '' }; // Adicionado confirmarSenha
   registerSuccessMessage: string = '';
   registerErrorMessage: string = '';
+
 
   constructor(private apiService: ApiService, private router: Router) { }
 
   ngOnInit(): void {
-    this.user = this.apiService.getUser(); // Get current user from AuthService
+    this.user = this.apiService.getUser();
   }
 
   logout(): void {
     this.apiService.logout();
-    window.location.reload();
+    this.router.navigate(['/home']).then(() => window.location.reload());
   }
 
-  // Modal Controls
+  // ... (abrir/fechar modais permanecem os mesmos) ...
   abrirLoginModal() {
-    this.mostrarRegisterModal = false; // Ensure register modal is closed
+    this.mostrarRegisterModal = false;
     this.mostrarLoginModal = true;
     this.loginEmail = '';
     this.loginPassword = '';
@@ -50,9 +50,9 @@ export class MenuCimaComponent implements OnInit {
   }
 
   abrirRegisterModal() {
-    this.mostrarLoginModal = false; // Ensure login modal is closed
+    this.mostrarLoginModal = false;
     this.mostrarRegisterModal = true;
-    this.registerUser = { username: '', email: '', password: '', telefone: '', role: 'user' };
+    this.registerUser = { username: '', email: '', password: '', telefone: '', confirmarSenha: '' };
     this.registerSuccessMessage = '';
     this.registerErrorMessage = '';
   }
@@ -62,60 +62,62 @@ export class MenuCimaComponent implements OnInit {
     this.mostrarRegisterModal = false;
   }
 
-  // Login Form Submission
+
   onLoginSubmit() {
-    if (this.loginEmail === "" && this.loginPassword === "") {
-      this.loginErrorMessage = "Os campos precisam estar preenchidos.";
-      return;
-    }
-    if (this.loginEmail === "") {
-      this.loginErrorMessage = "O campo de email precisa estar preenchido.";
-      return;
-    }
-    if (this.loginPassword === "") {
-      this.loginErrorMessage = "O campo de senha precisa estar preenchido.";
+    if (!this.loginEmail || !this.loginPassword) {
+      this.loginErrorMessage = "Email e senha são obrigatórios.";
       return;
     }
 
     this.apiService.login(this.loginEmail, this.loginPassword).subscribe({
       next: (response) => {
         console.log('Login realizado com sucesso!', response);
-        if (response.access_token && response.user) {
-          localStorage.setItem('token', response.access_token);
+        // ✅ CORRIGIDO: O backend retorna 'token' e 'user'
+        if (response.token && response.user) {
+          localStorage.setItem('token', response.token);
           this.apiService.setUser(response.user);
         }
         this.fecharModals();
-        window.location.reload(); // Or navigate to a dashboard
+        // Redireciona para a página de gerenciamento após o login
+        this.router.navigate(['/gerenciamento']);
       },
       error: (error) => {
         console.error('Erro no login', error);
-        this.loginErrorMessage = 'Email ou senha inválidos';
+        // ✅ CORRIGIDO: Exibe a mensagem de erro vinda do backend
+        this.loginErrorMessage = error.error?.error || 'Email ou senha inválidos';
       }
     });
   }
 
-  // Registration Form Submission
   onRegisterSubmit() {
-    console.log('Formulário de registro enviado', this.registerUser);
+    // Validação simples
     if (!this.registerUser.username || !this.registerUser.email || !this.registerUser.password || !this.registerUser.telefone) {
         this.registerErrorMessage = 'Todos os campos são obrigatórios.';
         return;
     }
 
-    this.apiService.register(this.registerUser).subscribe({
+    // ✅ CORRIGIDO: Mapeia os campos do formulário para o formato que o back-end espera.
+    const payload = {
+      nome: this.registerUser.username,
+      email: this.registerUser.email,
+      telefone: this.registerUser.telefone,
+      senha: this.registerUser.password,
+      confirmarSenha: this.registerUser.password // O back-end espera a confirmação
+    };
+
+    this.apiService.register(payload).subscribe({
       next: (response) => {
         console.log('Usuário cadastrado com sucesso:', response);
-        this.registerSuccessMessage = 'Cadastro realizado com sucesso! Você já pode logar.';
+        this.registerSuccessMessage = 'Cadastro realizado com sucesso! Faça o login para continuar.';
         this.registerErrorMessage = '';
-        // Clear form or automatically switch to login
         setTimeout(() => {
-          this.abrirLoginModal(); // Switch to login modal after showing success
-          this.registerSuccessMessage = ''; // Clear message after switch
+          this.abrirLoginModal();
         }, 2500);
       },
       error: (error) => {
         console.error('Erro no cadastro', error);
-        this.registerErrorMessage = 'Erro ao cadastrar. Verifique os dados. ' + (error.error?.message || '');
+        // ✅ CORRIGIDO: Exibe a mensagem de erro vinda do backend
+        this.registerErrorMessage = error.error?.error || 'Erro ao cadastrar. Verifique os dados.';
         this.registerSuccessMessage = '';
       }
     });
