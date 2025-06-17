@@ -29,6 +29,8 @@ export class MenuCimaComponent implements OnInit {
   registerSuccessMessage: string = '';
   registerErrorMessage: string = '';
 
+   currentTheme: string = 'light-theme'; // Tema padrão
+
   constructor(private apiService: ApiService, private router: Router) { }
 
   ngOnInit(): void {
@@ -140,4 +142,6 @@ export class MenuCimaComponent implements OnInit {
       }
     });
   }
+
+  
 }

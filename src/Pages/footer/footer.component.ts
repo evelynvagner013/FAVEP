@@ -9,4 +9,22 @@ import { Component } from '@angular/core';
 })
 export class FooterComponent {
 
+  isPrivacyModalOpen: boolean = false;
+  isTermsModalOpen: boolean = false;
+
+  openPrivacyPolicyModal(): void {
+    this.isPrivacyModalOpen = true;
+  }
+
+  closePrivacyPolicyModal(): void {
+    this.isPrivacyModalOpen = false;
+  }
+
+  openTermsAndConditionsModal(): void {
+    this.isTermsModalOpen = true;
+  }
+
+  closeTermsAndConditionsModal(): void {
+    this.isTermsModalOpen = false;
+  }
 }

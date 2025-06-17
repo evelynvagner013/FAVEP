@@ -8,14 +8,23 @@ import { Propriedade } from '../Models/propertie.model' // O nome do modelo é U
   providedIn: 'root'
 })
 export class ApiService {
+
   private baseUrl = 'http://localhost:5050'; //
+
   constructor(private http: HttpClient) {}
 
-   // ✅ CORRIGIDO: Adicionado '/auth' ao endpoint
-   register(user: any): Observable<any> { // Mudado para 'any' para flexibilidade no passo 3
-    return this.http.post(`${this.baseUrl}/auth/register`, user);
+  /**
+   * Verifica se o usuário está logado.
+   * Retorna true se houver dados de usuário no localStorage, false caso contrário.
+   */
+  isLoggedIn(): boolean {
+    return !!this.getUser(); // Retorna true se getUser() encontrar um usuário, false se for null
   }
 
+  // ✅ CORRIGIDO: Adicionado '/auth' ao endpoint
+  register(user: any): Observable<any> { // Mudado para 'any' para flexibilidade no passo 3
+    return this.http.post(`${this.baseUrl}/auth/register`, user);
+  }
 
   // ✅ CORRIGIDO: Adicionado '/auth' e mudado 'password' para 'senha'
   login(email: string, password: string): Observable<any> {

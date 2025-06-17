@@ -1,97 +1,223 @@
 
+/* Seção de Contato Detalhada */
 .contact-section {
-  background: var(--white-color);
+  padding: 60px 20px;
+  background-color: var(--background-color); /* Fundo da seção adaptável ao tema */
 }
 
-.contact-form {
-  background: var(--section-bg-color);
-  border-radius: var(--border-radius-small);
-  padding: 40px;
-
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.contact-info {
-  background: var(--white-color);
-  border-radius: var(--border-radius-medium);
-  display: inline-block;
-  margin-top: 20px;
-  padding: 40px;
-  font-family: Ratio Modern;
+.contact-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px; /* Espaço entre as colunas */
+  justify-content: center; /* Centraliza as colunas */
 }
 
-.team-info a,
-.contact-info h5,
-.contact-info h5 a {
-  color: var(--p-color);
+/* Colunas de Informação e Formulário */
+.contact-info-column,
+.contact-form-column {
+  flex: 1;
+  min-width: 300px; /* Largura mínima para colunas */
+  background-color: rgb(235, 232, 229);
+}
+
+.contact-info-card,
+.contact-form-card {
+  background-color: var(--card-background); /* Fundo do card adaptável */
+  color: var(--text-color); /* Cor do texto adaptável */
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px var(--box-shadow-color); /* Sombra adaptável */
+  height: 100%; /* Garante que os cards tenham a mesma altura */
+  display: flex;
+  flex-direction: column;
+}
+
+.card-title {
   font-family: 'Montserrat', sans-serif;
-  font-weight: 300;
-  font-size: 14px;
-}
-
-.team-info a:hover,
-.contact-info h5 a:hover {
-  color: var(--link-hover-color);
-}
-
-.row h2{
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 500;
-  font-size: 36px;
-
-}
-
-.row p{
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 300;
-  font-size: 16px;
-
-}
-.text{
-  font-size: 40px;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 300;
-}
-
-form {
-    background: #ffffff;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    margin-top: 20px;
-  }
-
-  label {
-    display: block;
-    margin-top: 15px;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 500;
-  }
-
-  input, textarea {
-    width: 100%;
-    padding: 12px;
-    margin-top: 8px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1rem;
-  }
-
-  button {
-    margin-top: 20px;
-    background: #2980b9;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-
-  button:hover {
-    background: #1c5985;
-  }
-
-
-
+  font-weight: 600;
+  font-size: 1.8rem;
+  color: var(--primary-color); /* Cor de destaque para títulos */
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border-color); /* Linha divisória adaptável */
   
+}
+
+/* Detalhes de Contato */
+.contact-detail {
+  display: flex;
+  align-items: center;
+  margin-bottom: 18px;
+  font-size: 1rem;
+  font-family: 'Open Sans', sans-serif;
+  color: var(--text-color);
+  line-height: 1.5;
+}
+
+.contact-detail:last-of-type {
+  margin-bottom: 0;
+}
+
+.contact-detail .contact-icon {
+  font-size: 1.4rem;
+  color: var(--primary-color); /* Cor do ícone adaptável */
+  margin-right: 15px;
+  width: 30px; /* Largura fixa para alinhar os ícones */
+  text-align: center;
+}
+
+.contact-detail a {
+  color: var(--link-color); /* Cor do link adaptável */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-detail a:hover {
+  color: var(--link-hover-color); /* Cor do link no hover adaptável */
+  text-decoration: underline;
+}
+
+/* Estilos do Formulário */
+.form-header {
+  color: var(--primary-color); /* Título do formulário */
+  margin-bottom: 25px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--primary-color); /* Borda no foco adaptável */
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb, 52, 152, 219), 0.25); /* Sombra no foco com transparência */
+}
+
+/* Submeter botão */
+.submit-btn {
+  background-color: var(--primary-color); /* Fundo do botão adaptável */
+  color: var(--button-primary-text); /* Cor do texto do botão adaptável */
+  padding: 14px 25px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submit-btn:hover {
+  background-color: var(--link-hover-color); /* Cor no hover adaptável */
+  transform: translateY(-2px);
+}
+
+/* WhatsApp Section */
+.whatsapp-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 1.4rem;
+  color: var(--text-color); /* Título WhatsApp adaptável */
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.whatsapp-description {
+  font-size: 0.95rem;
+  color: var(--text-color); /* Descrição WhatsApp adaptável */
+  margin-bottom: 20px;
+}
+
+.whatsapp-btn {
+  background-color: #25d366; /* Cor verde do WhatsApp */
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.whatsapp-btn:hover {
+  background-color: #1ea34d; /* Tom mais escuro de verde no hover */
+  transform: translateY(-2px);
+}
+
+.whatsapp-btn i {
+  font-size: 1.2rem;
+}
+
+/* Responsividade */
+@media (max-width: 991px) {
+  .contact-grid {
+    flex-direction: column; /* Colunas empilhadas em telas menores */
+    align-items: center;
+  }
+  .contact-info-column,
+  .contact-form-column {
+    width: 100%;
+    max-width: 550px; /* Limita a largura em telas menores para não ficar muito largo */
+  }
+  .contact-info-card,
+  .contact-form-card {
+    padding: 30px;
+  }
+  .card-title {
+    font-size: 1.6rem;
+  }
+ 
+}
+
+@media (max-width: 576px) {
+
+  .contact-section {
+    padding: 30px 15px;
+  }
+  .contact-info-card,
+  .contact-form-card {
+    padding: 20px;
+  }
+  .card-title {
+    font-size: 1.4rem;
+  }
+  .contact-detail, .form-group label, .form-group input, .form-group textarea, .submit-btn, .whatsapp-btn {
+    font-size: 0.9rem;
+  }
+  .contact-detail .contact-icon {
+    font-size: 1.2rem;
+    margin-right: 10px;
+  }
+  .whatsapp-title {
+    font-size: 1.2rem;
+  }
+  .whatsapp-btn {
+    padding: 10px 20px;
+  }
+}

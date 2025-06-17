@@ -328,3 +328,10 @@ input:-webkit-autofill:active {
 input.ng-invalid.ng-touched {
   /* border: 1px solid red; */ /* Example: remove or customize */
 }
+
+.user-icon {
+  font-size: 32px; /* Ajuste o tamanho conforme necessário */
+  margin-right: 10px; /* Espaçamento entre o ícone e o texto */
+  vertical-align: middle; /* Alinha o ícone verticalmente com o texto */
+  color: #e0e0e0; /* Exemplo de cor para o ícone */
+}
