@@ -7,9 +7,10 @@
     <a href="/parceiros">Parceiros</a>
     <a href="/contato">Contato</a>
   </nav>
-  <a *ngIf="!user" (click)="abrirLoginModal()" class="sign-in">Entrar</a>
+  
+  <a *ngIf="!user" (click)="abrirLoginModal()"  class="sign-in">Acessar</a>
   <div *ngIf="user" class="user-info">
-      <span class="welcome-user">Olá, {{ user.nome }}!</span>
+      <span class="welcome-user">Seja bem vindo, {{ user.nome }}!</span>
       <a (click)="logout()" class="sign-in">Sair</a>
   </div>
 </header>

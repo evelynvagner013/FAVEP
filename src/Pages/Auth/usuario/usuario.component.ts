@@ -2,16 +2,18 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common'; // CommonModule para *ngIf, etc., DatePipe para formatar datas
 import { FormsModule } from '@angular/forms';           // FormsModule para [(ngModel)]
 import { Router, RouterLink } from '@angular/router'; // RouterLink para navegação e Router para navegação programática
+import { ApiService } from '../../../services/api.service'; // Importe o ApiService
 
 // Interface para tipar o objeto de usuário
 interface Usuario {
+  id?: string; // Adicionado para consistência
   nome: string;
   email: string;
   telefone: string;
-  fotoUrl: string;
-  plano: string;
-  dataAssinatura: Date | string; // Usar Date para manipulação interna, string para display/input se necessário
-  dataValidade: Date | string;
+  fotoUrl?: string; // fotoUrl é opcional
+  plano?: string;
+  dataAssinatura?: Date | string; // Usar Date para manipulação interna, string para display/input se necessário
+  dataValidade?: Date | string;
 }
 
 @Component({
@@ -36,10 +38,10 @@ export class UsuarioComponent implements OnInit {
 
   // Dados do perfil do usuário
   usuario: Usuario = {
-    nome: 'Thomas Edison',
-    email: 'thomas@site.com',
-    telefone: '(60) 12 345 6789',
-    fotoUrl: 'assets/img/usuario.jpg', // Certifique-se que este caminho é válido no seu projeto
+    nome: '',
+    email: '',
+    telefone: '',
+    fotoUrl: 'assets/img/usuario.jpg', // Imagem padrão
     plano: 'Anual',
     dataAssinatura: new Date('2025-07-19'),
     dataValidade: new Date('2026-07-19')
@@ -54,10 +56,20 @@ export class UsuarioComponent implements OnInit {
   // 1. Injete o Router no construtor
   constructor(
     private datePipe: DatePipe,
-    private router: Router // Injetar o serviço Router
+    private router: Router, // Injetar o serviço Router
+    private apiService: ApiService // Injete o ApiService
   ) { }
 
   ngOnInit(): void {
+    const user = this.apiService.getUser();
+    if (user) {
+      this.usuario = {
+        ...this.usuario, // Mantém padrões como plano e datas, se não vierem do back-end
+        ...user,
+        fotoUrl: user.fotoUrl || 'assets/img/usuario.jpg'
+      };
+    }
+
     // Inicializa as informações do cabeçalho com os dados do perfil
     this.atualizarHeaderInfo();
     // Inicializa usuarioEditavel com uma cópia dos dados do usuário para o modal
@@ -119,7 +131,7 @@ export class UsuarioComponent implements OnInit {
   // --- Método auxiliar para atualizar informações do header ---
   private atualizarHeaderInfo(): void {
     this.headerUsuarioNome = this.usuario.nome;
-    this.headerUsuarioFoto = this.usuario.fotoUrl;
+    this.headerUsuarioFoto = this.usuario.fotoUrl || 'assets/img/usuario.jpg';
   }
 
   // 2. Adicione o método para navegação

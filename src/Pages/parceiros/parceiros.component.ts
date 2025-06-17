@@ -25,8 +25,8 @@ interface Parceiro {
   standalone: true,
   imports: [
     CommonModule,
-    MenuCimaComponent,
-    FooterComponent
+    FooterComponent,
+    MenuCimaComponent
   ],
   templateUrl: './parceiros.component.html',
   styleUrl: './parceiros.component.css'

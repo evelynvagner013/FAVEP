@@ -1,6 +1,7 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MenuComponent } from '../../navbar/menu/menu.component';
+import { ApiService } from '../../../services/api.service'; // Importe o ApiService
 
 @Component({
   selector: 'app-relatorio',
@@ -9,7 +10,7 @@ import { MenuComponent } from '../../navbar/menu/menu.component';
   templateUrl: './relatorio.component.html',
   styleUrl: './relatorio.component.css'
 })
-export class RelatorioComponent {
+export class RelatorioComponent implements OnInit {
   files = [
     { name: 'Formulário 1', url: '/assets/form1.pdf' },
     { name: 'Formulário 2', url: '/assets/form2.pdf' },
@@ -18,10 +19,20 @@ export class RelatorioComponent {
     { name: 'Formulário 5', url: '/assets/form5.pdf' }
   ];
 
-  usuarioNome: string = 'João Agricultor';
-  usuarioFoto: string = 'assets/user-avatar.jpg';
+  usuarioNome: string = '';
+  usuarioFoto: string = '';
 
     menuAberto = false;
+
+  constructor(private apiService: ApiService) {} // Injete o ApiService
+
+  ngOnInit(): void {
+    const user = this.apiService.getUser();
+    if (user) {
+      this.usuarioNome = user.nome;
+      this.usuarioFoto = user.fotoUrl || 'assets/user-avatar.jpg';
+    }
+  }
 
   alternarMenu() {
     this.menuAberto = !this.menuAberto;

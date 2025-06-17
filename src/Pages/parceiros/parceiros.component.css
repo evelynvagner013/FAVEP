@@ -1,33 +1,3 @@
-/* Importações de Fontes */
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Montserrat:wght@300;400;500;700&family=Open+Sans:wght@300;400&display=swap');
-
-/* ======================================= */
-/* ESTILOS PARA FIXAR O MENU NO TOPO */
-/* ======================================= */
-
-.fixed-menu {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-/*
-  NOVA CLASSE: Empurra o conteúdo para baixo para não ficar atrás do menu.
-  Ajuste o 'padding-top' se a altura do seu menu for diferente.
-*/
-.content-after-fixed-menu {
-  padding-top: 70px; /* Ajuste este valor para a altura exata do seu menu */
-}
-
-
-/* ======================================= */
-/* ESTILOS DA PÁGINA DE PARCEIROS */
-/* ======================================= */
-
 .parceiros-painel {
   background: url("/assets/img/fundo.jpg") no-repeat center center/cover;
   min-height: 40vh;
@@ -46,7 +16,6 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
   z-index: 1;
 }
 
@@ -54,7 +23,7 @@
   position: relative;
   z-index: 2;
   padding: 30px;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.5);
   border-radius: 8px;
 }
 
@@ -225,7 +194,6 @@
 .list-inline-item a:hover i.fa-linkedin-in { color: #0077b5; }
 .list-inline-item a:hover i.fa-twitter { color: #1da1f2; }
 
-/* Adaptações para responsividade */
 @media (min-width: 992px) {
   .col-lg-6 {
     flex: 0 0 50%;
@@ -258,3 +226,4 @@
     padding: 30px 15px;
   }
 }
+

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
 import { MenuComponent } from '../navbar/menu/menu.component';
+import { ApiService } from '../../services/api.service'; // Importe o ApiService
 
 // Definição de uma interface para Propriedade para melhor tipagem
 export interface Propriedade {
@@ -89,11 +90,7 @@ export class GerenciamentoComponent implements OnInit {
     { valor: 'Algodão', texto: 'Algodão' }
   ];
 
-  usuario: any = {
-    nome: 'João Agricultor',
-    email: 'joao@fazenda.com',
-    foto: 'assets/user-avatar.jpg'
-  };
+  usuario: any = {}; // Remova os dados pré-definidos
   novaSenha: string = '';
 
   propriedades: Propriedade[] = [
@@ -180,13 +177,17 @@ export class GerenciamentoComponent implements OnInit {
   relatorioChart: any;
 
 
-  constructor() {
+  constructor(private apiService: ApiService) { // Injete o ApiService
     Chart.register(...registerables);
   }
 
   ngOnInit(): void {
-    this.headerUsuarioNome = this.usuario.nome;
-    this.headerUsuarioFoto = this.usuario.foto;
+    const user = this.apiService.getUser(); // Obtenha o usuário do serviço
+    if (user) {
+      this.usuario = user;
+      this.headerUsuarioNome = this.usuario.nome;
+      this.headerUsuarioFoto = this.usuario.fotoUrl || 'assets/user-avatar.jpg'; // Use uma imagem padrão se não houver foto
+    }
     this.aplicarFiltros();
   }
 
@@ -199,7 +200,7 @@ export class GerenciamentoComponent implements OnInit {
 
   abrirModalAdicionar(): void {
     this.modalAberto = true;
-    this.tipoEdicao = this.abaAtiva === 'financeiro' ? 'movimentacao' : 
+    this.tipoEdicao = this.abaAtiva === 'financeiro' ? 'movimentacao' :
                       (this.abaAtiva === 'propriedades' ? 'propriedade' : this.abaAtiva);
     this.modalTitulo = `Adicionar ${this.getTituloModal()}`;
 
@@ -285,7 +286,7 @@ export class GerenciamentoComponent implements OnInit {
     if (!isNaN(dias)) {
         dataLimite.setDate(dataLimite.getDate() - dias);
     }
-    
+
     this.movimentacoesFiltradas = this.movimentacoes.filter(mov => {
       const periodo = this.filtroPeriodo === 'todos' || (mov.data instanceof Date && mov.data >= dataLimite);
       const busca = !this.termoBusca ||
@@ -437,7 +438,7 @@ export class GerenciamentoComponent implements OnInit {
     this.tipoExclusao = '';
     this.aplicarFiltros(); // Reaplicar filtros para atualizar a lista principal se necessário
   }
-  
+
   gerarNovoId(lista: any[]): number {
     if (!lista || lista.length === 0) return 1;
     const ids = lista.map(item => item.id).filter(id => typeof id === 'number');
@@ -529,7 +530,7 @@ export class GerenciamentoComponent implements OnInit {
     this.fecharModal();
     this.aplicarFiltros();
   }
-  
+
   // ... (gerarRelatorio permanece o mesmo) ...
   gerarRelatorio(): void {
     if (this.relatorioChart) {
@@ -628,14 +629,14 @@ export class GerenciamentoComponent implements OnInit {
             beginAtZero: true,
             title: {
                 display: true,
-                text: this.tipoRelatorio === 'financeiro' ? 'Valor (R$)' : 
+                text: this.tipoRelatorio === 'financeiro' ? 'Valor (R$)' :
                      (this.tipoRelatorio === 'produtividade' ? 'Produtividade (kg/ha)' : 'Produção (kg)')
             }
           },
           x: {
             title: {
                 display: true,
-                text: this.tipoRelatorio === 'produtividade' ? 'Culturas' : 
+                text: this.tipoRelatorio === 'produtividade' ? 'Culturas' :
                      (this.tipoRelatorio === 'producao' ? 'Safras' : '')
             }
           }
@@ -652,11 +653,11 @@ export class GerenciamentoComponent implements OnInit {
   toggleStatusPropriedade(propriedade: Propriedade): void {
     propriedade.ativo = !propriedade.ativo;
     console.log(`Propriedade '${propriedade.nome}' agora está ${propriedade.ativo ? 'ATIVA' : 'INATIVA'}.`);
-    
+
     // Os getters (totalPropriedadesAtivas) e chamadas de função (calcularAreaTotal, contarCulturasAtivas)
     // no template serão reavaliados automaticamente pelo Angular quando a detecção de mudanças ocorrer
     // após a alteração em 'propriedade.ativo'.
     // Não é estritamente necessário chamar this.aplicarFiltros() aqui, a menos que a
     // lista 'propriedadesFiltradas' (a tabela) também precise ser refiltrada com base no status 'ativo'.
   }
-}  
+}

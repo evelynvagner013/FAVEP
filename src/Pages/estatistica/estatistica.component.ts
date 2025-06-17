@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { MenuComponent } from '../navbar/menu/menu.component'; // Assuming this is a valid path
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt'; // Importa os dados da localidade pt
+import { ApiService } from '../../services/api.service'; // Importe o ApiService
 
 registerLocaleData(localePt);
 
@@ -49,8 +50,8 @@ export class EstatisticaComponent implements OnInit {
   @ViewChild('produtividadeChart', { static: true }) produtividadeChart!: ElementRef<HTMLCanvasElement>;
   @ViewChild('financeiroChart', { static: true }) financeiroChart!: ElementRef<HTMLCanvasElement>;
 
-  usuarioNome: string = 'João Agricultor';
-  usuarioFoto: string = 'assets/user-avatar.jpg'; // Make sure this path is correct
+  usuarioNome: string = '';
+  usuarioFoto: string = '';
 
   totalPropriedades: number = 5;
   areaTotal: number = 12500; // Example: 12,500 ha
@@ -82,12 +83,17 @@ export class EstatisticaComponent implements OnInit {
     despesas: 175000
   };
 
-  constructor() {
+  constructor(private apiService: ApiService) { // Injete o ApiService
     // Chart.js V3 and later are tree-shakeable, so you need to register components.
     Chart.register(...registerables);
   }
 
   ngOnInit(): void {
+    const user = this.apiService.getUser();
+    if (user) {
+      this.usuarioNome = user.nome;
+      this.usuarioFoto = user.fotoUrl || 'assets/user-avatar.jpg';
+    }
     this.criarGraficos();
   }
 

@@ -7,7 +7,7 @@
   background: var(--section-bg-color);
   border-radius: var(--border-radius-small);
   padding: 40px;
-  
+
 }
 
 .contact-info {
@@ -37,14 +37,14 @@
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
   font-size: 36px;
-  
+
 }
 
 .row p{
   font-family: 'Montserrat', sans-serif;
   font-weight: 300;
   font-size: 16px;
-  
+
 }
 .text{
   font-size: 40px;
@@ -66,7 +66,7 @@ form {
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
   }
-  
+
   input, textarea {
     width: 100%;
     padding: 12px;
@@ -75,7 +75,7 @@ form {
     border-radius: 8px;
     font-size: 1rem;
   }
-  
+
   button {
     margin-top: 20px;
     background: #2980b9;
@@ -87,11 +87,11 @@ form {
     cursor: pointer;
     transition: background 0.3s ease;
   }
-  
+
   button:hover {
     background: #1c5985;
   }
 
-  
-  
+
+
   

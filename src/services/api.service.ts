@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from '../Models/user.model'; // O nome do modelo é User, mas o back-end espera 'nome' e não 'username'
+import { User } from '../Models/user.model';
+import { Propriedade } from '../Models/propertie.model' // O nome do modelo é User, mas o back-end espera 'nome' e não 'username'
 
 @Injectable({
   providedIn: 'root'
