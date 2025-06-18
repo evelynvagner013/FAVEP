@@ -64,7 +64,7 @@ export class GerenciamentoComponent implements OnInit {
     }
   }
 
-  headerUsuarioNome: string = '';
+  usuarioNome: string = '';
   headerUsuarioFoto: string = '';
 
   abaAtiva: string = 'propriedades';
@@ -185,7 +185,7 @@ export class GerenciamentoComponent implements OnInit {
     const user = this.apiService.getUser(); // Obtenha o usuário do serviço
     if (user) {
       this.usuario = user;
-      this.headerUsuarioNome = this.usuario.nome;
+      this.usuarioNome = this.usuario.nome;
       this.headerUsuarioFoto = this.usuario.fotoUrl || 'assets/user-avatar.jpg'; // Use uma imagem padrão se não houver foto
     }
     this.aplicarFiltros();

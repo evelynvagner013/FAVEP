@@ -14,7 +14,7 @@
   </div>
  
   <div *ngIf="user" class="user-info">
-      <span class="welcome-user">Seja bem vindo, {{ user.nome }}!</span>
+      <span class="welcome-user"> {{ user.nome }}</span>
       <a (click)="logout()" class="sign-in">Sair</a>
   </div>
 </header>

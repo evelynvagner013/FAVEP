@@ -33,7 +33,7 @@ export class UsuarioComponent implements OnInit {
   menuAberto = false;
 
   // Propriedades para o cabeçalho (serão preenchidas a partir do objeto 'usuario')
-  headerUsuarioNome: string = '';
+  usuarioNome: string = '';
   headerUsuarioFoto: string = '';
 
   // Dados do perfil do usuário
@@ -130,7 +130,7 @@ export class UsuarioComponent implements OnInit {
 
   // --- Método auxiliar para atualizar informações do header ---
   private atualizarHeaderInfo(): void {
-    this.headerUsuarioNome = this.usuario.nome;
+    this.usuarioNome = this.usuario.nome;
     this.headerUsuarioFoto = this.usuario.fotoUrl || 'assets/img/usuario.jpg';
   }
 

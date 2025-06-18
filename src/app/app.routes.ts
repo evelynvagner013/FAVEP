@@ -9,7 +9,7 @@ import { GerenciamentoComponent } from '../Pages/gerenciamento/gerenciamento.com
 import { HomeComponent } from '../Pages/home/home.component';
 import { MenuCimaComponent } from '../Pages/navbar/menu-cima/menu-cima.component';
 import { MenuComponent } from '../Pages/navbar/menu/menu.component';
-import { RegistrosComponent } from '../Pages/registros/registros.component';
+
 import { RelatorioComponent } from '../Pages/relatorio/relatorio/relatorio.component';
 import { ParceirosComponent } from '../Pages/parceiros/parceiros.component';
 
@@ -27,7 +27,6 @@ export const routes: Routes = [
   { path: 'gerenciamento', component: GerenciamentoComponent},
   { path: 'contato', component: ContatoComponent},
   { path: 'usuario', component: UsuarioComponent },
-  { path: 'registros', component: RegistrosComponent },
   { path: 'menuCima', component: MenuCimaComponent},
   { path: 'parceiros', component: ParceirosComponent} 
 ];

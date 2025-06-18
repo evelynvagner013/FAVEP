@@ -53,6 +53,11 @@ nav a {
   color: #1a5276;
 }
 
+.welcome-user{
+  color: white;
+  margin-right: 10px;
+}
+
 /* Unified Auth Modal Overlay */
 .auth-modal-overlay {
   background: rgba(0, 0, 0, 0.75); /* Darker overlay */
