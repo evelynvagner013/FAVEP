@@ -7,6 +7,15 @@
     <a href="/parceiros">Parceiros</a>
     <a href="/contato">Contato</a>
   </nav>
+
+  <div class="theme-switch-wrapper">
+    <i class="fas fa-sun"></i>
+    <label class="switch">
+      <input type="checkbox" [checked]="(isDarkMode$ | async)" (change)="onThemeToggle()">
+      <span class="slider round"></span>
+    </label>
+    <i class="fas fa-moon"></i>
+  </div>
   
   <div *ngIf="!user">
     <i class="fas fa-user-circle user-icon"></i>

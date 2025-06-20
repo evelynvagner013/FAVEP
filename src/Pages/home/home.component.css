@@ -1,6 +1,4 @@
-.estilos-fundo {
-  background-color: #f2f2f2;
-}
+/* ARQUIVO CORRIGIDO: Agora usando as variáveis de tema globais */
 
 /* PAINEL PRINCIPAL */
 .painel {
@@ -14,8 +12,8 @@
 
 .overlay {
   text-align: center;
-  color: white;
-  background: rgba(0, 0, 0, 0.4);
+  color: var(--text-on-dark-bg);
+  background: var(--bg-overlay);
   padding: 40px;
   border-radius: 8px;
 }
@@ -36,8 +34,8 @@
 
 .btn {
   text-decoration: none;
-  color: white;
-  border: 2px solid white;
+  color: var(--text-on-dark-bg);
+  border: 2px solid var(--text-on-dark-bg);
   padding: 10px 20px;
   transition: background 0.3s, color 0.3s;
   font-family: 'Montserrat', sans-serif;
@@ -45,8 +43,8 @@
 }
 
 .btn:hover {
-  background: white;
-  color: #333;
+  background: var(--text-on-dark-bg);
+  color: #333; /* Cor escura para o texto quando o fundo do botão é claro */
 }
 
 /* CARDS DE SERVIÇOS EXPLICATIVOS */
@@ -59,12 +57,13 @@
 }
 
 .card {
-  background-color: white;
+  background-color: var(--bg-card);
   padding: 20px;
   width: 220px;
   border-radius: 12px;
   text-align: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px var(--shadow-color);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card .icon {
@@ -77,11 +76,12 @@
   font-size: 25px;
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
+  color: var(--text-headings);
 }
 
 .card p {
   font-size: 0.9rem;
-  color: #555;
+  color: var(--text-primary);
   text-align: left;
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
@@ -91,12 +91,12 @@
   display: inline-block;
   margin-top: 10px;
   padding: 5px 10px;
-  color: #ffffff;
+  color: var(--btn-text-color);
   text-decoration: none;
   font-weight: bold;
   font-size: 15px;
   font-family: 'Open Sans', sans-serif;
-  background-color: #0077ff;
+  background-color: var(--btn-primary-bg);
   border-radius: 5px;
 }
 
@@ -114,19 +114,23 @@
 }
 
 .servico {
-  background-color: #012e5ec2;
+  background-color: var(--bg-section-accent);
+}
+
+.servico1 {
+  background-color: var(--bg-main);
 }
 
 .texto {
   max-width: 500px;
-  color: #000000;
+  color: var(--text-primary);
   font-family: 'Montserrat', sans-serif;
   font-size: 16px;
   line-height: 1.6;
 }
 
 .texto h1 {
-  color: #000000;
+  color: var(--text-headings);
   margin-bottom: 30px;
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
@@ -136,14 +140,14 @@
 
 .texto1 {
   max-width: 500px;
-  color: #ffffff;
+  color: var(--text-on-accent-bg);
   font-family: 'Montserrat', sans-serif;
   font-size: 16px;
   line-height: 1.6;
 }
 
 .texto1 h1 {
-  color: #ffffff;
+  color: var(--text-on-accent-bg);
   margin-bottom: 30px;
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
@@ -159,15 +163,15 @@
 
 .imagem img {
   max-width: 100%;
-  width: 550px;
+  width: 650px;
   height: auto;
-  border: 2px solid #2c3e50;
+  border: 2px solid var(--border-color-img);
   border-radius: 8px;
 }
 
 .parceiros-section {
   padding: 50px 20px;
-  background-color: #f8f9fa;
+  background-color: var(--bg-section-partners);
 }
 
 .container {
@@ -185,14 +189,14 @@
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
   font-size: 40px;
-  color: #000000;
+  color: var(--text-headings);
   margin-bottom: 10px;
 }
 
 .parceiros-home-titulo p {
   font-family: 'Open Sans', sans-serif;
   font-size: 1.1rem;
-  color: #555;
+  color: var(--text-primary);
 }
 
 /* GRID E CARDs DE PARCEIROS */
@@ -215,10 +219,10 @@
 }
 
 .partner-card {
-  background-color: #ffffff;
+  background-color: var(--bg-card);
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px var(--shadow-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -227,12 +231,12 @@
 
 .partner-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 25px var(--shadow-color);
 }
 
 .partner-card-header {
   padding: 15px;
-  background-color: #2c3e50;
+  background-color: var(--border-color-img); /* Reutilizando variável para consistência */
   text-align: center;
   min-height: 180px;
   display: flex;
@@ -259,7 +263,7 @@
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
   font-size: 1.75rem;
-  color: #343a40;
+  color: var(--text-headings);
   margin-bottom: 15px;
   text-align: center;
 }
@@ -267,7 +271,7 @@
 .partner-description {
   font-family: 'Open Sans', sans-serif;
   font-size: 0.95rem;
-  color: #495057;
+  color: var(--text-primary);
   line-height: 1.6;
   margin-bottom: 20px;
   flex-grow: 1;
@@ -284,10 +288,10 @@
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
   font-size: 1.1rem;
-  color: #007bff;
+  color: var(--action-color);
   margin-bottom: 10px;
   padding-bottom: 5px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .list-unstyled, .list-inline {
@@ -309,33 +313,33 @@
   font-family: 'Open Sans', sans-serif;
   font-size: 0.9rem;
   margin-bottom: 8px;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .partner-contact-info ul li i,
 .partner-social-media ul li i {
   margin-right: 10px;
-  color: #007bff;
+  color: var(--action-color);
   width: 20px;
   text-align: center;
 }
 
 .partner-contact-info a,
 .partner-social-media a {
-  color: #333;
+  color: var(--text-primary);
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .partner-contact-info a:hover,
 .partner-social-media a:hover {
-  color: #0056b3;
+  color: var(--link-hover-color);
   text-decoration: underline;
 }
 
 .partner-social-media .list-inline-item i {
   font-size: 1.5rem;
-  color: #555;
+  color: var(--text-primary);
   transition: color 0.3s ease;
 }
 
@@ -351,20 +355,20 @@
 }
 
 .btn-parceiros {
-  background-color: #2b8dca;
+  background-color: var(--btn-secondary-bg);
   text-decoration: none;
-  color: #ffffff;
+  color: var(--text-on-dark-bg);
   padding: 12px 25px;
-  transition: background 0.3s, color 0.3s;
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
-  border: 1px solid #2b8dca;
+  border: 1px solid var(--btn-secondary-bg);
   border-radius: 5px;
 }
 
 .btn-parceiros:hover {
-  background-color: #34d842;
-  border-color: #34d842;
+  background-color: var(--btn-secondary-hover-bg);
+  border-color: var(--btn-secondary-hover-bg);
   color: white;
 }
 

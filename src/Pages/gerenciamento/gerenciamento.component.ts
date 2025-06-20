@@ -1,12 +1,13 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, Renderer2, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
 import { MenuComponent } from '../navbar/menu/menu.component';
-import { ApiService } from '../../services/api.service'; // Importe o ApiService
+import { ApiService } from '../../services/api.service';
 
-// Definição de uma interface para Propriedade para melhor tipagem
+// Definição das interfaces
 export interface Propriedade {
   id: number;
   nome: string;
@@ -14,7 +15,7 @@ export interface Propriedade {
   localizacao: string;
   produtividade: number;
   culturas: string[];
-  ativo: boolean; // Propriedade para o status
+  ativo: boolean;
 }
 
 export interface Producao {
@@ -37,7 +38,6 @@ export interface Movimentacao {
   categoria?: string;
 }
 
-
 @Component({
   selector: 'app-gerenciamento',
   standalone: true,
@@ -46,9 +46,111 @@ export interface Movimentacao {
   styleUrl: './gerenciamento.component.css'
 })
 export class GerenciamentoComponent implements OnInit {
-  // ... (outras propriedades como menuAberto, headerUsuarioNome, etc. permanecem as mesmas) ...
-  menuAberto = false;
 
+  // Propriedade para controlar o estado do tema (pública para o template)
+  public contentTheme: 'light' | 'dark' = 'light';
+
+  // Suas propriedades existentes
+  menuAberto = false;
+  usuarioNome: string = '';
+  headerUsuarioFoto: string = '';
+  abaAtiva: string = 'propriedades';
+  modalAberto: boolean = false;
+  confirmacaoAberta: boolean = false;
+  configAberto: boolean = false;
+  modalTitulo: string = '';
+  mensagemConfirmacao: string = '';
+  tipoEdicao: string = '';
+  itemParaExcluir: any = null;
+  tipoExclusao: string = '';
+  filtroAtivo: string = 'todos';
+  filtroPeriodo: string = '30';
+  termoBusca: string = '';
+  tipoRelatorio: string = 'produtividade';
+  periodoRelatorio: string = '30';
+
+  opcoesFiltro: any[] = [
+    { valor: 'todos', texto: 'Todos' },
+    { valor: 'Soja', texto: 'Soja' },
+    { valor: 'Milho', texto: 'Milho' },
+    { valor: 'Algodão', texto: 'Algodão' }
+  ];
+
+  usuario: any = {};
+  novaSenha: string = '';
+
+  propriedades: Propriedade[] = [
+    { id: 1, nome: 'Fazenda São Francisco', area: 4000, localizacao: 'Casa do Chapéu, BA', produtividade: 70.5, culturas: ['Soja', 'Milho', 'Algodão'], ativo: true },
+    { id: 2, nome: 'Sítio Vale Verde', area: 250, localizacao: 'Barreiras, BA', produtividade: 65.2, culturas: ['Milho', 'Feijão'], ativo: false },
+    { id: 3, nome: 'Chácara Bela Vista', area: 100, localizacao: 'Luís Eduardo Magalhães, BA', produtividade: 60.0, culturas: ['Soja'], ativo: true }
+  ];
+  propriedadesFiltradas: Propriedade[] = [];
+  propriedadeEditada: Partial<Propriedade> & { culturas: string[] } = { culturas: [], ativo: true };
+
+  producoes: Producao[] = [
+    { id: 1, propriedadeId: 1, cultura: 'Soja', safra: '2022/23', quantidade: 269319, area: 1500, data: new Date('2023-05-15') },
+    { id: 2, propriedadeId: 1, cultura: 'Milho', safra: '2022/23', quantidade: 180000, area: 1000, data: new Date('2023-06-20') }
+  ];
+  producoesFiltradas: Producao[] = [];
+  producaoEditada: Partial<Producao> = {};
+
+  movimentacoes: Movimentacao[] = [
+    { id: 1, tipo: 'receita', descricao: 'Venda de Soja', valor: 125000, data: new Date('2023-05-15'), propriedade: 'Fazenda São Francisco' },
+    { id: 2, tipo: 'despesa', descricao: 'Compra de Fertilizantes', valor: 28000.50, data: new Date('2023-05-10'), propriedade: 'Fazenda São Francisco', categoria: 'Insumos' }
+  ];
+  movimentacoesFiltradas: Movimentacao[] = [];
+  movimentacaoEditada: Partial<Movimentacao> = { tipo: 'receita' };
+
+  todasCulturas: string[] = ['Soja', 'Milho', 'Algodão', 'Feijão', 'Trigo', 'Café'];
+  safras: string[] = ['2022/23', '2021/22', '2020/21'];
+
+  relatorioChart: any;
+
+  // CONSTRUCTOR CORRIGIDO com todas as injeções necessárias
+  constructor(
+    private apiService: ApiService,
+    private renderer: Renderer2,
+    @Inject(DOCUMENT) private document: Document
+  ) {
+    Chart.register(...registerables);
+  }
+
+  ngOnInit(): void {
+    const user = this.apiService.getUser();
+    if (user) {
+      this.usuario = user;
+      this.usuarioNome = this.usuario.nome;
+      this.headerUsuarioFoto = this.usuario.fotoUrl || 'assets/user-avatar.jpg';
+    }
+    this.aplicarFiltros();
+
+    // Lógica do tema é carregada na inicialização
+    this.contentTheme = localStorage.getItem('contentTheme') as 'light' | 'dark' || 'light';
+    this.applyContentTheme();
+  }
+
+  // MÉTODOS PARA O TEMA
+  toggleTheme(): void {
+    this.contentTheme = this.contentTheme === 'light' ? 'dark' : 'light';
+    localStorage.setItem('contentTheme', this.contentTheme);
+    this.applyContentTheme();
+  }
+
+  private applyContentTheme(): void {
+    const container = this.document.getElementById('dashboard-container');
+    if (!container) {
+      console.error('Container do dashboard não encontrado no DOM.');
+      return;
+    }
+
+    if (this.contentTheme === 'dark') {
+      this.renderer.addClass(container, 'content-dark-theme');
+    } else {
+      this.renderer.removeClass(container, 'content-dark-theme');
+    }
+  }
+
+  // SEUS MÉTODOS ORIGINAIS
   alternarMenu() {
     this.menuAberto = !this.menuAberto;
   }
@@ -63,135 +165,6 @@ export class GerenciamentoComponent implements OnInit {
       this.menuAberto = false;
     }
   }
-
-  usuarioNome: string = '';
-  headerUsuarioFoto: string = '';
-
-  abaAtiva: string = 'propriedades';
-  modalAberto: boolean = false;
-  confirmacaoAberta: boolean = false;
-  configAberto: boolean = false;
-  modalTitulo: string = '';
-  mensagemConfirmacao: string = '';
-  tipoEdicao: string = '';
-  itemParaExcluir: any = null;
-  tipoExclusao: string = '';
-
-  filtroAtivo: string = 'todos';
-  filtroPeriodo: string = '30';
-  termoBusca: string = '';
-  tipoRelatorio: string = 'produtividade';
-  periodoRelatorio: string = '30';
-
-  opcoesFiltro: any[] = [
-    { valor: 'todos', texto: 'Todos' },
-    { valor: 'Soja', texto: 'Soja' },
-    { valor: 'Milho', texto: 'Milho' },
-    { valor: 'Algodão', texto: 'Algodão' }
-  ];
-
-  usuario: any = {}; // Remova os dados pré-definidos
-  novaSenha: string = '';
-
-  propriedades: Propriedade[] = [
-    {
-      id: 1,
-      nome: 'Fazenda São Francisco',
-      area: 4000,
-      localizacao: 'Casa do Chapéu, BA',
-      produtividade: 70.5,
-      culturas: ['Soja', 'Milho', 'Algodão'],
-      ativo: true
-    },
-    {
-      id: 2,
-      nome: 'Sítio Vale Verde',
-      area: 250,
-      localizacao: 'Barreiras, BA',
-      produtividade: 65.2,
-      culturas: ['Milho', 'Feijão'],
-      ativo: false
-    },
-    { // Adicionando mais uma propriedade para testar os cálculos
-      id: 3,
-      nome: 'Chácara Bela Vista',
-      area: 100,
-      localizacao: 'Luís Eduardo Magalhães, BA',
-      produtividade: 60.0,
-      culturas: ['Soja'],
-      ativo: true
-    }
-  ];
-  propriedadesFiltradas: Propriedade[] = [];
-  propriedadeEditada: Partial<Propriedade> & { culturas: string[] } = { culturas: [], ativo: true };
-
-  // ... (arrays de producoes, movimentacoes, etc. permanecem os mesmos) ...
-  producoes: Producao[] = [
-    {
-      id: 1,
-      propriedadeId: 1,
-      cultura: 'Soja',
-      safra: '2022/23',
-      quantidade: 269319,
-      area: 1500,
-      data: new Date('2023-05-15')
-    },
-    {
-      id: 2,
-      propriedadeId: 1,
-      cultura: 'Milho',
-      safra: '2022/23',
-      quantidade: 180000,
-      area: 1000,
-      data: new Date('2023-06-20')
-    }
-  ];
-  producoesFiltradas: Producao[] = [];
-  producaoEditada: Partial<Producao> = {};
-
-  movimentacoes: Movimentacao[] = [
-    {
-      id: 1,
-      tipo: 'receita',
-      descricao: 'Venda de Soja',
-      valor: 125000,
-      data: new Date('2023-05-15'),
-      propriedade: 'Fazenda São Francisco'
-    },
-    {
-      id: 2,
-      tipo: 'despesa',
-      descricao: 'Compra de Fertilizantes',
-      valor: 28000.50,
-      data: new Date('2023-05-10'),
-      propriedade: 'Fazenda São Francisco',
-      categoria: 'Insumos'
-    }
-  ];
-  movimentacoesFiltradas: Movimentacao[] = [];
-  movimentacaoEditada: Partial<Movimentacao> = { tipo: 'receita' };
-
-  todasCulturas: string[] = ['Soja', 'Milho', 'Algodão', 'Feijão', 'Trigo', 'Café'];
-  safras: string[] = ['2022/23', '2021/22', '2020/21'];
-
-  relatorioChart: any;
-
-
-  constructor(private apiService: ApiService) { // Injete o ApiService
-    Chart.register(...registerables);
-  }
-
-  ngOnInit(): void {
-    const user = this.apiService.getUser(); // Obtenha o usuário do serviço
-    if (user) {
-      this.usuario = user;
-      this.usuarioNome = this.usuario.nome;
-      this.headerUsuarioFoto = this.usuario.fotoUrl || 'assets/user-avatar.jpg'; // Use uma imagem padrão se não houver foto
-    }
-    this.aplicarFiltros();
-  }
-
-  // ... (selecionarAba, abrirModalAdicionar, etc. permanecem os mesmos) ...
 
   selecionarAba(aba: string): void {
     this.abaAtiva = aba;
@@ -235,15 +208,6 @@ export class GerenciamentoComponent implements OnInit {
     this.propriedadeEditada = { culturas: [], ativo: true };
     this.producaoEditada = {};
     this.movimentacaoEditada = { tipo: 'receita' };
-  }
-
-  abrirConfiguracoes(): void {
-    this.configAberto = true;
-  }
-
-  fecharConfig(): void {
-    this.configAberto = false;
-    this.novaSenha = '';
   }
 
   aplicarFiltros(): void {
@@ -301,51 +265,22 @@ export class GerenciamentoComponent implements OnInit {
     return prop ? prop.nome : 'Desconhecida';
   }
 
-  toggleCultura(cultura: string): void {
-    if (!this.propriedadeEditada.culturas) {
-      this.propriedadeEditada.culturas = [];
-    }
-    const index = this.propriedadeEditada.culturas.indexOf(cultura);
-    if (index === -1) {
-      this.propriedadeEditada.culturas.push(cultura);
-    } else {
-      this.propriedadeEditada.culturas.splice(index, 1);
-    }
-  }
-
-  // --- MODIFICAÇÕES AQUI ---
-  /**
-   * Calcula a área total SOMENTE das propriedades ATIVAS.
-   */
   calcularAreaTotal(): number {
     return this.propriedades
-      .filter(prop => prop.ativo) // Filtra apenas propriedades ativas
+      .filter(prop => prop.ativo)
       .reduce((total, prop) => total + prop.area, 0);
   }
 
-  /**
-   * Retorna o número total de propriedades ATIVAS.
-   * Usado como um getter para ser reativo no template.
-   */
-  get totalPropriedadesAtivas(): number {
-    return this.propriedades.filter(prop => prop.ativo).length;
-  }
-  // --- FIM DAS MODIFICAÇÕES DIRETAS PARA ESTA SOLICITAÇÃO ---
-
-  /**
-   * Conta o número de culturas únicas presentes SOMENTE nas propriedades ATIVAS.
-   */
   contarCulturasAtivas(): number {
     const culturasUnicas = new Set<string>();
     this.propriedades.forEach(prop => {
-      if (prop.ativo) { // Considera apenas propriedades ativas
+      if (prop.ativo) {
         prop.culturas.forEach(c => culturasUnicas.add(c));
       }
     });
     return culturasUnicas.size;
   }
 
-  // ... (outras funções de cálculo como calcularProducaoTotal, etc. permanecem as mesmas) ...
   calcularProducaoTotal(): number {
     return this.producoes.reduce((total, prod) => total + prod.quantidade, 0);
   }
@@ -376,7 +311,6 @@ export class GerenciamentoComponent implements OnInit {
     return this.calcularTotalReceitas() - this.calcularTotalDespesas();
   }
 
-  // ... (funções de edição, exclusão, salvamento permanecem as mesmas) ...
   editarPropriedade(prop: Propriedade): void {
     this.propriedadeEditada = { ...prop };
     this.modalTitulo = 'Editar Propriedade';
@@ -436,7 +370,7 @@ export class GerenciamentoComponent implements OnInit {
     this.confirmacaoAberta = false;
     this.itemParaExcluir = null;
     this.tipoExclusao = '';
-    this.aplicarFiltros(); // Reaplicar filtros para atualizar a lista principal se necessário
+    this.aplicarFiltros();
   }
 
   gerarNovoId(lista: any[]): number {
@@ -531,7 +465,6 @@ export class GerenciamentoComponent implements OnInit {
     this.aplicarFiltros();
   }
 
-  // ... (gerarRelatorio permanece o mesmo) ...
   gerarRelatorio(): void {
     if (this.relatorioChart) {
       this.relatorioChart.destroy();
@@ -600,7 +533,7 @@ export class GerenciamentoComponent implements OnInit {
       data: {
         labels: labels,
         datasets: [{
-          label: chartTitle, // Usar o título do gráfico como label do dataset para clareza
+          label: chartTitle,
           data: data,
           backgroundColor: this.tipoRelatorio === 'financeiro' ?
             ['#4CAF50', '#F44336', (this.calcularResultadoFinanceiro() >= 0 ? '#2196F3' : '#FF9800')] :
@@ -645,19 +578,8 @@ export class GerenciamentoComponent implements OnInit {
     });
   }
 
-
-  /**
-   * Alterna o status de ativação de uma propriedade.
-   * @param propriedade A propriedade a ter seu status alterado.
-   */
   toggleStatusPropriedade(propriedade: Propriedade): void {
     propriedade.ativo = !propriedade.ativo;
     console.log(`Propriedade '${propriedade.nome}' agora está ${propriedade.ativo ? 'ATIVA' : 'INATIVA'}.`);
-
-    // Os getters (totalPropriedadesAtivas) e chamadas de função (calcularAreaTotal, contarCulturasAtivas)
-    // no template serão reavaliados automaticamente pelo Angular quando a detecção de mudanças ocorrer
-    // após a alteração em 'propriedade.ativo'.
-    // Não é estritamente necessário chamar this.aplicarFiltros() aqui, a menos que a
-    // lista 'propriedadesFiltradas' (a tabela) também precise ser refiltrada com base no status 'ativo'.
   }
 }

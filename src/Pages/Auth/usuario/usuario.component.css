@@ -1,8 +1,7 @@
 .dashboard-container {
-  display: flex; /* Alterado para flex para melhor controle do menu e conteúdo */
+  display: flex;
   flex-direction: column;
   min-height: 100vh;
-  position: relative; /* Para posicionamento absoluto/fixo de filhos como o menu */
 }
 
 .dashboard-header {
@@ -15,13 +14,13 @@
   position: sticky;
   top: 0;
   z-index: 1001;
-  height: 78px; /* Definir altura explícita para cálculos de posicionamento */
+  height: 78px;
   box-sizing: border-box;
 }
 
 .dashboard-header h1 {
   margin: 0;
-  font-size: 2.2rem; /* Levemente reduzido para caber melhor */
+  font-size: 2.2rem;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -30,15 +29,13 @@
   font-weight: 500;
 }
 
-  .header-logo-img { /* Logo no header */
-    height: 3.5rem; /* Define a altura da imagem. Ajuste este valor conforme necessário. */
-    width: auto;    /* Mantém a proporção da imagem. */
-    /* O display:flex e align-items:center no .dashboard-header h1 pai já devem cuidar do alinhamento vertical. */
-    /* Você pode adicionar 'vertical-align: middle;' se necessário, mas geralmente não é preciso com flexbox. */
+  .header-logo-img {
+    height: 3.5rem;
+    width: auto;
   }
 
-.dashboard-header .menu-toggle i { /* Ícone de menu hamburguer */
-    font-size: 1.8rem; /* Tamanho específico para o ícone do toggle */
+.dashboard-header .menu-toggle i {
+    font-size: 1.8rem;
 }
 
 
@@ -55,38 +52,87 @@
   object-fit: cover;
 }
 
+/* ---------------------------------------------------- */
+/* SWITCH DE TEMA (SOL/LUA)                             */
+/* ---------------------------------------------------- */
+.theme-switch-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.theme-switch-wrapper .fa-sun {
+  color: #f1c40f; 
+  font-size: 1.1rem;
+}
+.theme-switch-wrapper .fa-moon {
+  color: #bdc3c7; 
+  font-size: 1.1rem;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #73869d;
+  transition: .4s;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+}
+input:checked + .slider {
+  background-color: #34495e;
+}
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+.slider.round {
+  border-radius: 34px;
+}
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
 .main-menu {
   background-color: #34495e;
   color: white;
   padding-top: 15px;
   padding-bottom: 15px;
-  position: fixed;
-  left: 0;
-  top: 78px; /* Abaixo do header */
-  bottom: 0;
   width: 250px;
-  overflow-y: auto;
-  z-index: 1000;
-  transform: translateX(-100%); /* Começa fechado em todas as telas por padrão */
-  transition: transform 0.3s ease-in-out;
-}
-
-.main-menu.open {
-  transform: translateX(0); /* Abre o menu */
 }
 
 .main-menu a {
-  display: flex; /* Alterado para flex */
+  display: flex;
   align-items: center;
-  gap: 12px; /* Espaço entre ícone e texto */
+  gap: 12px;
   color: white;
   text-decoration: none;
-  padding: 14px 25px; /* Aumentado padding vertical */
+  padding: 14px 25px;
   transition: background-color 0.2s ease-in-out, padding-left 0.2s ease-in-out;
   font-size: 0.95rem;
 }
 .main-menu a .material-symbols-outlined {
-    font-size: 22px; /* Tamanho dos ícones do menu */
+    font-size: 22px;
 }
 
 
@@ -104,19 +150,18 @@
 .main-content-perfil {
   padding: 25px;
   background-color: #f5f7fa;
-  flex-grow: 1; /* Para ocupar o espaço restante na coluna flex do dashboard-container */
-  /* margin-top: 78px;  Removido, pois o header é sticky e o main-content flui abaixo */
-  /* A lógica de margin-left será para telas grandes onde o menu não é overlay */
+  flex-grow: 1;
+  transition: background-color 0.3s ease-in-out;
 }
 
 .botao-voltar {
-  margin: 1.5rem 0; /* Ajustado */
+  margin: 1.5rem 0;
 }
 
 .botao-voltar a {
   text-decoration: none;
-  font-size: 1.5rem; /* Ajustado */
-  color: #4a5568; /* Cor mais suave */
+  font-size: 1.5rem;
+  color: #4a5568;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -130,11 +175,11 @@
 .container-perfil {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 0 15px; /* Padding lateral para conteúdo em telas menores */
+  padding: 0 15px;
 }
 
-.container-perfil > h1 { /* Título principal da página de perfil, se houver */
-  font-size: 2.5rem; /* Ajustado */
+.container-perfil > h1 {
+  font-size: 2.5rem;
   color: #2b2c34;
   text-align: center;
   margin-bottom: 35px;
@@ -142,43 +187,45 @@
 
 .profile-section {
   display: flex;
-  flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha */
-  gap: 25px; /* Espaçamento entre os cards */
+  flex-wrap: wrap;
+  gap: 25px;
   margin-bottom: 25px;
 }
 
-.card-perfil { /* Classe base para os cards de perfil */
-  background: #ffffff; /* Fundo branco padrão para os cards */
+.card-perfil {
+  background: #ffffff;
   padding: 25px;
-  border-radius: 12px; /* Bordas mais suaves */
+  border-radius: 12px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-  color: #333; /* Cor de texto padrão para os cards */
+  color: #333;
   display: flex;
   flex-direction: column;
+  transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
 }
 .card-perfil h2 {
-    color: #1a202c; /* Cor de título mais escura */
-    margin-top: 0; /* Remove margem de cima do título do card */
+    color: #1a202c;
+    margin-top: 0;
     margin-bottom: 20px;
-    font-size: 1.4rem; /* Tamanho do título do card */
-    border-bottom: 1px solid #e2e8f0; /* Linha sutil abaixo do título */
+    font-size: 1.4rem;
+    border-bottom: 1px solid #e2e8f0;
     padding-bottom: 10px;
+    transition: color 0.3s, border-color 0.3s;
 }
 
 
 .general-info {
-  background: #112d4e; /* Mantendo seu estilo original */
+  background: #112d4e;
   color: #ffffff;
-  flex: 2 1 500px; /* Flex-grow, flex-shrink, flex-basis */
-  min-width: 300px; /* Largura mínima */
+  flex: 2 1 500px;
+  min-width: 300px;
 }
-.general-info .card-header { /* Para alinhar título e botão Editar */
+.general-info .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: none; /* Remove a borda duplicada se h2 já tem */
+    border-bottom: none;
     padding-bottom: 0;
-    margin-bottom: 15px; /* Espaço antes dos detalhes */
+    margin-bottom: 15px;
 }
 .general-info .card-header h2 {
     border-bottom: none;
@@ -187,7 +234,7 @@
     color: #ffffff;
 }
 
-.profile-details { /* Novo container para foto e info-list */
+.profile-details {
     display: flex;
     align-items: center;
     gap: 20px;
@@ -201,8 +248,8 @@
   border: 3px solid #34495e;
 }
 
-.general-info .edit-main-btn { /* Estilo do seu botão "Editar" original */
-  background-color: #3498db; /* Cor azul mais clara */
+.general-info .edit-main-btn {
+  background-color: #3498db;
   color: white;
   border: none;
   padding: 8px 15px;
@@ -229,7 +276,7 @@
 }
 
 .info-list strong {
-  color: #bdc3c7; /* Cor para o strong no fundo escuro */
+  color: #bdc3c7;
   margin-right: 5px;
 }
 .info-list span {
@@ -238,9 +285,9 @@
 
 
 .help-box {
-  background: #3498db; /* Cor do seu botão "Editar" */
+  background: #3498db;
   color: #ffffff;
-  flex: 1 1 300px; /* Flex-grow, flex-shrink, flex-basis */
+  flex: 1 1 300px;
   min-width: 280px;
 }
 .help-box h2 {
@@ -256,7 +303,7 @@
 
 .chat-btn {
   background-color: white;
-  color: #2980b9; /* Cor do texto para combinar com fundo do help-box */
+  color: #2980b9;
   border: none;
   padding: 12px 25px;
   font-weight: bold;
@@ -274,10 +321,10 @@
   transform: translateY(-2px);
 }
 
-.additional-info { /* Mudado para .additional-info */
-  background-color: #112d4e; /* Mantendo seu estilo original */
+.additional-info {
+  background-color: #112d4e;
   color: #ffffff;
-  flex-basis: 100%; /* Ocupa a linha inteira abaixo dos outros cards */
+  flex-basis: 100%;
 }
 .additional-info p {
     margin: 12px 0;
@@ -301,117 +348,43 @@
 
 
 .menu-toggle {
-  display: none; /* Começa escondido em telas grandes */
+  display: none;
   background: none;
   border: none;
   color: white;
-  font-size: 1.8rem; /* Ajustado */
+  font-size: 1.8rem;
   cursor: pointer;
-  padding: 5px; /* Área de clique */
+  padding: 5px;
 }
 
-/* ========= RESPONSIVIDADE ========= */
-/* Telas Grandes (Desktop) - Menu Lateral Fixo à Esquerda */
-@media (min-width: 769px) {
-  .dashboard-container {
-    display: grid; /* Volta para Grid em telas maiores */
-    grid-template-columns: 250px 1fr; /* Menu e Conteúdo */
-    grid-template-rows: 78px 1fr; /* Header e (Menu + Conteúdo) */
-    grid-template-areas:
-      "header header"
-      "menu content";
-  }
-  .dashboard-header {
-    grid-area: header;
-  }
-  .main-menu {
-    grid-area: menu;
-    transform: translateX(0); /* Menu sempre visível e fixo */
-    position: sticky; /* Para rolar com o conteúdo da área do menu, se necessário */
-    top: 78px; /* Alinhado abaixo do header */
-    height: calc(100vh - 78px); /* Altura total menos o header */
-  }
-  .main-content-perfil {
-    grid-area: content;
-    /* margin-left: 0; Removido, grid cuida do posicionamento */
-    /* margin-top: 0; Removido, grid cuida do posicionamento */
-  }
-  .menu-toggle {
-    display: none !important; /* Garante que o toggle não apareça */
-  }
+.plan-actions-container {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #34495e;
+  text-align: right;
 }
 
-
-/* Telas Médias e Pequenas (Tablets e Celulares) - Menu Deslizante */
-@media (max-width: 768px) {
-  .dashboard-header h1 {
-    font-size: 1.6rem; /* Reduzido para caber com o toggle */
-  }
-   .dashboard-header i {font-size: 1.6rem;}
-
-
-  .menu-toggle {
-    display: block;
-  }
-
-  .main-content-perfil {
-    padding: 20px; /* Menor padding em telas menores */
-  }
-
-  .profile-section {
-    flex-direction: column; /* Cards empilhados */
-  }
-
-  .general-info,
-  .help-box,
-  .additional-info { /* Renomeado de .card-info */
-    flex-basis: auto; /* Reset flex-basis para empilhamento */
-    min-width: unset; /* Reset min-width */
-  }
-
-  .profile-details {
-      flex-direction: column;
-      align-items: flex-start;
-  }
+.btn-manage-plan {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-@media (max-width: 480px) {
-  .dashboard-header {
-    padding: 0.8rem 1rem;
-    height: auto; /* Altura automática para caber o título e toggle */
-  }
-  .dashboard-header h1 {
-    font-size: 1.2rem; /* Ainda menor */
-  }
-  .dashboard-header i {font-size: 1.2rem;}
+.btn-manage-plan:hover {
+  background-color: #2980b9;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
 
-
-  .main-menu {
-    width: 220px; /* Menu um pouco mais estreito */
-    top: 66px; /* Ajustar se a altura do header mudar */
-    height: calc(100vh - 66px);
-  }
-
-  .main-content-perfil {
-    padding: 15px;
-  }
-
-  .container-perfil > h1 {
-    font-size: 1.8rem;
-  }
-
-  .card-perfil { padding: 20px; }
-  .card-perfil h2 { font-size: 1.2rem; margin-bottom: 15px; }
-
-  .info-list p,
-  .additional-info p {
-    font-size: 0.9rem;
-  }
-
-  .chat-btn {
-    padding: 10px 20px;
-    font-size: 0.9rem;
-  }
+.btn-manage-plan:active {
+  transform: translateY(1px);
+  box-shadow: none;
 }
 
 /* ========= ESTILOS DO MODAL DE EDIÇÃO ========= */
@@ -421,32 +394,32 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.65); /* Overlay um pouco mais escuro */
+  background-color: rgba(0, 0, 0, 0.65);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1050;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.25s ease-out, visibility 0.25s step-end 0.25s; /* Step-end para visibilidade */
+  transition: opacity 0.25s ease-out, visibility 0.25s step-end 0.25s;
 }
 
 .modal-overlay.active {
   opacity: 1;
   visibility: visible;
-  transition: opacity 0.25s ease-out, visibility 0s; /* Transição imediata para visível */
+  transition: opacity 0.25s ease-out, visibility 0s;
 }
 
 .modal-content {
   background-color: #fff;
   padding: 25px 30px;
-  border-radius: 10px; /* Bordas um pouco mais arredondadas */
+  border-radius: 10px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   width: 90%;
   max-width: 500px;
-  transform: translateY(20px) scale(0.98); /* Começa um pouco abaixo e menor */
+  transform: translateY(20px) scale(0.98);
   opacity: 0;
-  transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.25s ease-out;
+  transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.25s ease-out, background-color 0.3s, color 0.3s;
 }
 
 .modal-overlay.active .modal-content {
@@ -461,6 +434,7 @@
   border-bottom: 1px solid #e9ecef;
   padding-bottom: 15px;
   margin-bottom: 25px;
+  transition: border-color 0.3s;
 }
 
 .modal-header h3 {
@@ -468,6 +442,7 @@
   font-size: 1.6rem;
   color: #343a40;
   font-weight: 600;
+  transition: color 0.3s;
 }
 
 .modal-header .close-btn {
@@ -491,9 +466,10 @@
 .form-group label {
   display: block;
   margin-bottom: 8px;
-  font-weight: 500; /* Menos bold */
+  font-weight: 500;
   color: #495057;
   font-size: 0.9rem;
+  transition: color 0.3s;
 }
 
 .form-group input[type="text"],
@@ -507,14 +483,10 @@
   border-radius: 5px;
   box-sizing: border-box;
   font-size: 0.95rem;
-  background-color: #fff; /* Garante fundo branco */
-  color: #495057; /* Cor do texto do input */
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  background-color: #fff;
+  color: #495057;
+  transition: border-color 0.15s, box-shadow 0.15s, background-color 0.3s, color 0.3s;
 }
-.form-group input::placeholder {
-    color: #adb5bd;
-}
-
 
 .form-group input:focus,
 .form-group select:focus {
@@ -523,15 +495,13 @@
   box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
 }
 
-/* Estilos para mensagens de validação */
 .validation-error {
     margin-top: 5px;
 }
 .validation-error small {
-    color: #e74c3c; /* Cor vermelha para erro */
+    color: #e74c3c;
     font-size: 0.85rem;
 }
-
 
 .modal-footer {
   display: flex;
@@ -540,21 +510,15 @@
   padding-top: 20px;
   border-top: 1px solid #e9ecef;
   margin-top: 25px;
+  transition: border-color 0.3s;
 }
 
 .btn-cancel, .btn-save {
-  padding: 10px 20px;
   border: none;
+  padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
-  font-weight: 500;
-  font-size: 0.9rem;
-  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-.btn-cancel:active, .btn-save:active {
-  transform: translateY(1px);
-  box-shadow: none;
+  transition: background-color 0.2s;
 }
 
 .btn-cancel {
@@ -566,15 +530,245 @@
 }
 
 .btn-save {
-  background-color: #3498db;
+  background-color: #27ae60;
   color: white;
 }
 .btn-save:hover {
-  background-color: #2980b9;
+  background-color: #219653;
 }
 .btn-save:disabled {
-  background-color: #adb5bd;
+  background-color: #cccccc;
   cursor: not-allowed;
-  opacity: 0.65;
-  box-shadow: none;
+}
+
+
+/* ESTILOS DO MODAL DE GERENCIAMENTO DE PLANO */
+.plan-section {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+}
+.plan-section h4 {
+  font-size: 1.3rem;
+  color: #343a40;
+  margin-top: 0;
+  margin-bottom: 10px;
+  transition: color 0.3s;
+}
+.plan-section p {
+  color: #495057;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  transition: color 0.3s;
+}
+
+.section-divider {
+  border: 0;
+  height: 1px;
+  background-color: #e9ecef;
+  margin: 0 0 25px 0;
+  transition: background-color 0.3s;
+}
+
+.btn-cancel-subscription {
+  background-color: #e74c3c;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+.btn-cancel-subscription:hover {
+  background-color: #c0392b;
+}
+
+/* =================================================================== */
+/* ==== TEMA ESCURO PARA CONTEÚDO (SOBRESCRITAS DE ESTILO) ========= */
+/* =================================================================== */
+.content-dark-theme .main-content-perfil {
+  background-color: #1e2730;
+}
+.content-dark-theme .container-perfil > h1,
+.content-dark-theme .botao-voltar a {
+    color: #e0e6eb;
+}
+.content-dark-theme .card-perfil {
+  /* Os cards que já são escuros por design não precisam de mudança de fundo */
+  /* Apenas ajustamos a sombra para ter mais destaque no fundo escuro */
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* MODAIS EM TEMA ESCURO */
+.content-dark-theme .modal-content {
+  background-color: #2c3e50;
+  color: #e0e6eb;
+}
+.content-dark-theme .modal-header {
+  border-bottom-color: #3e4c5b;
+}
+.content-dark-theme .modal-header h3 {
+  color: #f8f9fa;
+}
+.content-dark-theme .modal-header .close-btn {
+  color: #adb5bd;
+}
+.content-dark-theme .modal-header .close-btn:hover {
+  color: #f8f9fa;
+}
+.content-dark-theme .form-group label {
+  color: #ced4da;
+}
+.content-dark-theme .form-group input,
+.content-dark-theme .form-group select {
+  background-color: #1e2730;
+  border-color: #4a5568;
+  color: #e0e6eb;
+}
+.content-dark-theme .validation-error small {
+  color: #ff7667;
+}
+.content-dark-theme .modal-footer {
+  border-top-color: #3e4c5b;
+}
+.content-dark-theme .btn-cancel {
+  background-color: #495057;
+}
+.content-dark-theme .btn-cancel:hover {
+  background-color: #5a6268;
+}
+.content-dark-theme .btn-save {
+  background-color: #2ecc71;
+}
+.content-dark-theme .btn-save:hover {
+  background-color: #27ae60;
+}
+.content-dark-theme .btn-save:disabled {
+  background-color: #5a6268;
+}
+.content-dark-theme .plan-section h4 {
+  color: #f8f9fa;
+}
+.content-dark-theme .plan-section p {
+  color: #ced4da;
+}
+.content-dark-theme .section-divider {
+  background-color: #3e4c5b;
+}
+
+
+/* ========= RESPONSIVIDADE ========= */
+@media (min-width: 769px) {
+  .dashboard-container {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    grid-template-rows: 78px 1fr;
+    grid-template-areas:
+      "header header"
+      "menu content";
+  }
+  .dashboard-header {
+    grid-area: header;
+  }
+  .main-menu {
+    grid-area: menu;
+    transform: translateX(0);
+    position: sticky;
+    top: 78px;
+    height: calc(100vh - 78px);
+  }
+  .main-content-perfil {
+    grid-area: content;
+  }
+  .menu-toggle {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-header h1 {
+    font-size: 1.6rem;
+  }
+   .dashboard-header i {font-size: 1.6rem;}
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .main-menu {
+    position: fixed;
+    left: 0;
+    top: 78px;
+    bottom: 0;
+    width: 250px;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+  .main-menu.open {
+    transform: translateX(0);
+  }
+
+  .main-content-perfil {
+    padding: 20px;
+  }
+
+  .profile-section {
+    flex-direction: column;
+  }
+
+  .general-info,
+  .help-box,
+  .additional-info {
+    flex-basis: auto;
+    min-width: unset;
+  }
+
+  .profile-details {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+
+  .plan-actions-container {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-header {
+    padding: 0.8rem 1rem;
+    height: auto;
+  }
+  .dashboard-header h1 {
+    font-size: 1.2rem;
+  }
+  .dashboard-header i {font-size: 1.2rem;}
+
+  .main-menu {
+    width: 220px;
+    top: 66px;
+    height: calc(100vh - 66px);
+  }
+
+  .main-content-perfil {
+    padding: 15px;
+  }
+
+  .container-perfil > h1 {
+    font-size: 1.8rem;
+  }
+
+  .card-perfil { padding: 20px; }
+  .card-perfil h2 { font-size: 1.2rem; margin-bottom: 15px; }
+
+  .info-list p,
+  .additional-info p {
+    font-size: 0.9rem;
+  }
+
+  .chat-btn, .btn-cancel-plan {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
 }

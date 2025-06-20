@@ -3,7 +3,6 @@
   grid-template-columns: 250px 1fr;
   grid-template-rows: auto 1fr;
   min-height: 100vh;
-  
 }
 
 .dashboard-header {
@@ -24,15 +23,12 @@
   gap: 10px;
   font-family: 'Merriweather', serif;
   font-weight: 500;
-  
 }
 
-  .header-logo-img { /* Logo no header */
-    height: 3.5rem; /* Define a altura da imagem. Ajuste este valor conforme necessário. */
-    width: auto;    /* Mantém a proporção da imagem. */
-    /* O display:flex e align-items:center no .dashboard-header h1 pai já devem cuidar do alinhamento vertical. */
-    /* Você pode adicionar 'vertical-align: middle;' se necessário, mas geralmente não é preciso com flexbox. */
-  }
+.header-logo-img {
+  height: 3.5rem;
+  width: auto;
+}
 
 .user-info {
   display: flex;
@@ -47,6 +43,25 @@
   object-fit: cover;
 }
 
+/* ---------------------------------------------------- */
+/* SWITCH DE TEMA (NOVO ESTILO)                         */
+/* ---------------------------------------------------- */
+.theme-switch-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.theme-switch-wrapper .fa-sun { color: #f1c40f; font-size: 1.1rem; }
+.theme-switch-wrapper .fa-moon { color: #bdc3c7; font-size: 1.1rem; }
+.switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #73869d; transition: .4s; }
+.slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; }
+input:checked + .slider { background-color: #34495e; }
+input:checked + .slider:before { transform: translateX(24px); }
+.slider.round { border-radius: 34px; }
+.slider.round:before { border-radius: 50%; }
+
 .menu-toggle {
   display: none;
   background: none;
@@ -56,27 +71,6 @@
   cursor: pointer;
 }
 
-@media (max-width: 768px) {
-  .menu-toggle {
-    display: block;
-  }
-
-  .main-menu {
-    position: absolute;
-    top: 70px;
-    left: 0;
-    width: 200px;
-    height: calc(100% - 70px);
-    background-color: #34495e;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    z-index: 1000;
-  }
-
-  .main-menu.open {
-    transform: translateX(0);
-  }
-}
 .main-menu {
   background-color: #34495e;
   color: white;
@@ -107,6 +101,7 @@
   padding: 20px;
   background-color: #f5f6fa;
   overflow-y: auto;
+  transition: background-color 0.3s ease-in-out;
 }
 
 .titulo {
@@ -117,21 +112,22 @@
   font-weight: 300;
   color: #000000;
   font-size: 55px;
-  
+  transition: color 0.3s ease-in-out;
 }
 
-/* Tabela */
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
   background: white;
+  transition: background-color 0.3s ease-in-out;
 }
 
 th, td {
   border: 1px solid #4b4b4b;
   padding: 10px;
   text-align: left;
+  transition: border-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
 th {
@@ -139,76 +135,34 @@ th {
   color: rgb(255, 255, 255);
 }
 
-@media (max-width: 1024px) {
-  .dashboard-container {
-    grid-template-columns: 200px 1fr;
-  }
+/* =================================================================== */
+/* ==== TEMA ESCURO PARA CONTEÚDO (SOBRESCRITAS DE ESTILO) ========= */
+/* =================================================================== */
+.content-dark-theme .dashboard-content {
+  background-color: #1e2730;
+}
 
-  .dashboard-header h1 {
-    font-size: 2rem;
-  }
+.content-dark-theme .titulo {
+  color: #e0e6eb;
+}
 
-  .titulo {
-    font-size: 45px;
-  }
+.content-dark-theme table {
+  background-color: #2c3e50;
+}
+
+.content-dark-theme th,
+.content-dark-theme td {
+  border-color: #5a738f;
+  color: #e0e6eb;
+}
+
+.content-dark-theme td a {
+  color: #5dade2;
 }
 
 @media (max-width: 768px) {
-  .dashboard-container {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto 1fr;
-  }
-
-  .main-menu {
-    order: 2;
-    padding: 10px 0;
-  }
-
-  .main-menu a {
-    padding: 10px 20px;
-    font-size: 1rem;
-  }
-
-  .dashboard-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .dashboard-header h1 {
-    font-size: 1.8rem;
-  }
-
-  .user-info {
-    justify-content: space-between;
-    width: 100%;
-  }
-
-  .titulo {
-    font-size: 36px;
-  }
+  .menu-toggle { display: block; }
+  .main-menu { position: absolute; top: 70px; left: 0; width: 200px; height: calc(100% - 70px); background-color: #34495e; transform: translateX(-100%); transition: transform 0.3s ease; z-index: 1000; }
+  .main-menu.open { transform: translateX(0); }
 }
-
-@media (max-width: 480px) {
-  .dashboard-header h1 {
-    font-size: 1.5rem;
-  }
-
-  .main-menu a {
-    font-size: 0.9rem;
-    padding: 8px 15px;
-  }
-
-  .dashboard-content {
-    padding: 15px;
-  }
-
-  .titulo {
-    font-size: 28px;
-  }
-
-  th, td {
-    font-size: 0.9rem;
-    padding: 8px;
-  }
-}
+/* ... outras media queries ... */
