@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MenuCimaComponent } from '../navbar/menu-cima/menu-cima.component';
 import { FooterComponent } from '../footer/footer.component';
 import { AssinaturaComponent } from '../assinatura/assinatura/assinatura.component';
 
@@ -11,7 +10,7 @@ import { AssinaturaComponent } from '../assinatura/assinatura/assinatura.compone
   imports: [
     CommonModule,
     RouterLink,
-    MenuCimaComponent,
+   
     FooterComponent,
     AssinaturaComponent
   ],

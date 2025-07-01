@@ -4,7 +4,7 @@ import { ApiService } from '../../../services/api.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs'; // Adicionado para o tema
-import { ThemeService } from '../../../services/theme.service'; // Adicionado para o tema
+
 
 @Component({
   selector: 'app-menu-cima',
@@ -14,8 +14,7 @@ import { ThemeService } from '../../../services/theme.service'; // Adicionado pa
   styleUrl: './menu-cima.component.css'
 })
 export class MenuCimaComponent implements OnInit {
-  // --- LÓGICA DE TEMA ---
-  public isDarkMode$: Observable<boolean>;
+
 
   // --- Propriedades para o estado do usuário e controle dos modais ---
   user: any = null;
@@ -36,24 +35,15 @@ export class MenuCimaComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private router: Router,
-    private themeService: ThemeService // Injetando o serviço de tema
-  ) {
-    // Inicializando o observable do tema
-    this.isDarkMode$ = this.themeService.isDarkMode$;
-  }
+    
+  ) {}
 
   ngOnInit(): void {
     // Ao iniciar o componente, verifica se há um usuário logado no serviço
     this.user = this.apiService.getUser();
   }
 
-  // --- LÓGICA DE TEMA ---
-  /**
-   * Chamado quando o switch de tema é acionado, e pede ao serviço para alternar o tema.
-   */
-  onThemeToggle(): void {
-    this.themeService.toggleTheme();
-  }
+
 
   // --- LÓGICA DE AUTENTICAÇÃO E MODAIS (EXISTENTE) ---
   logout(): void {

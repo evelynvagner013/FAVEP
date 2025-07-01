@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MenuCimaComponent } from '../navbar/menu-cima/menu-cima.component'; // Ajuste o caminho se necessário
+
 import { FooterComponent } from '../footer/footer.component'; // Ajuste o caminho se necessário
 
 // Interface para definir a estrutura de um parceiro
@@ -26,7 +26,7 @@ interface Parceiro {
   imports: [
     CommonModule,
     FooterComponent,
-    MenuCimaComponent
+   
   ],
   templateUrl: './parceiros.component.html',
   styleUrl: './parceiros.component.css'

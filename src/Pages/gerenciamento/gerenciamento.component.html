@@ -1,55 +1,55 @@
-<div class="dashboard-container" id="dashboard-container">
-    <header class="dashboard-header">
-    <button class="menu-toggle" aria-label="Abrir menu" (click)="alternarMenu()">
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <button class="menu-toggle" aria-label="Abrir menu" >
       <i class="fas fa-bars"></i>
     </button>
     <h1>
       <img src="assets/img/FAVEP_LOGO_nobg.png" alt="Logo FAVEP" class="header-logo-img"> FAVEP - Gestão Agronômica
     </h1>
     <div class="user-info">
-
-      <div class="theme-switch-wrapper">
-        <i class="fas fa-sun"></i>
-        <label class="switch">
-          <input type="checkbox" [checked]="contentTheme === 'dark'" (change)="toggleTheme()">
-          <span class="slider round"></span>
-        </label>
-        <i class="fas fa-moon"></i>
-      </div>
-
+      <!-- CORREÇÃO AQUI: Usando 'usuarioNome' -->
       <span>Olá, {{ usuarioNome }}</span>
+      <!-- Mantido 'headerUsuarioFoto' e usando 'usuarioNome' para o alt -->
       <img [src]="headerUsuarioFoto" [alt]="'Foto de ' + usuarioNome" class="user-avatar">
-      </div>
+    </div>
   </header>
 
   <nav class="main-menu" [class.open]="menuAberto">
-    <a routerLink="/home" routerLinkActive="active" >
+    <a routerLink="/home" routerLinkActive="active">
       <span class="material-symbols-outlined">home</span> Home
     </a>
-    <a routerLink="/gerenciamento" routerLinkActive="active" >
+
+    <a routerLink="/gerenciamento" routerLinkActive="active">
       <span class="material-symbols-outlined">dashboard</span> Gerenciamento
     </a>
-    <a routerLink="/estatistica" routerLinkActive="active" >
+
+    <a routerLink="/estatistica" routerLinkActive="active">
       <span class="material-symbols-outlined">monitoring</span> Estatística
     </a>
-    <a routerLink="/relatorio" routerLinkActive="active" >
+
+    <a routerLink="/relatorio" routerLinkActive="active">
       <span class="material-symbols-outlined">overview</span> Relatório geral
     </a>
-    <a routerLink="/usuario" routerLinkActive="active" >
+
+    <a routerLink="/usuario" routerLinkActive="active">
       <span class="material-symbols-outlined">account_circle</span> Perfil
     </a>
   </nav>
 
   <main class="main-content">
+
     <nav class="main-nav">
       <button [class.active]="abaAtiva === 'propriedades'" (click)="selecionarAba('propriedades')">
         <i class="fas fa-map-marked"></i> Propriedades
       </button>
       <button [class.active]="abaAtiva === 'producao'" (click)="selecionarAba('producao')">
-        <i class="fas fa-wheat-awn"></i> Produção
+        <i class="fas fa-wheat-awn"></i> Culturas
       </button>
       <button [class.active]="abaAtiva === 'financeiro'" (click)="selecionarAba('financeiro')">
         <i class="fas fa-money-bill-wave"></i> Financeiro
+      </button>
+      <button [class.active]="abaAtiva === 'relatorios'" (click)="selecionarAba('relatorios')">
+        <i class="fas fa-chart-line"></i> Relatórios
       </button>
     </nav>
 
@@ -62,6 +62,7 @@
             <option *ngFor="let opcao of opcoesFiltro" [value]="opcao.valor">{{opcao.texto}}</option>
           </select>
         </div>
+
         <div class="filtro-group" *ngIf="abaAtiva === 'financeiro'">
           <label>Período:</label>
           <select [(ngModel)]="filtroPeriodo" (change)="aplicarFiltros()">
@@ -72,31 +73,35 @@
             <option value="todos">Todos</option>
           </select>
         </div>
+
         <div class="search-group">
           <input type="text" placeholder="Pesquisar..." [(ngModel)]="termoBusca" (input)="aplicarFiltros()">
           <button class="btn-search"><i class="fas fa-search"></i></button>
         </div>
       </div>
+
       <button class="btn-add" (click)="abrirModalAdicionar()">
         <i class="fas fa-plus"></i> Adicionar
       </button>
     </div>
 
+
     <section *ngIf="abaAtiva === 'propriedades'" class="content-section">
       <div class="summary-cards">
         <div class="summary-card">
           <h3>Total Propriedades</h3>
-          <p class="value">{{propriedades.length}}</p>
+          <p class="value">{{properties.length}}</p>
         </div>
         <div class="summary-card">
           <h3>Área Total</h3>
-          <p class="value">{{calcularAreaTotal() | number}} ha</p>
+          <p class="value">{{calcularAreaTotal() | number:'1.0-0':'pt-BR'}} ha</p>
         </div>
         <div class="summary-card">
           <h3>Culturas Ativas</h3>
           <p class="value">{{contarCulturasAtivas()}}</p>
         </div>
       </div>
+
       <div class="table-container">
         <table>
           <thead>
@@ -104,36 +109,249 @@
               <th>Nome</th>
               <th>Área (ha)</th>
               <th>Localização</th>
-              <th>Culturas</th>
-              <th>Produtividade</th>
               <th>Ações</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let prop of propriedadesFiltradas">
-              <td>{{prop.nome}}</td>
-              <td>{{prop.area | number}}</td>
-              <td>{{prop.localizacao}}</td>
-              <td>
-                <span class="tag" *ngFor="let cultura of prop.culturas">{{cultura}}</span>
-              </td>
-              <td>{{prop.produtividade | number:'1.2-2'}} kg/ha</td>
+            <tr *ngFor="let prop of propriedadesFiltradas; trackBy: trackById">
+              <td>{{prop.name}}</td>
+              <td>{{prop.area | number:'1.0-0':'pt-BR'}}</td>
+              <td>{{prop.location}}</td>
               <td class="actions">
                 <button class="btn-edit" (click)="editarPropriedade(prop)"><i class="fas fa-edit"></i></button>
-                <button class="btn-toggle-status"
-                        [class.ativo]="prop.ativo"
-                        [class.inativo]="!prop.ativo"
-                        (click)="toggleStatusPropriedade(prop)"
-                        [title]="prop.ativo ? 'Clique para Desativar' : 'Clique para Ativar'">
-                  <i class="fas" [ngClass]="{'fa-toggle-on': prop.ativo, 'fa-toggle-off': !prop.ativo}"></i>
-                  <span>{{ prop.ativo ? 'Ativa' : 'Inativa' }}</span>
-                </button>
+                <button class="btn-delete" (click)="confirmarExclusao(prop, 'propriedades')"><i class="fas fa-trash"></i></button>
               </td>
+            </tr>
+            <tr *ngIf="propriedadesFiltradas.length === 0">
+              <td colspan="4" class="no-data">Nenhuma propriedade encontrada.</td>
             </tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    </main>
+    <section *ngIf="abaAtiva === 'producao'" class="content-section">
+      <div class="summary-cards">
+        <div class="summary-card">
+          <h3>Produção Total (Culturas)</h3>
+          <p class="value">{{calcularProducaoTotal() | number:'1.0-0':'pt-BR'}} kg</p>
+        </div>
+        <div class="summary-card">
+          <h3>Área Plantada (Culturas)</h3>
+          <p class="value">{{calcularAreaPlantada() | number:'1.0-0':'pt-BR'}} ha</p>
+        </div>
+        <div class="summary-card">
+          <h3>Produtividade Média (Culturas)</h3>
+          <p class="value">{{calcularProdutividadeMedia() | number:'1.2-2':'pt-BR'}} kg/ha</p>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Cultura</th>
+              <th>Tipo</th>
+              <th>Data Plantio</th>
+              <th>Data Colheita</th>
+              <th>Produção Esperada (kg)</th>
+              <th>Produção Real (kg)</th>
+              <th>Propriedade</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let crop of producoesFiltradas; trackBy: trackById">
+              <td>{{crop.name}}</td>
+              <td>{{crop.type}}</td>
+              <td>{{crop.plantingDate | date:'dd/MM/yyyy':'pt-BR'}}</td>
+              <td>{{crop.harvestDate ? (crop.harvestDate | date:'dd/MM/yyyy':'pt-BR') : '-'}}</td>
+              <td>{{crop.expectedYield | number:'1.0-0':'pt-BR'}}</td>
+              <td>{{crop.actualYield | number:'1.0-0':'pt-BR'}}</td>
+              <td>{{getPropertyName(crop.property)}}</td>
+              <td class="actions">
+                <button class="btn-edit" (click)="editarProducao(crop)"><i class="fas fa-edit"></i></button>
+                <button class="btn-delete" (click)="confirmarExclusao(crop, 'producao')"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+            <tr *ngIf="producoesFiltradas.length === 0">
+              <td colspan="8" class="no-data">Nenhuma cultura encontrada.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section *ngIf="abaAtiva === 'financeiro'" class="content-section">
+      <div class="summary-cards">
+        <div class="summary-card">
+          <h3>Receitas</h3>
+          <p class="value positivo">{{calcularTotalReceitas() | currency:'BRL':'symbol':'1.2-2':'pt-BR'}}</p>
+        </div>
+        <div class="summary-card">
+          <h3>Despesas</h3>
+          <p class="value negativo">{{calcularTotalDespesas() | currency:'BRL':'symbol':'1.2-2':'pt-BR'}}</p>
+        </div>
+        <div class="summary-card">
+          <h3>Resultado</h3>
+          <p class="value" [class.positivo]="calcularResultadoFinanceiro() >= 0" [class.negativo]="calcularResultadoFinanceiro() < 0">
+            {{calcularResultadoFinanceiro() | currency:'BRL':'symbol':'1.2-2':'pt-BR'}}
+          </p>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Tipo</th>
+              <th>Descrição</th>
+              <th>Propriedade</th>
+              <th>Valor</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let mov of movimentacoesFiltradas; trackBy: trackById">
+              <td>{{mov.date | date:'dd/MM/yyyy':'pt-BR'}}</td>
+              <td>
+                <span class="badge" [class.receita]="mov.type === 'revenue'" [class.despesa]="mov.type === 'expense'">
+                  {{mov.type === 'revenue' ? 'Receita' : 'Despesa'}}
+                </span>
+              </td>
+              <td>{{mov.description || '-'}}</td>
+              <td>{{mov.property ? getPropertyName(mov.property) : '-'}}</td>
+              <td [class.positivo]="mov.type === 'revenue'" [class.negativo]="mov.type === 'expense'">
+                {{mov.amount | currency:'BRL':'symbol':'1.2-2':'pt-BR'}}
+              </td>
+              <td class="actions">
+                <button class="btn-edit" (click)="editarMovimentacao(mov)"><i class="fas fa-edit"></i></button>
+                <button class="btn-delete" (click)="confirmarExclusao(mov, 'financeiro')"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+            <tr *ngIf="movimentacoesFiltradas.length === 0">
+              <td colspan="6" class="no-data">Nenhum registro financeiro encontrado.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+   
+
+  </main>
+
+  <div class="modal" *ngIf="modalAberto">
+    <div class="modal-content">
+      <span class="close" (click)="fecharModal()">&times;</span>
+      <h3>{{modalTitulo}}</h3>
+
+      <form (ngSubmit)="salvar()">
+        <div *ngIf="tipoEdicao === 'propriedades'">
+          <div class="form-group">
+            <label>Nome da Propriedade</label>
+            <input type="text" [(ngModel)]="propriedadeEditada.name" name="propertyName" required>
+          </div>
+          <div class="form-group">
+            <label>Área Total (ha)</label>
+            <input type="number" step="0.01" [(ngModel)]="propriedadeEditada.area" name="propertyArea" required>
+          </div>
+          <div class="form-group">
+            <label>Localização</label>
+            <input type="text" [(ngModel)]="propriedadeEditada.location" name="propertyLocation" required>
+          </div>
+        </div>
+
+        <div *ngIf="tipoEdicao === 'producao'">
+          <div class="form-group">
+            <label>Nome da Cultura</label>
+            <input type="text" [(ngModel)]="producaoEditada.name" name="cropName" required>
+          </div>
+          <div class="form-group">
+            <label>Tipo de Cultura</label>
+            <input type="text" [(ngModel)]="producaoEditada.type" name="cropType" placeholder="Ex: Grão, Fruta" required>
+          </div>
+          <div class="form-group">
+            <label>Data de Plantio</label>
+            <input type="date" [(ngModel)]="producaoEditada.plantingDate" name="plantingDate" required>
+          </div>
+          <div class="form-group">
+            <label>Data de Colheita (Opcional)</label>
+            <input type="date" [(ngModel)]="producaoEditada.harvestDate" name="harvestDate">
+          </div>
+          <div class="form-group">
+            <label>Produção Esperada (kg)</label>
+            <input type="number" step="0.01" [(ngModel)]="producaoEditada.expectedYield" name="expectedYield">
+          </div>
+          <div class="form-group">
+            <label>Produção Real (kg) (Opcional)</label>
+            <input type="number" step="0.01" [(ngModel)]="producaoEditada.actualYield" name="actualYield">
+          </div>
+          <div class="form-group">
+            <label>Propriedade</label>
+            <select [(ngModel)]="producaoEditada.property" name="cropProperty" required>
+              <option [value]="''" disabled>Selecione uma propriedade</option>
+              <option *ngFor="let prop of properties" [value]="prop._id">{{prop.name}}</option>
+            </select>
+          </div>
+        </div>
+
+        <div *ngIf="tipoEdicao === 'financeiro'">
+          <div class="form-group">
+            <label>Tipo</label>
+            <select [(ngModel)]="movimentacaoEditada.type" name="financialType" required>
+              <option value="revenue">Receita</option>
+              <option value="expense">Despesa</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Descrição</label>
+            <input type="text" [(ngModel)]="movimentacaoEditada.description" name="financialDescription" required>
+          </div>
+          <div class="form-group">
+            <label>Valor (R$)</label>
+            <input type="number" step="0.01" [(ngModel)]="movimentacaoEditada.amount" name="financialAmount" required>
+          </div>
+          <div class="form-group">
+            <label>Data</label>
+            <input type="date" [(ngModel)]="movimentacaoEditada.date" name="financialDate" required>
+          </div>
+          <div class="form-group">
+            <label>Propriedade (Opcional)</label>
+            <select [(ngModel)]="movimentacaoEditada.property" name="financialProperty">
+              <option [value]="''">Nenhuma</option>
+              <option *ngFor="let prop of properties" [value]="prop._id">{{prop.name}}</option>
+            </select>
+          </div>
+          <div class="form-group" *ngIf="movimentacaoEditada.type === 'expense'">
+            <label>Categoria (Opcional)</label>
+            <select [(ngModel)]="movimentacaoEditada.description" name="financialCategory">
+              <option value="">Nenhuma</option>
+              <option value="Insumos">Insumos</option>
+              <option value="Mão de Obra">Mão de Obra</option>
+              <option value="Manutenção">Manutenção</option>
+              <option value="Outros">Outros</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" (click)="fecharModal()">Cancelar</button>
+          <button type="submit" class="btn-save">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="confirmacaoAberta">
+    <div class="modal-content confirm-modal">
+      <h3>Confirmar Exclusão</h3>
+      <p>{{mensagemConfirmacao}}</p>
+      <div class="confirm-actions">
+        <button class="btn-cancel" (click)="cancelarExclusao()">Cancelar</button>
+        <button class="btn-confirm" (click)="executarExclusao()">Confirmar</button>
+      </div>
+    </div>
+  </div>
 </div>
