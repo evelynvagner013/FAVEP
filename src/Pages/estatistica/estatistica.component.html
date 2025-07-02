@@ -1,15 +1,13 @@
 <div class="dashboard-container">
-<header class="dashboard-header">
-    <button class="menu-toggle" aria-label="Abrir menu" >
+  <header class="dashboard-header">
+    <button class="menu-toggle" aria-label="Abrir menu">
       <i class="fas fa-bars"></i>
     </button>
     <h1>
       <img src="assets/img/FAVEP_LOGO_nobg.png" alt="Logo FAVEP" class="header-logo-img"> FAVEP - Gestão Agronômica
     </h1>
     <div class="user-info">
-      <!-- CORREÇÃO AQUI: Usando 'usuarioNome' -->
       <span>Olá, {{ usuarioNome }}</span>
-      <!-- Mantido 'headerUsuarioFoto' e usando 'usuarioNome' para o alt -->
       <img [src]="usuarioFoto" [alt]="'Foto de ' + usuarioNome" class="user-avatar">
     </div>
   </header>
@@ -36,75 +34,50 @@
     </a>
   </nav>
 
-<!-- Conteúdo principal do dashboard -->
-<main class="dashboard-content">
-  <!-- Seção de cards de resumo -->
-  <div class="resumo-cards">
-    <!-- Card de Propriedades -->
-    <div class="resumo-card">
-      <h3>Propriedades</h3>
-      <!-- Exibe o total de propriedades -->
-      <p class="valor">{{totalPropriedades}}</p>
-      <!-- Exibe a área total, formatada como número com separador de milhar e "ha" -->
-      <p class="info">Área Total: {{areaTotal | number:'1.0-0':'pt-BR'}} ha</p>
+  <main class="dashboard-content">
+    <div class="resumo-cards">
+      <div class="resumo-card">
+        <h3>Propriedades</h3>
+        <p class="valor">{{totalPropriedades}}</p>
+        <p class="info">Área Total: {{areaTotal | number:'1.0-0':'pt-BR'}} ha</p>
+      </div>
+
+      <div class="resumo-card">
+        <h3>Produção Total</h3>
+        <p class="valor">{{producaoAtual | number:'1.0-0':'pt-BR'}} kg</p>
+        </div>
+
+      <div class="resumo-card">
+        <h3>Resultado Financeiro</h3>
+        <p class="valor" [class.positivo]="resultadoFinanceiro >= 0" [class.negativo]="resultadoFinanceiro < 0">
+          {{resultadoFinanceiro | currency:'BRL':'symbol':'1.2-2':'pt-BR'}}
+        </p>
+        <p class="info">Últimos 30 dias</p>
+      </div>
     </div>
 
-    <!-- Card de Produção Total -->
-    <div class="resumo-card">
-      <h3>Produção Total</h3>
-      <!-- Exibe a produção atual, formatada como número com separador de milhar e "kg" -->
-      <p class="valor">{{producaoAtual | number:'1.0-0':'pt-BR'}} kg</p>
-      <!-- Opcional: Exibir culturas ativas aqui, se desejar -->
-      <!-- <p class="info">Culturas Ativas: {{culturasAtivas.join(', ')}}</p> -->
+    <div class="graficos-container">
+      <div class="grafico-card">
+        <h3>Produtividade por Cultura</h3>
+        <canvas #produtividadeChart></canvas>
+      </div>
+
+      <div class="grafico-card">
+        <h3>Receitas x Despesas</h3>
+        <canvas #financeiroChart></canvas>
+      </div>
     </div>
 
-    <!-- Card de Resultado Financeiro -->
-    <div class="resumo-card">
-      <h3>Resultado Financeiro</h3>
-      <!-- Exibe o resultado financeiro, formatado como moeda BRL.
-           A classe 'positivo' ou 'negativo' é aplicada condicionalmente. -->
-      <p class="valor" [class.positivo]="resultadoFinanceiro >= 0" [class.negativo]="resultadoFinanceiro < 0">
-        {{resultadoFinanceiro | currency:'BRL':'symbol':'1.2-2':'pt-BR'}}
-      </p>
-      <p class="info">Últimos 30 dias</p>
+    <div class="atividades-recentes">
+      <h3>Atividades Recentes</h3>
+      <ul>
+        <li *ngFor="let atividade of atividades">
+          <i [class]="'fas ' + atividade.icone"></i>
+          <span>{{atividade.descricao}}</span>
+          <span class="data">{{atividade.data | date:'dd/MM/yyyy'}}</span>
+        </li>
+        <li *ngIf="atividades.length === 0">Nenhuma atividade recente encontrada.</li>
+      </ul>
     </div>
-  </div>
-
-  <!-- Seção de gráficos -->
-  <div class="graficos-container">
-    <!-- Card do Gráfico de Produtividade por Cultura -->
-    <div class="grafico-card">
-      <h3>Produtividade por Cultura</h3>
-      <!-- Elemento canvas para o gráfico de produtividade.
-           A referência de template #produtividadeChart é usada no componente TS. -->
-      <canvas #produtividadeChart></canvas>
-    </div>
-
-    <!-- Card do Gráfico de Receitas x Despesas -->
-    <div class="grafico-card">
-      <h3>Receitas x Despesas</h3>
-      <!-- Elemento canvas para o gráfico financeiro.
-           A referência de template #financeiroChart é usada no componente TS. -->
-      <canvas #financeiroChart></canvas>
-    </div>
-  </div>
-
-  <!-- Seção de atividades recentes -->
-  <div class="atividades-recentes">
-    <h3>Atividades Recentes</h3>
-    <ul>
-      <!-- Itera sobre a array 'atividades' e exibe cada uma -->
-      <li *ngFor="let atividade of atividades">
-        <!-- Ícone da atividade, usando a classe Font Awesome mapeada no TS -->
-        <i [class]="'fas ' + atividade.icone"></i>
-        <!-- Descrição da atividade -->
-        <span>{{atividade.description}}</span>
-        <!-- Data da atividade, formatada para 'dd/MM/yyyy' -->
-        <span class="data">{{atividade.date | date:'dd/MM/yyyy'}}</span>
-      </li>
-      <!-- Mensagem para quando não há atividades (opcional) -->
-      <li *ngIf="atividades.length === 0">Nenhuma atividade recente encontrada.</li>
-    </ul>
-  </div>
-</main>
+  </main>
 </div>

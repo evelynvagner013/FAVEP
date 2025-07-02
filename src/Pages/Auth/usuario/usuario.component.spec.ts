@@ -5,6 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 
 
 interface Usuario {
+fotoPerfil: any;
   nome: string;
   email: string;
   telefone: string;

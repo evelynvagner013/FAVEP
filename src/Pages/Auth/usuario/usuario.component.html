@@ -1,6 +1,6 @@
 <div class="dashboard-container">
-<header class="dashboard-header">
-    <button class="menu-toggle" aria-label="Abrir menu" >
+  <header class="dashboard-header">
+    <button class="menu-toggle" aria-label="Abrir menu">
       <i class="fas fa-bars"></i>
     </button>
     <h1>
@@ -34,7 +34,6 @@
     </a>
   </nav>
 
-
   <main class="main-content-perfil">
     <div class="container-perfil">
       <div class="profile-section">
@@ -47,7 +46,7 @@
           </div>
           <div class="profile-details">
             <div class="profile-photo">
-              <img [src]="usuario.fotoUrl" alt="Foto de {{ usuario.nome }}">
+              <img [src]="usuario.fotoPerfil" [alt]="'Foto de ' + usuario.nome">
             </div>
             <div class="info-list">
               <p><strong>Nome:</strong> <span>{{ usuario.nome }}</span></p>
@@ -66,14 +65,7 @@
         </div>
       </div>
 
-      <div class="additional-info card-perfil">
-        <h2>Informações adicionais</h2>
-        <p><strong>Plano:</strong> <span>{{ usuario.plano }}</span></p>
-        <p><strong>Data assinatura do plano:</strong> <span>{{ usuario.dataAssinatura | date:'dd/MM/yyyy' }}</span></p>
-        <p><strong>Data Validade do plano:</strong> <span>{{ usuario.dataValidade | date:'dd/MM/yyyy' }}</span></p>
-      
       </div>
-    </div>
   </main>
 
   <div class="modal-overlay" [class.active]="editModalAberto" *ngIf="editModalAberto">
@@ -88,15 +80,15 @@
             <label for="edit-nome">Nome:</label>
             <input type="text" id="edit-nome" name="nome" [(ngModel)]="usuarioEditavel.nome" required #nomeInput="ngModel">
             <div *ngIf="nomeInput.invalid && (nomeInput.dirty || nomeInput.touched)" class="validation-error">
-                <small *ngIf="nomeInput.errors?.['required']">Nome é obrigatório.</small>
+              <small *ngIf="nomeInput.errors?.['required']">Nome é obrigatório.</small>
             </div>
           </div>
           <div class="form-group">
             <label for="edit-email">Email:</label>
             <input type="email" id="edit-email" name="email" [(ngModel)]="usuarioEditavel.email" required email #emailInput="ngModel">
             <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="validation-error">
-                <small *ngIf="emailInput.errors?.['required']">Email é obrigatório.</small>
-                <small *ngIf="emailInput.errors?.['email']">Formato de email inválido.</small>
+              <small *ngIf="emailInput.errors?.['required']">Email é obrigatório.</small>
+              <small *ngIf="emailInput.errors?.['email']">Formato de email inválido.</small>
             </div>
           </div>
           <div class="form-group">
@@ -104,10 +96,10 @@
             <input type="tel" id="edit-telefone" name="telefone" [(ngModel)]="usuarioEditavel.telefone">
           </div>
           <div class="form-group">
-            <label for="edit-fotoUrl">URL da Foto:</label>
-            <input type="text" id="edit-fotoUrl" name="fotoUrl" [(ngModel)]="usuarioEditavel.fotoUrl">
+            <label for="edit-fotoPerfil">URL da Foto:</label>
+            <input type="text" id="edit-fotoPerfil" name="fotoPerfil" [(ngModel)]="usuarioEditavel.fotoPerfil">
           </div>
-          </div>
+        </div>
         <div class="modal-footer">
           <button type="button" class="btn-cancel" (click)="fecharModalEdicao()">Cancelar</button>
           <button type="submit" class="btn-save" [disabled]="!perfilForm.form.valid">Salvar</button>
@@ -116,4 +108,4 @@
     </div>
   </div>
 
-</div>
+  </div>

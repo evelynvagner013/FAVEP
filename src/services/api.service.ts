@@ -1,91 +1,89 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core'; 
-import { isPlatformBrowser } from '@angular/common'; 
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 // ====================================================================
-// Interfaces para os dados do Backend (Baseadas nos seus modelos)
+// Interfaces com nomes e campos em português (DA SUA API)
 // ====================================================================
 
-export interface UserProfile {
-  _id: string;
-  username: string; 
+export interface Usuario {
+  id: string;
+  nome: string;
   email: string;
   telefone?: string;
-  fotoUrl?: string;
-  plano?: string;
-  dataAssinatura?: string;
-  dataValidade?: string;
+  fotoPerfil?: string;
+  senha: string;
 }
 
-export interface Property {
-  _id: string;
-  name: string;
-  location: string;
-  area: number; 
-  owner: string; 
+export interface Propriedade {
+  id: string;
+  nome: string;
+  localizacao: string;
+  area: number;
+  proprietario: string;
 }
 
-export interface Crop {
-  _id: string;
-  name: string;
-  type: string;
-  plantingDate: string; 
-  harvestDate?: string; 
-  expectedYield?: number; 
-  actualYield?: number; 
-  property: string; 
-  owner: string; 
+export interface Producao {
+  id: number;
+  propriedadeId: number;
+  cultura: string;
+  safra: string;
+  quantidade: number;
+  area: number;
+  data: Date;
 }
 
 export interface Atividade {
-  _id: string;
-  description: string;
-  date: string; 
-  type: string;
-  property?: string;
-  owner: string;
-  icone?: string; 
+  id: string;
+  descricao: string;
+  data: string; 
+  tipo: string;
+  propriedade?: string;
+  responsavel: string;
+  icone?: string;
 }
 
-export interface FinancialRecord {
-  _id: string;
-  type: 'revenue' | 'expense';
-  amount: number;
-  date: string;
-  description?: string;
-  property?: string;
-  owner: string;
+export interface Movimentacao {
+  id: number;
+  tipo: 'receita' | 'despesa';
+  descricao: string;
+  valor: number;
+  data: Date; // Na API, 'data' é Date para Movimentacao
+  propriedade?: string;
+  categoria?: string;
 }
 
-
+// ====================================================================
+// Serviço Angular
+// ====================================================================
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  private baseUrl = 'http://localhost:5050/api'; 
-  private isBrowser: boolean; 
+  private baseUrl = 'http://localhost:5050/api';
+  private isBrowser: boolean;
 
   constructor(
     private http: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: Object 
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   isLoggedIn(): boolean {
-    return this.isBrowser ? !!this.getToken() : false; 
+    return this.isBrowser ? !!this.getToken() : false;
   }
 
-  register(userData: any): Observable<any> {
-    return this.http.post(`${this.baseUrl.replace('/api', '')}/auth/register`, userData);
+  register(dadosUsuario: any): Observable<any> {
+    return this.http.post(`${this.baseUrl.replace('/api', '')}/auth/register`, dadosUsuario);
   }
 
-  login(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.baseUrl.replace('/api', '')}/auth/login`, { email, password }).pipe(
+  login(email: string, senha: string): Observable<any> {
+    return this.http.post(`${this.baseUrl.replace('/api', '')}/auth/login`, { email, password: senha }).pipe(
       map((response: any) => {
         if (response.token && response.user) {
           this.setToken(response.token);
@@ -97,49 +95,38 @@ export class ApiService {
   }
 
   setToken(token: string): void {
-    if (this.isBrowser) { 
-      localStorage.setItem('token', token);
-    }
+    if (this.isBrowser) localStorage.setItem('token', token);
   }
 
   getToken(): string | null {
-    if (this.isBrowser) { 
-      return localStorage.getItem('token');
-    }
-    return null; 
+    return this.isBrowser ? localStorage.getItem('token') : null;
   }
 
-  setUser(user: UserProfile): void {
-    if (this.isBrowser) { 
-      localStorage.setItem('user', JSON.stringify(user));
-    }
+  setUser(usuario: Usuario): void {
+    if (this.isBrowser) localStorage.setItem('user', JSON.stringify(usuario));
   }
 
-  getUser(): UserProfile | null {
-    if (this.isBrowser) { 
-      const userJson = localStorage.getItem('user');
-      return userJson ? JSON.parse(userJson) : null;
+  getUser(): Usuario | null {
+    if (this.isBrowser) {
+      const json = localStorage.getItem('user');
+      return json ? JSON.parse(json) : null;
     }
-    return null; 
+    return null;
   }
 
   logout(): void {
-    if (this.isBrowser) { 
+    if (this.isBrowser) {
       localStorage.removeItem('user');
       localStorage.removeItem('token');
     }
   }
 
   // ====================================================================
-  // Métodos para buscar dados do Dashboard e Perfil
+  // Métodos para Dashboard e Perfil
   // ====================================================================
 
-  /**
-   * Obtém o perfil do usuário logado do backend.
-   * Endpoint: GET /api/users/me
-   */
-  getUserProfile(): Observable<UserProfile | null> {
-    return this.http.get<UserProfile>(`${this.baseUrl}/users/me`).pipe(
+  getPerfilUsuario(): Observable<Usuario | null> {
+    return this.http.get<Usuario>(`${this.baseUrl}/users/me`).pipe(
       catchError(error => {
         console.error('Erro ao buscar perfil do usuário:', error);
         return of(null);
@@ -147,58 +134,48 @@ export class ApiService {
     );
   }
 
-  /**
-   * Atualiza o perfil do usuário no backend.
-   * @param userId O ID do usuário (pode ser obtido do UserProfile ou do token).
-   * @param userData Os dados parciais do usuário a serem atualizados.
-   * Endpoint: PUT /api/users/:id
-   */
-  updateUserProfile(userId: string, userData: Partial<UserProfile>): Observable<UserProfile> {
-    return this.http.put<UserProfile>(`${this.baseUrl}/users/${userId}`, userData).pipe(
+  atualizarPerfilUsuario(idUsuario: string, dados: Partial<Usuario>): Observable<Usuario> {
+    return this.http.put<Usuario>(`${this.baseUrl}/users/${idUsuario}`, dados).pipe(
       catchError(error => {
-        console.error('Erro ao atualizar perfil do usuário:', error);
-        throw error; 
+        console.error('Erro ao atualizar perfil:', error);
+        throw error;
       })
     );
   }
 
-  /**
-   * Carrega todos os dados para o dashboard e gerenciamento em paralelo.
-   */
-  getAllDashboardData(): Observable<{
-    userProfile: UserProfile | null;
-    properties: Property[];
-    crops: Crop[];
-    activities: Atividade[];
-    financialRecords: FinancialRecord[];
+  carregarDadosDashboard(): Observable<{
+    perfil: Usuario | null;
+    propriedades: Propriedade[];
+    producoes: Producao[];
+    atividades: Atividade[];
+    movimentacoes: Movimentacao[];
   }> {
     return forkJoin({
-      userProfile: this.getUserProfile(),
-      properties: this.getProperties(),
-      crops: this.getCrops(),
-      activities: this.getActivities(),
-      financialRecords: this.getFinancialRecords()
+      perfil: this.getPerfilUsuario(),
+      propriedades: this.getPropriedades(),
+      producoes: this.getProducoes(),
+      atividades: this.getAtividades(),
+      movimentacoes: this.getMovimentacoes()
     }).pipe(
       catchError(error => {
-        console.error('Erro em getAllDashboardData:', error);
+        console.error('Erro ao carregar dados:', error);
         return of({
-          userProfile: null,
-          properties: [],
-          crops: [],
-          activities: [],
-          financialRecords: []
+          perfil: null,
+          propriedades: [],
+          producoes: [],
+          atividades: [],
+          movimentacoes: []
         });
       })
     );
   }
 
   // ====================================================================
-  // Métodos de CRUD para Gerenciamento
+  // CRUD: Propriedades
   // ====================================================================
 
-  // --- Propriedades ---
-  getProperties(): Observable<Property[]> {
-    return this.http.get<Property[]>(`${this.baseUrl}/properties`).pipe(
+  getPropriedades(): Observable<Propriedade[]> {
+    return this.http.get<Propriedade[]>(`${this.baseUrl}/properties`).pipe(
       catchError(error => {
         console.error('Erro ao buscar propriedades:', error);
         return of([]);
@@ -206,42 +183,48 @@ export class ApiService {
     );
   }
 
-  addProperty(property: Omit<Property, '_id' | 'owner'>): Observable<Property> {
-    return this.http.post<Property>(`${this.baseUrl}/properties`, property);
+  adicionarPropriedade(prop: Omit<Propriedade, 'id' | 'proprietario'>): Observable<Propriedade> {
+    return this.http.post<Propriedade>(`${this.baseUrl}/properties`, prop);
   }
 
-  updateProperty(id: string, property: Partial<Property>): Observable<Property> {
-    return this.http.put<Property>(`${this.baseUrl}/properties/${id}`, property);
+  atualizarPropriedade(id: string, prop: Partial<Propriedade>): Observable<Propriedade> {
+    return this.http.put<Propriedade>(`${this.baseUrl}/properties/${id}`, prop);
   }
 
-  deleteProperty(id: string): Observable<any> {
+  excluirPropriedade(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/properties/${id}`);
   }
 
-  // --- Culturas ---
-  getCrops(): Observable<Crop[]> {
-    return this.http.get<Crop[]>(`${this.baseUrl}/crops`).pipe(
+  // ====================================================================
+  // CRUD: Produções
+  // ====================================================================
+
+  getProducoes(): Observable<Producao[]> {
+    return this.http.get<Producao[]>(`${this.baseUrl}/crops`).pipe(
       catchError(error => {
-        console.error('Erro ao buscar culturas:', error);
+        console.error('Erro ao buscar produções:', error);
         return of([]);
       })
     );
   }
 
-  addCrop(crop: Omit<Crop, '_id' | 'owner'>): Observable<Crop> {
-    return this.http.post<Crop>(`${this.baseUrl}/crops`, crop);
+  adicionarProducao(prod: Omit<Producao, 'id'>): Observable<Producao> {
+    return this.http.post<Producao>(`${this.baseUrl}/crops`, prod);
   }
 
-  updateCrop(id: string, crop: Partial<Crop>): Observable<Crop> {
-    return this.http.put<Crop>(`${this.baseUrl}/crops/${id}`, crop);
+  atualizarProducao(id: string, prod: Partial<Producao>): Observable<Producao> {
+    return this.http.put<Producao>(`${this.baseUrl}/crops/${id}`, prod);
   }
 
-  deleteCrop(id: string): Observable<any> {
+  excluirProducao(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/crops/${id}`);
   }
 
-  // --- Atividades ---
-  getActivities(): Observable<Atividade[]> {
+  // ====================================================================
+  // CRUD: Atividades
+  // ====================================================================
+
+  getAtividades(): Observable<Atividade[]> {
     return this.http.get<Atividade[]>(`${this.baseUrl}/activities`).pipe(
       catchError(error => {
         console.error('Erro ao buscar atividades:', error);
@@ -250,37 +233,40 @@ export class ApiService {
     );
   }
 
-  addActivity(activity: Omit<Atividade, '_id' | 'owner' | 'icone'>): Observable<Atividade> {
-    return this.http.post<Atividade>(`${this.baseUrl}/activities`, activity);
+  adicionarAtividade(atv: Omit<Atividade, 'id' | 'responsavel' | 'icone'>): Observable<Atividade> {
+    return this.http.post<Atividade>(`${this.baseUrl}/activities`, atv);
   }
 
-  updateActivity(id: string, activity: Partial<Omit<Atividade, 'icone'>>): Observable<Atividade> {
-    return this.http.put<Atividade>(`${this.baseUrl}/activities/${id}`, activity);
+  atualizarAtividade(id: string, atv: Partial<Omit<Atividade, 'icone'>>): Observable<Atividade> {
+    return this.http.put<Atividade>(`${this.baseUrl}/activities/${id}`, atv);
   }
 
-  deleteActivity(id: string): Observable<any> {
+  excluirAtividade(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/activities/${id}`);
   }
 
-  // --- Registros Financeiros ---
-  getFinancialRecords(): Observable<FinancialRecord[]> {
-    return this.http.get<FinancialRecord[]>(`${this.baseUrl}/financial`).pipe(
+  // ====================================================================
+  // CRUD: Movimentações
+  // ====================================================================
+
+  getMovimentacoes(): Observable<Movimentacao[]> {
+    return this.http.get<Movimentacao[]>(`${this.baseUrl}/financial`).pipe(
       catchError(error => {
-        console.error('Erro ao buscar registros financeiros:', error);
+        console.error('Erro ao buscar movimentações:', error);
         return of([]);
       })
     );
   }
 
-  addFinancialRecord(record: Omit<FinancialRecord, '_id' | 'owner'>): Observable<FinancialRecord> {
-    return this.http.post<FinancialRecord>(`${this.baseUrl}/financial`, record);
+  adicionarMovimentacao(mov: Omit<Movimentacao, 'id'>): Observable<Movimentacao> {
+    return this.http.post<Movimentacao>(`${this.baseUrl}/financial`, mov);
   }
 
-  updateFinancialRecord(id: string, record: Partial<FinancialRecord>): Observable<FinancialRecord> {
-    return this.http.put<FinancialRecord>(`${this.baseUrl}/financial/${id}`, record);
+  atualizarMovimentacao(id: string, mov: Partial<Movimentacao>): Observable<Movimentacao> {
+    return this.http.put<Movimentacao>(`${this.baseUrl}/financial/${id}`, mov);
   }
 
-  deleteFinancialRecord(id: string): Observable<any> {
+  excluirMovimentacao(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/financial/${id}`);
   }
 }

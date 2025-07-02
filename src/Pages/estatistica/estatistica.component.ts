@@ -2,36 +2,30 @@ import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular
 import { RouterLink } from '@angular/router';
 import { Chart, registerables } from 'chart.js';
 import { CommonModule } from '@angular/common';
-import { MenuComponent } from '../navbar/menu/menu.component'; // Mantido conforme seu código
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
-import { ApiService, UserProfile, Property, Crop, FinancialRecord } from '../../services/api.service'; // Importe o ApiService e as interfaces
-import { HttpClientModule } from '@angular/common/http'; // Importa HttpClientModule para componentes standalone
+
+import { ApiService, Usuario, Propriedade, Producao, Atividade as BackendAtividade, Movimentacao as BackendMovimentacao } from '../../services/api.service';
+import { HttpClientModule } from '@angular/common/http'; 
 
 registerLocaleData(localePt);
 
-// CORREÇÃO AQUI: A interface Atividade agora usa 'description' para corresponder ao backend
-interface Atividade {
-  _id: string; // Adicionado _id para corresponder à interface do ApiService
-  description: string; // Alterado de 'descricao' para 'description'
-  date: Date;
-  type: string; // Adicionado 'type' para corresponder à interface do ApiService
-  icone?: string; // Propriedade opcional para o ícone do frontend
+// Interfaces para o componente, adaptadas da API
+interface AtividadeComponent extends Omit<BackendAtividade, 'data'> {
+  data: Date;
 }
 
 @Component({
-  selector: 'app-estatistica', // Seu seletor atual
+  selector: 'app-estatistica',
   standalone: true,
   imports: [
     CommonModule,
     RouterLink,
-    MenuComponent, // Mantido conforme seu código
     HttpClientModule // Necessário para que o HttpClient funcione em um componente standalone
   ],
-  templateUrl: './estatistica.component.html', // Seu template atual
-  styleUrls: ['./estatistica.component.css'] // Seu estilo atual
+  templateUrl: './estatistica.component.html',
+  styleUrls: ['./estatistica.component.css']
 })
-// CORREÇÃO AQUI: A classe agora implementa OnInit
 export class EstatisticaComponent implements OnInit {
   menuAberto = false; // Estado para o menu lateral, se usado
 
@@ -47,7 +41,7 @@ export class EstatisticaComponent implements OnInit {
   culturasAtivas: string[] = [];
   resultadoFinanceiro: number = 0;
 
-  atividades: Atividade[] = [];
+  atividades: AtividadeComponent[] = []; // Usando a interface adaptada
 
   dadosProdutividade: number[] = [];
   culturas: string[] = [];
@@ -69,29 +63,30 @@ export class EstatisticaComponent implements OnInit {
   }
 
   carregarDadosDoBackend(): void {
-    this.apiService.getAllDashboardData().subscribe({
+    this.apiService.carregarDadosDashboard().subscribe({ // Chamada ao novo método da ApiService
       next: (data) => {
-        const { userProfile, properties, crops, activities, financialRecords } = data;
+        // Desestruturando os dados com os nomes em português da sua ApiService
+        const { perfil, propriedades, producoes, atividades, movimentacoes } = data;
 
-        if (userProfile) {
-          this.usuarioNome = userProfile.username || 'Usuário';
-          this.usuarioFoto = userProfile.fotoUrl || 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
+        if (perfil) {
+          this.usuarioNome = perfil.nome || 'Usuário'; // 'nome' em vez de 'username'
+          this.usuarioFoto = perfil.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User'; // 'fotoPerfil' em vez de 'fotoUrl'
         } else {
           this.usuarioNome = 'Visitante';
         }
 
-        this.totalPropriedades = properties.length;
-        this.areaTotal = properties.reduce((sum, prop) => sum + prop.area, 0);
+        this.totalPropriedades = propriedades.length;
+        this.areaTotal = propriedades.reduce((sum, prop) => sum + prop.area, 0);
 
         const producaoPorCultura: { [key: string]: number } = {};
         const culturasUnicas = new Set<string>();
         let totalProducao = 0;
 
-        crops.forEach(crop => {
-          culturasUnicas.add(crop.name);
-          if (crop.actualYield) {
-            totalProducao += crop.actualYield;
-            producaoPorCultura[crop.name] = (producaoPorCultura[crop.name] || 0) + crop.actualYield;
+        producoes.forEach(prod => { // 'producoes' em vez de 'crops'
+          culturasUnicas.add(prod.cultura); // 'cultura' em vez de 'name'
+          if (prod.quantidade) { // 'quantidade' em vez de 'actualYield'
+            totalProducao += prod.quantidade;
+            producaoPorCultura[prod.cultura] = (producaoPorCultura[prod.cultura] || 0) + prod.quantidade;
           }
         });
         this.producaoAtual = totalProducao;
@@ -100,25 +95,27 @@ export class EstatisticaComponent implements OnInit {
         let totalReceitas = 0;
         let totalDespesas = 0;
 
-        financialRecords.forEach(record => {
-          if (record.type === 'revenue') {
-            totalReceitas += record.amount;
-          } else if (record.type === 'expense') {
-            totalDespesas += record.amount;
+        movimentacoes.forEach(mov => { // 'movimentacoes' em vez de 'financialRecords'
+          if (mov.tipo === 'receita') { // 'tipo' em vez de 'type', 'receita' em vez de 'revenue'
+            totalReceitas += mov.valor; // 'valor' em vez de 'amount'
+          } else if (mov.tipo === 'despesa') { // 'tipo' em vez de 'type', 'despesa' em vez de 'expense'
+            totalDespesas += mov.valor; // 'valor' em vez de 'amount'
           }
         });
         this.resultadoFinanceiro = totalReceitas - totalDespesas;
         this.dadosFinanceiros.receitas = totalReceitas;
         this.dadosFinanceiros.despesas = totalDespesas;
 
-        // CORREÇÃO AQUI: O mapeamento agora usa 'ativ.description'
-        this.atividades = activities.map(ativ => ({
-          _id: ativ._id, // Garante que _id esteja presente
-          description: ativ.description, // Mapeia 'description' do backend
-          date: new Date(ativ.date),
-          type: ativ.type, // Mapeia 'type' do backend
-          icone: this.getIconForActivityType(ativ.type)
-        })).sort((a, b) => b.date.getTime() - a.date.getTime());
+        // Mapeamento das atividades para a interface local
+        this.atividades = atividades.map(ativ => ({
+          id: ativ.id, // 'id' em vez de '_id'
+          descricao: ativ.descricao, // 'descricao' em vez de 'description'
+          data: new Date(ativ.data), // 'data' em vez de 'date'
+          tipo: ativ.tipo, // 'tipo' em vez de 'type'
+          propriedade: ativ.propriedade, // Novo campo
+          responsavel: ativ.responsavel, // Novo campo
+          icone: this.getIconForActivityType(ativ.tipo) // Usa 'tipo'
+        })).sort((a, b) => b.data.getTime() - a.data.getTime());
 
         this.culturas = Object.keys(producaoPorCultura);
         this.dadosProdutividade = this.culturas.map(cultura => producaoPorCultura[cultura]);
@@ -126,14 +123,14 @@ export class EstatisticaComponent implements OnInit {
         this.dadosReceitasMensais = new Array(12).fill(0);
         this.dadosDespesasMensais = new Array(12).fill(0);
 
-        financialRecords.forEach(record => {
-          const recordDate = new Date(record.date);
+        movimentacoes.forEach(mov => { // 'movimentacoes' em vez de 'financialRecords'
+          const recordDate = new Date(mov.data); // 'data' em vez de 'date'
           const month = recordDate.getMonth();
           if (month >= 0 && month < 12) {
-            if (record.type === 'revenue') {
-              this.dadosReceitasMensais[month] += record.amount;
-            } else if (record.type === 'expense') {
-              this.dadosDespesasMensais[month] += record.amount;
+            if (mov.tipo === 'receita') { // 'tipo' em vez de 'type', 'receita' em vez de 'revenue'
+              this.dadosReceitasMensais[month] += mov.valor; // 'valor' em vez de 'amount'
+            } else if (mov.tipo === 'despesa') { // 'tipo' em vez de 'type', 'despesa' em vez de 'expense'
+              this.dadosDespesasMensais[month] += mov.valor; // 'valor' em vez de 'amount'
             }
           }
         });
@@ -147,19 +144,21 @@ export class EstatisticaComponent implements OnInit {
   }
 
   getIconForActivityType(type: string): string {
+    // Mantido o case original, pois a API pode retornar nomes em inglês mesmo que as interfaces sejam em português
+    // Se o backend também retornar em português para os tipos de atividade, ajuste aqui
     switch (type.toLowerCase()) {
-      case 'planting':
+      case 'planting': // Plantio
         return 'fa-seedling';
-      case 'harvest':
+      case 'harvest': // Colheita
         return 'fa-wheat-awn';
-      case 'maintenance':
+      case 'maintenance': // Manutenção
         return 'fa-tractor';
       case 'payment':
-      case 'revenue':
+      case 'revenue': // Receita
         return 'fa-dollar-sign';
-      case 'expense':
+      case 'expense': // Despesa
         return 'fa-money-bill-wave';
-      case 'forecast':
+      case 'forecast': // Previsão
         return 'fa-cloud-rain';
       default:
         return 'fa-clipboard-list';

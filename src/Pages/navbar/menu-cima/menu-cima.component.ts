@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Observable } from 'rxjs'; // Adicionado para o tema
 
 
 @Component({
@@ -14,38 +13,31 @@ import { Observable } from 'rxjs'; // Adicionado para o tema
   styleUrl: './menu-cima.component.css'
 })
 export class MenuCimaComponent implements OnInit {
-
-
-  // --- Propriedades para o estado do usuário e controle dos modais ---
+  // Propriedades para o estado do usuário e controle dos modais
   user: any = null;
   mostrarLoginModal = false;
   mostrarRegisterModal = false;
 
-  // --- Propriedades para o formulário de Login ---
+  // Propriedades para o formulário de Login
   loginEmail: string = '';
   loginPassword: string = '';
   loginRememberMe: boolean = false;
   loginErrorMessage: string = '';
 
-  // --- Propriedades para o formulário de Registro ---
+  // Propriedades para o formulário de Registro
   registerUser: any = { username: '', email: '', password: '', telefone: '', confirmarSenha: '' };
   registerSuccessMessage: string = '';
   registerErrorMessage: string = '';
 
-  constructor(
-    private apiService: ApiService,
-    private router: Router,
-    
-  ) {}
+   currentTheme: string = 'light-theme'; // Tema padrão
+
+  constructor(private apiService: ApiService, private router: Router) { }
 
   ngOnInit(): void {
     // Ao iniciar o componente, verifica se há um usuário logado no serviço
     this.user = this.apiService.getUser();
   }
 
-
-
-  // --- LÓGICA DE AUTENTICAÇÃO E MODAIS (EXISTENTE) ---
   logout(): void {
     // Realiza o logout, limpa os dados e recarrega a página
     this.apiService.logout();
@@ -104,27 +96,35 @@ export class MenuCimaComponent implements OnInit {
   }
 
   onRegisterSubmit() {
+    // --- LÓGICA DE VALIDAÇÃO CORRIGIDA E INTEGRADA ---
+
+    // 1. Validação de campos obrigatórios
     if (!this.registerUser.username || !this.registerUser.email || !this.registerUser.password || !this.registerUser.telefone || !this.registerUser.confirmarSenha) {
         this.registerErrorMessage = 'Todos os campos são obrigatórios.';
         this.registerSuccessMessage = '';
         return;
     }
 
+    // 2. Validação para garantir que as senhas coincidem
     if (this.registerUser.password !== this.registerUser.confirmarSenha) {
         this.registerErrorMessage = 'As senhas não coincidem.';
         this.registerSuccessMessage = '';
         return;
     }
 
+    // Limpa a mensagem de erro se a validação passar
     this.registerErrorMessage = '';
 
+    // 3. Mapeia os campos do formulário para o formato que o back-end espera (payload)
     const payload = {
       nome: this.registerUser.username,
       email: this.registerUser.email,
       telefone: this.registerUser.telefone,
       senha: this.registerUser.password,
-      confirmarSenha: this.registerUser.confirmarSenha
+      confirmarSenha: this.registerUser.confirmarSenha // CORRIGIDO
     };
+
+    // --- FIM DA LÓGICA DE VALIDAÇÃO ---
 
     this.apiService.register(payload).subscribe({
       next: (response) => {
@@ -142,4 +142,6 @@ export class MenuCimaComponent implements OnInit {
       }
     });
   }
+
+  
 }

@@ -8,8 +8,6 @@ import { EstatisticaComponent } from '../Pages/estatistica/estatistica.component
 import { GerenciamentoComponent } from '../Pages/gerenciamento/gerenciamento.component';
 import { HomeComponent } from '../Pages/home/home.component';
 import { MenuCimaComponent } from '../Pages/navbar/menu-cima/menu-cima.component';
-import { MenuComponent } from '../Pages/navbar/menu/menu.component';
-
 import { RelatorioComponent } from '../Pages/relatorio/relatorio/relatorio.component';
 import { ParceirosComponent } from '../Pages/parceiros/parceiros.component';
 
@@ -19,7 +17,6 @@ import { ParceirosComponent } from '../Pages/parceiros/parceiros.component';
 
 export const routes: Routes = [
   { path: '', component:HomeComponent },
-  { path: 'menu' , component: MenuComponent},
   { path: 'home', component: HomeComponent},
   { path: 'assinatura', component: AssinaturaComponent},
   { path: 'estatistica', component: EstatisticaComponent},

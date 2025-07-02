@@ -2,27 +2,28 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-// Chart, registerables não são mais necessários se não houver gráficos no componente
-// import { Chart, registerables } from 'chart.js';
 
-import { ApiService, UserProfile, Property, Crop, FinancialRecord as BackendFinancialRecord, Atividade as BackendActivity } from '../../services/api.service';
-
-// Importa o MenuComponent (Adicione se você tiver um MenuComponent aqui)
-// import { MenuComponent } from '../../navbar/menu/menu.component';
+import {
+  ApiService,
+  Usuario,
+  Propriedade,
+  Producao,
+  Atividade as BackendAtividade,
+  Movimentacao as BackendMovimentacao,
+} from '../../services/api.service';
 
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 registerLocaleData(localePt);
 
 
-interface Atividade extends Omit<BackendActivity, 'date'> {
-  date: Date;
+interface AtividadeComponent extends Omit<BackendAtividade, 'data'> {
+  data: Date;
 }
 
-interface FinancialRecord extends Omit<BackendFinancialRecord, 'date'> {
-  date: Date;
+interface MovimentacaoComponent extends Omit<BackendMovimentacao, 'data'> {
+  data: Date;
 }
-
 
 @Component({
   selector: 'app-gerenciamento',
@@ -31,11 +32,10 @@ interface FinancialRecord extends Omit<BackendFinancialRecord, 'date'> {
     RouterModule,
     CommonModule,
     FormsModule,
-    // MenuComponent // Adicione se você tiver um MenuComponent aqui
   ],
   providers: [DatePipe],
   templateUrl: './gerenciamento.component.html',
-  styleUrl: './gerenciamento.component.css'
+  styleUrl: './gerenciamento.component.css',
 })
 export class GerenciamentoComponent implements OnInit {
   menuAberto = false;
@@ -67,82 +67,77 @@ export class GerenciamentoComponent implements OnInit {
   filtroAtivo: string = 'todos';
   filtroPeriodo: string = '30';
   termoBusca: string = '';
-  // Removidas propriedades relacionadas a relatórios
-  // tipoRelatorio: string = 'produtividade';
-  // periodoRelatorio: string = '30';
 
-  opcoesFiltro: { valor: string; texto: string }[] = [
-    { valor: 'todos', texto: 'Todos' },
-  ];
+  opcoesFiltro: { valor: string; texto: string }[] = [{ valor: 'todos', texto: 'Todos' }];
 
-  usuario: UserProfile | null = null;
+  usuario: Usuario | null = null;
   novaSenha: string = '';
 
-  properties: Property[] = [];
-  crops: Crop[] = [];
-  activities: Atividade[] = [];
-  financialRecords: FinancialRecord[] = [];
+  propriedades: Propriedade[] = [];
+  producoes: Producao[] = [];
+  atividades: AtividadeComponent[] = [];
+  movimentacoes: MovimentacaoComponent[] = [];
 
-  propriedadesFiltradas: Property[] = [];
-  producoesFiltradas: Crop[] = [];
-  movimentacoesFiltradas: FinancialRecord[] = [];
+  propriedadesFiltradas: Propriedade[] = [];
+  producoesFiltradas: Producao[] = [];
+  movimentacoesFiltradas: MovimentacaoComponent[] = [];
 
-  propriedadeEditada: Partial<Property> = {};
-  producaoEditada: Partial<Crop> = {};
-  movimentacaoEditada: Partial<BackendFinancialRecord> = { type: 'revenue' };
-
+  propriedadeEditada: Partial<Propriedade> = {};
+  producaoEditada: Partial<Producao> = {};
+  movimentacaoEditada: Partial<MovimentacaoComponent> = { tipo: 'receita' }; // 'tipo' é 'receita' ou 'despesa'
 
   todasCulturas: string[] = [];
   safras: string[] = [];
 
-  // Removida propriedade do gráfico de relatório
-  // relatorioChart: Chart | null = null;
-
-  constructor(private apiService: ApiService, private datePipe: DatePipe) {
-    // Removido o registro do Chart.js se não houver mais gráficos neste componente
-    // Chart.register(...registerables);
-  }
+  constructor(private apiService: ApiService, private datePipe: DatePipe) {}
 
   ngOnInit(): void {
-    this.loadAllData();
+    this.carregarTodosDados();
   }
 
-  loadAllData(): void {
-    this.apiService.getAllDashboardData().subscribe({
+  carregarTodosDados(): void {
+    this.apiService.carregarDadosDashboard().subscribe({
       next: (data) => {
-        this.usuario = data.userProfile;
+        this.usuario = data.perfil;
         if (this.usuario) {
-          this.usuarioNome = this.usuario.username || 'Usuário';
-          this.headerUsuarioFoto = this.usuario.fotoUrl || 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
+          this.usuarioNome = this.usuario.nome || 'Usuário';
+          this.headerUsuarioFoto =
+            this.usuario.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
         } else {
           this.usuarioNome = 'Visitante';
         }
 
-        this.properties = data.properties;
-        this.crops = data.crops;
-        this.activities = data.activities.map(act => ({
-          ...act,
-          date: new Date(act.date),
-          icone: this.getIconForActivityType(act.type)
-        })).sort((a, b) => b.date.getTime() - a.date.getTime());
+        this.propriedades = data.propriedades;
+        this.producoes = data.producoes;
+        this.atividades = data.atividades
+          .map((act) => ({
+            ...act,
+            data: new Date(act.data),
+            icone: this.getIconForActivityType(act.tipo),
+          }))
+          .sort((a, b) => b.data.getTime() - a.data.getTime());
 
-        this.financialRecords = data.financialRecords.map(rec => ({
-          ...rec,
-          date: new Date(rec.date)
-        })).sort((a, b) => b.date.getTime() - a.date.getTime());
+        this.movimentacoes = data.movimentacoes
+          .map((rec) => ({
+            ...rec,
+            data: new Date(rec.data),
+          }))
+          .sort((a, b) => b.data.getTime() - a.data.getTime());
 
         const uniqueCrops = new Set<string>();
-        this.crops.forEach(crop => uniqueCrops.add(crop.name));
+        this.producoes.forEach((prod) => uniqueCrops.add(prod.cultura));
         this.opcoesFiltro = [{ valor: 'todos', texto: 'Todos' }];
-        Array.from(uniqueCrops).sort().forEach(cultura => {
-          this.opcoesFiltro.push({ valor: cultura, texto: cultura });
-        });
+        Array.from(uniqueCrops)
+          .sort()
+          .forEach((cultura) => {
+            this.opcoesFiltro.push({ valor: cultura, texto: cultura });
+          });
         this.todasCulturas = Array.from(uniqueCrops).sort();
 
         const uniqueSafras = new Set<string>();
-        this.crops.forEach(crop => {
-          if (crop.type) {
-            uniqueSafras.add(crop.type);
+        this.producoes.forEach((prod) => {
+          if (prod.safra) {
+            uniqueSafras.add(prod.safra);
           }
         });
         this.safras = Array.from(uniqueSafras).sort();
@@ -151,17 +146,13 @@ export class GerenciamentoComponent implements OnInit {
       },
       error: (err) => {
         console.error('Erro ao carregar dados:', err);
-      }
+      },
     });
   }
 
   selecionarAba(aba: string): void {
     this.abaAtiva = aba;
     this.aplicarFiltros();
-    // Removida a chamada a gerarRelatorio()
-    // if (this.abaAtiva === 'relatorios') {
-    //   this.gerarRelatorio();
-    // }
   }
 
   abrirModalAdicionar(): void {
@@ -171,29 +162,44 @@ export class GerenciamentoComponent implements OnInit {
 
     switch (this.tipoEdicao) {
       case 'propriedades':
-        this.propriedadeEditada = { name: '', location: '', area: 0 };
+        this.propriedadeEditada = { nome: '', localizacao: '', area: 0 };
         break;
       case 'producao':
-        this.producaoEditada = { name: '', type: '', plantingDate: '', property: '' };
+        this.producaoEditada = {
+          propriedadeId: 0,
+          cultura: '',
+          safra: '',
+          quantidade: 0,
+          area: 0,
+          data: new Date(),
+        }; // Ajuste conforme a interface Producao
         break;
       case 'financeiro':
         this.movimentacaoEditada = {
-          type: 'revenue',
-          amount: 0,
-          date: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '',
-          description: '',
-          property: ''
+          tipo: 'receita',
+          valor: 0,
+          data: new Date(),
+          descricao: '',
+          propriedade: '',
+          categoria: '',
         };
         break;
+      
     }
   }
 
   getTituloModal(): string {
     switch (this.tipoEdicao) {
-      case 'propriedades': return 'Propriedade';
-      case 'producao': return 'Cultura';
-      case 'financeiro': return 'Movimentação Financeira';
-      default: return 'Item';
+      case 'propriedades':
+        return 'Propriedade';
+      case 'producao':
+        return 'Produção';
+      case 'financeiro':
+        return 'Movimentação Financeira';
+      case 'atividades':
+        return 'Atividade';
+      default:
+        return 'Item';
     }
   }
 
@@ -201,7 +207,8 @@ export class GerenciamentoComponent implements OnInit {
     this.modalAberto = false;
     this.propriedadeEditada = {};
     this.producaoEditada = {};
-    this.movimentacaoEditada = { type: 'revenue' };
+    this.movimentacaoEditada = { tipo: 'receita' };
+    this.atividadeEditada = {};
   }
 
   abrirConfiguracoes(): void {
@@ -219,7 +226,7 @@ export class GerenciamentoComponent implements OnInit {
         this.filtrarPropriedades();
         break;
       case 'producao':
-        this.filtrarCulturas();
+        this.filtrarProducoes();
         break;
       case 'financeiro':
         this.filtrarMovimentacoes();
@@ -228,24 +235,31 @@ export class GerenciamentoComponent implements OnInit {
   }
 
   filtrarPropriedades(): void {
-    this.propriedadesFiltradas = this.properties.filter(prop => {
-      const busca = !this.termoBusca ||
-        prop.name.toLowerCase().includes(this.termoBusca.toLowerCase()) ||
-        prop.location.toLowerCase().includes(this.termoBusca.toLowerCase());
+    this.propriedadesFiltradas = this.propriedades.filter((prop) => {
+      const busca =
+        !this.termoBusca ||
+        prop.nome.toLowerCase().includes(this.termoBusca.toLowerCase()) ||
+        prop.localizacao.toLowerCase().includes(this.termoBusca.toLowerCase());
       return busca;
     });
   }
 
-  filtrarCulturas(): void {
-    this.producoesFiltradas = this.crops.filter(crop => {
-      const filtroCultura = this.filtroAtivo === 'todos' || crop.name === this.filtroAtivo;
-      const busca = !this.termoBusca ||
-        this.getPropertyName(crop.property).toLowerCase().includes(this.termoBusca.toLowerCase()) ||
-        crop.name.toLowerCase().includes(this.termoBusca.toLowerCase()) ||
-        crop.type.toLowerCase().includes(this.termoBusca.toLowerCase());
+  filtrarProducoes(): void {
+    this.producoesFiltradas = this.producoes.filter((prod) => {
+      const filtroCultura =
+        this.filtroAtivo === 'todos' || prod.cultura === this.filtroAtivo;
+      const busca =
+        !this.termoBusca ||
+        this.getNomePropriedade(prod.propriedadeId)
+          .toLowerCase()
+          .includes(this.termoBusca.toLowerCase()) ||
+        prod.cultura.toLowerCase().includes(this.termoBusca.toLowerCase()) ||
+        prod.safra.toLowerCase().includes(this.termoBusca.toLowerCase());
       return filtroCultura && busca;
     });
   }
+
+ 
 
   filtrarMovimentacoes(): void {
     const dias = parseInt(this.filtroPeriodo);
@@ -254,34 +268,42 @@ export class GerenciamentoComponent implements OnInit {
       dataLimite.setDate(dataLimite.getDate() - dias);
     }
 
-    this.movimentacoesFiltradas = this.financialRecords.filter(mov => {
-      const periodo = this.filtroPeriodo === 'todos' || (mov.date >= dataLimite);
-      const busca = !this.termoBusca ||
-        (mov.description && mov.description.toLowerCase().includes(this.termoBusca.toLowerCase())) ||
-        (mov.property && this.getPropertyName(mov.property).toLowerCase().includes(this.termoBusca.toLowerCase()));
+    this.movimentacoesFiltradas = this.movimentacoes.filter((mov) => {
+      const periodo = this.filtroPeriodo === 'todos' || mov.data >= dataLimite;
+      const busca =
+        !this.termoBusca ||
+        (mov.descricao &&
+          mov.descricao.toLowerCase().includes(this.termoBusca.toLowerCase())) ||
+        (mov.propriedade &&
+          this.getNomePropriedade(mov.propriedade)
+            .toLowerCase()
+            .includes(this.termoBusca.toLowerCase()));
       return periodo && busca;
     });
   }
 
-  getPropertyName(id: string): string {
-    const prop = this.properties.find(p => p._id === id);
-    return prop ? prop.name : 'Desconhecida';
+  getNomePropriedade(id: string | number): string {
+    // Sua API de propriedades tem 'id: string', mas a Producao tem 'propriedadeId: number'.
+    // Precisamos ajustar isso. Assumindo que Producao.propriedadeId deveria ser string para bater com Propriedade.id
+    // Se no backend o ID da propriedade na Produção é um number, você precisará ajustar o lookup.
+    const prop = this.propriedades.find((p) => p.id === String(id));
+    return prop ? prop.nome : 'Desconhecida';
   }
 
   getIconForActivityType(type: string): string {
     switch (type.toLowerCase()) {
-      case 'planting':
+      case 'plantio':
         return 'fa-seedling';
-      case 'harvest':
+      case 'colheita':
         return 'fa-wheat-awn';
-      case 'maintenance':
+      case 'manutencao':
         return 'fa-tractor';
-      case 'payment':
-      case 'revenue':
+      case 'pagamento':
+      case 'receita':
         return 'fa-dollar-sign';
-      case 'expense':
+      case 'despesa':
         return 'fa-money-bill-wave';
-      case 'forecast':
+      case 'previsao':
         return 'fa-cloud-rain';
       default:
         return 'fa-clipboard-list';
@@ -289,30 +311,32 @@ export class GerenciamentoComponent implements OnInit {
   }
 
   calcularAreaTotal(): number {
-    return this.properties.reduce((total, prop) => total + prop.area, 0);
+    return this.propriedades.reduce((total, prop) => total + prop.area, 0);
   }
 
   contarCulturasAtivas(): number {
     const culturasUnicas = new Set<string>();
-    this.crops.forEach(crop => culturasUnicas.add(crop.name));
+    this.producoes.forEach((prod) => culturasUnicas.add(prod.cultura));
     return culturasUnicas.size;
   }
 
   calcularProducaoTotal(): number {
-    return this.crops.reduce((total, crop) => total + (crop.actualYield || 0), 0);
+    return this.producoes.reduce((total, prod) => total + prod.quantidade, 0);
   }
 
   calcularAreaPlantada(): number {
     const areasComCulturas = new Set<string>();
-    this.crops.forEach(crop => {
-      if (crop.property) {
-        areasComCulturas.add(crop.property);
+    this.producoes.forEach((prod) => {
+      // Aqui, `prod.propriedadeId` é `number`, enquanto `propriedade.id` é `string`.
+      // Vamos converter para string para a comparação.
+      if (prod.propriedadeId) {
+        areasComCulturas.add(String(prod.propriedadeId));
       }
     });
 
     let totalArea = 0;
-    areasComCulturas.forEach(propertyId => {
-      const prop = this.properties.find(p => p._id === propertyId);
+    areasComCulturas.forEach((propertyId) => {
+      const prop = this.propriedades.find((p) => p.id === propertyId);
       if (prop) {
         totalArea += prop.area;
       }
@@ -327,54 +351,50 @@ export class GerenciamentoComponent implements OnInit {
   }
 
   calcularTotalReceitas(): number {
-    return this.financialRecords
-      .filter(m => m.type === 'revenue')
-      .reduce((total, m) => total + m.amount, 0);
+    return this.movimentacoes
+      .filter((m) => m.tipo === 'receita')
+      .reduce((total, m) => total + m.valor, 0);
   }
 
   calcularTotalDespesas(): number {
-    return this.financialRecords
-      .filter(m => m.type === 'expense')
-      .reduce((total, m) => total + m.amount, 0);
+    return this.movimentacoes
+      .filter((m) => m.tipo === 'despesa')
+      .reduce((total, m) => total + m.valor, 0);
   }
 
   calcularResultadoFinanceiro(): number {
     return this.calcularTotalReceitas() - this.calcularTotalDespesas();
   }
 
-  editarPropriedade(prop: Property): void {
+  editarPropriedade(prop: Propriedade): void {
     this.propriedadeEditada = { ...prop };
     this.modalTitulo = 'Editar Propriedade';
     this.tipoEdicao = 'propriedades';
     this.modalAberto = true;
   }
 
-  editarProducao(crop: Crop): void {
-    this.producaoEditada = { ...crop };
-    if (crop.plantingDate) {
-      this.producaoEditada.plantingDate = this.datePipe.transform(crop.plantingDate, 'yyyy-MM-dd') || '';
-    }
-    if (crop.harvestDate) {
-      this.producaoEditada.harvestDate = this.datePipe.transform(crop.harvestDate, 'yyyy-MM-dd') || '';
-    }
-    this.modalTitulo = 'Editar Cultura';
+  editarProducao(prod: Producao): void {
+    this.producaoEditada = { ...prod };
+    this.producaoEditada.data = this.datePipe.transform(prod.data, 'yyyy-MM-dd') as any; // Ajuste para 'data'
+    this.modalTitulo = 'Editar Produção';
     this.tipoEdicao = 'producao';
     this.modalAberto = true;
   }
 
-  editarMovimentacao(mov: FinancialRecord): void {
+  
 
-    
-    if (mov.date) {
-      this.movimentacaoEditada.date = this.datePipe.transform(mov.date, 'yyyy-MM-dd') || '';
-    }
-    
+  editarMovimentacao(mov: MovimentacaoComponent): void {
+    this.movimentacaoEditada = { ...mov };
+    this.movimentacaoEditada.data = this.datePipe.transform(mov.data, 'yyyy-MM-dd') as any;
+    this.modalTitulo = 'Editar Movimentação Financeira';
+    this.tipoEdicao = 'financeiro';
+    this.modalAberto = true;
   }
 
   confirmarExclusao(item: any, tipo: string): void {
     this.itemParaExcluir = item;
     this.tipoExclusao = tipo;
-    this.mensagemConfirmacao = `Confirmar exclusão de "${tipo === 'propriedades' ? item.name : (item.description || item.name)}"?`;
+    this.mensagemConfirmacao = `Confirmar exclusão de "${tipo === 'propriedades' ? item.nome : item.descricao || item.cultura}"?`; // Ajustado para 'nome' e 'cultura'
     this.confirmacaoAberta = true;
   }
 
@@ -385,7 +405,7 @@ export class GerenciamentoComponent implements OnInit {
   }
 
   executarExclusao(): void {
-    if (!this.itemParaExcluir || !this.itemParaExcluir._id) {
+    if (!this.itemParaExcluir || !this.itemParaExcluir.id) {
       console.error('Item para exclusão inválido ou sem ID.');
       this.cancelarExclusao();
       return;
@@ -393,33 +413,49 @@ export class GerenciamentoComponent implements OnInit {
 
     switch (this.tipoExclusao) {
       case 'propriedades':
-        this.apiService.deleteProperty(this.itemParaExcluir._id).subscribe({
+        this.apiService.excluirPropriedade(this.itemParaExcluir.id).subscribe({
           next: () => {
-            this.properties = this.properties.filter(p => p._id !== this.itemParaExcluir._id);
+            this.propriedades = this.propriedades.filter(
+              (p) => p.id !== this.itemParaExcluir.id
+            );
             this.aplicarFiltros();
             this.confirmacaoAberta = false;
           },
-          error: (err) => console.error('Erro ao excluir propriedade:', err)
+          error: (err) => console.error('Erro ao excluir propriedade:', err),
         });
         break;
       case 'producao':
-        this.apiService.deleteCrop(this.itemParaExcluir._id).subscribe({
+        this.apiService.excluirProducao(this.itemParaExcluir.id).subscribe({
           next: () => {
-            this.crops = this.crops.filter(c => c._id !== this.itemParaExcluir._id);
+            this.producoes = this.producoes.filter((c) => c.id !== this.itemParaExcluir.id);
             this.aplicarFiltros();
             this.confirmacaoAberta = false;
           },
-          error: (err) => console.error('Erro ao excluir cultura:', err)
+          error: (err) => console.error('Erro ao excluir produção:', err),
+        });
+        break;
+      case 'atividades':
+        this.apiService.excluirAtividade(this.itemParaExcluir.id).subscribe({
+          next: () => {
+            this.atividades = this.atividades.filter(
+              (a) => a.id !== this.itemParaExcluir.id
+            );
+            this.aplicarFiltros();
+            this.confirmacaoAberta = false;
+          },
+          error: (err) => console.error('Erro ao excluir atividade:', err),
         });
         break;
       case 'financeiro':
-        this.apiService.deleteFinancialRecord(this.itemParaExcluir._id).subscribe({
+        this.apiService.excluirMovimentacao(this.itemParaExcluir.id).subscribe({
           next: () => {
-            this.financialRecords = this.financialRecords.filter(m => m._id !== this.itemParaExcluir._id);
+            this.movimentacoes = this.movimentacoes.filter(
+              (m) => m.id !== this.itemParaExcluir.id
+            );
             this.aplicarFiltros();
             this.confirmacaoAberta = false;
           },
-          error: (err) => console.error('Erro ao excluir movimentação:', err)
+          error: (err) => console.error('Erro ao excluir movimentação:', err),
         });
         break;
       default:
@@ -436,7 +472,10 @@ export class GerenciamentoComponent implements OnInit {
         this.salvarPropriedade();
         break;
       case 'producao':
-        this.salvarCultura();
+        this.salvarProducao();
+        break;
+      case 'atividades':
+        this.salvarAtividade();
         break;
       case 'financeiro':
         this.salvarMovimentacao();
@@ -445,119 +484,234 @@ export class GerenciamentoComponent implements OnInit {
   }
 
   salvarPropriedade(): void {
-    if (!this.propriedadeEditada.name || !this.propriedadeEditada.location || this.propriedadeEditada.area === undefined || this.propriedadeEditada.area <= 0) {
+    if (
+      !this.propriedadeEditada.nome ||
+      !this.propriedadeEditada.localizacao ||
+      this.propriedadeEditada.area === undefined ||
+      this.propriedadeEditada.area <= 0
+    ) {
       console.error('Dados da propriedade incompletos ou inválidos.');
       return;
     }
 
-    if (this.propriedadeEditada._id) {
-      this.apiService.updateProperty(this.propriedadeEditada._id, this.propriedadeEditada).subscribe({
-        next: (updatedProp) => {
-          const index = this.properties.findIndex(p => p._id === updatedProp._id);
-          if (index !== -1) {
-            this.properties[index] = updatedProp;
-          }
-          this.fecharModal();
-          this.aplicarFiltros();
-        },
-        error: (err) => console.error('Erro ao atualizar propriedade:', err)
-      });
+    // Certifique-se de que 'id' é usado para verificar se é uma edição
+    if (this.propriedadeEditada.id) {
+      this.apiService
+        .atualizarPropriedade(this.propriedadeEditada.id, this.propriedadeEditada)
+        .subscribe({
+          next: (updatedProp) => {
+            const index = this.propriedades.findIndex((p) => p.id === updatedProp.id);
+            if (index !== -1) {
+              this.propriedades[index] = updatedProp;
+            }
+            this.fecharModal();
+            this.aplicarFiltros();
+          },
+          error: (err) => console.error('Erro ao atualizar propriedade:', err),
+        });
     } else {
-      this.apiService.addProperty(this.propriedadeEditada as Omit<Property, '_id' | 'owner'>).subscribe({
+      // Ajuste o tipo para a chamada `adicionarPropriedade`
+      const novaProp: Omit<Propriedade, 'id' | 'proprietario'> = {
+        nome: this.propriedadeEditada.nome,
+        localizacao: this.propriedadeEditada.localizacao,
+        area: this.propriedadeEditada.area,
+      };
+      this.apiService.adicionarPropriedade(novaProp).subscribe({
         next: (newProp) => {
-          this.properties.push(newProp);
+          this.propriedades.push(newProp);
           this.fecharModal();
           this.aplicarFiltros();
         },
-        error: (err) => console.error('Erro ao adicionar propriedade:', err)
+        error: (err) => console.error('Erro ao adicionar propriedade:', err),
       });
     }
   }
 
-  salvarCultura(): void {
-    if (!this.producaoEditada.name || !this.producaoEditada.type || !this.producaoEditada.plantingDate || !this.producaoEditada.property) {
-      console.error('Dados da cultura incompletos.');
+  salvarProducao(): void {
+    // Sua interface Producao na API tem id: number, propriedadeId: number, data: Date
+    // Seu componente está usando string para data e não tem id como number na edição inicial
+    if (
+      !this.producaoEditada.cultura ||
+      !this.producaoEditada.safra ||
+      this.producaoEditada.quantidade === undefined ||
+      this.producaoEditada.area === undefined ||
+      !this.producaoEditada.data ||
+      !this.producaoEditada.propriedadeId
+    ) {
+      console.error('Dados da produção incompletos.');
       return;
     }
 
-    const plantingDate = this.datePipe.transform(this.producaoEditada.plantingDate, 'yyyy-MM-ddTHH:mm:ss.SSSZ') || '';
-    const harvestDate = this.producaoEditada.harvestDate ? (this.datePipe.transform(this.producaoEditada.harvestDate, 'yyyy-MM-ddTHH:mm:ss.SSSZ') || '') : undefined;
+    // Converte a string de data para Date, se necessário, ou formata como string ISO
+    const dataFormatada =
+      typeof this.producaoEditada.data === 'string'
+        ? new Date(this.producaoEditada.data)
+        : this.producaoEditada.data;
 
-    const cropToSave: Partial<Crop> = {
+    const producaoToSave: Omit<Producao, 'id'> | Producao = {
       ...this.producaoEditada,
-      plantingDate: plantingDate,
-      harvestDate: harvestDate,
-      expectedYield: this.producaoEditada.expectedYield ? Number(this.producaoEditada.expectedYield) : undefined,
-      actualYield: this.producaoEditada.actualYield ? Number(this.producaoEditada.actualYield) : undefined,
-    };
+      propriedadeId: Number(this.producaoEditada.propriedadeId), // Garante que é um number
+      quantidade: Number(this.producaoEditada.quantidade),
+      area: Number(this.producaoEditada.area),
+      data: dataFormatada,
+    } as Omit<Producao, 'id'>; // Assumimos que o 'id' não está presente ao adicionar
 
-    if (this.producaoEditada._id) {
-      this.apiService.updateCrop(this.producaoEditada._id, cropToSave).subscribe({
-        next: (updatedCrop) => {
-          const index = this.crops.findIndex(c => c._id === updatedCrop._id);
-          if (index !== -1) {
-            this.crops[index] = updatedCrop;
-          }
-          this.fecharModal();
-          this.aplicarFiltros();
-        },
-        error: (err) => console.error('Erro ao atualizar cultura:', err)
-      });
+    if (this.producaoEditada.id) {
+      // Se estamos editando, o 'id' deve existir e ser um number
+      this.apiService
+        .atualizarProducao(String(this.producaoEditada.id), producaoToSave as Producao) // O método espera string para id
+        .subscribe({
+          next: (updatedProd) => {
+            const index = this.producoes.findIndex((p) => p.id === updatedProd.id);
+            if (index !== -1) {
+              this.producoes[index] = updatedProd;
+            }
+            this.fecharModal();
+            this.aplicarFiltros();
+          },
+          error: (err) => console.error('Erro ao atualizar produção:', err),
+        });
     } else {
-      this.apiService.addCrop(cropToSave as Omit<Crop, '_id' | 'owner'>).subscribe({
-        next: (newCrop) => {
-          this.crops.push(newCrop);
+      this.apiService.adicionarProducao(producaoToSave).subscribe({
+        next: (newProd) => {
+          this.producoes.push(newProd);
           this.fecharModal();
           this.aplicarFiltros();
         },
-        error: (err) => console.error('Erro ao adicionar cultura:', err)
+        error: (err) => console.error('Erro ao adicionar produção:', err),
+      });
+    }
+  }
+
+  // Novo método para salvar atividades
+  atividadeEditada: Partial<BackendAtividade> = {};
+  salvarAtividade(): void {
+    if (
+      !this.atividadeEditada.descricao ||
+      !this.atividadeEditada.data ||
+      !this.atividadeEditada.tipo
+    ) {
+      console.error('Dados da atividade incompletos.');
+      return;
+    }
+
+    // Formata a data para o formato esperado pelo backend (string ISO)
+    const dataAtividade = this.datePipe.transform(
+      this.atividadeEditada.data,
+      'yyyy-MM-ddTHH:mm:ss.SSSZ'
+    );
+    if (!dataAtividade) {
+      console.error('Formato de data inválido para atividade.');
+      return;
+    }
+
+    const atividadeToSave: Omit<BackendAtividade, 'id' | 'responsavel' | 'icone'> = {
+      ...this.atividadeEditada,
+      data: dataAtividade,
+      // 'responsavel' e 'icone' serão tratados pelo backend ou preenchidos automaticamente.
+    } as Omit<BackendAtividade, 'id' | 'responsavel' | 'icone'>;
+
+    if (this.atividadeEditada.id) {
+      this.apiService
+        .atualizarAtividade(this.atividadeEditada.id, atividadeToSave)
+        .subscribe({
+          next: (updatedAtv) => {
+            const index = this.atividades.findIndex((a) => a.id === updatedAtv.id);
+            if (index !== -1) {
+              this.atividades[index] = {
+                ...updatedAtv,
+                data: new Date(updatedAtv.data),
+                icone: this.getIconForActivityType(updatedAtv.tipo),
+              };
+            }
+            this.fecharModal();
+            this.aplicarFiltros();
+          },
+          error: (err) => console.error('Erro ao atualizar atividade:', err),
+        });
+    } else {
+      this.apiService.adicionarAtividade(atividadeToSave).subscribe({
+        next: (newAtv) => {
+          this.atividades.push({
+            ...newAtv,
+            data: new Date(newAtv.data),
+            icone: this.getIconForActivityType(newAtv.tipo),
+          });
+          this.fecharModal();
+          this.aplicarFiltros();
+        },
+        error: (err) => console.error('Erro ao adicionar atividade:', err),
       });
     }
   }
 
   salvarMovimentacao(): void {
-    if (!this.movimentacaoEditada.type || !this.movimentacaoEditada.description || this.movimentacaoEditada.amount === undefined || !this.movimentacaoEditada.date) {
+    if (
+      !this.movimentacaoEditada.tipo ||
+      !this.movimentacaoEditada.descricao ||
+      this.movimentacaoEditada.valor === undefined ||
+      !this.movimentacaoEditada.data
+    ) {
       console.error('Dados da movimentação incompletos.');
       return;
     }
-    if (this.movimentacaoEditada.amount <= 0) {
+    if (this.movimentacaoEditada.valor <= 0) {
       console.error('O valor da movimentação deve ser maior que zero.');
       return;
     }
 
-    const recordDate = this.datePipe.transform(this.movimentacaoEditada.date, 'yyyy-MM-ddTHH:mm:ss.SSSZ') || '';
+    // Formata a data para o formato esperado pelo backend (string ISO)
+    const dataMovimentacao = this.datePipe.transform(
+      this.movimentacaoEditada.data,
+      'yyyy-MM-ddTHH:mm:ss.SSSZ'
+    );
+    if (!dataMovimentacao) {
+      console.error('Formato de data inválido para movimentação.');
+      return;
+    }
 
-    const recordToSave: Partial<BackendFinancialRecord> = {
+    const movimentacaoToSave: Omit<BackendMovimentacao, 'id'> = {
       ...this.movimentacaoEditada,
-      amount: Number(this.movimentacaoEditada.amount),
-      date: recordDate
-    };
+      valor: Number(this.movimentacaoEditada.valor),
+      data: new Date(dataMovimentacao), // Convertendo de volta para Date para a API
+    } as Omit<BackendMovimentacao, 'id'>;
 
-    if (this.movimentacaoEditada._id) {
-      this.apiService.updateFinancialRecord(this.movimentacaoEditada._id, recordToSave).subscribe({
-        next: (updatedRecord) => {
-          const index = this.financialRecords.findIndex(r => r._id === updatedRecord._id);
-          if (index !== -1) {
-            this.financialRecords[index] = { ...updatedRecord, date: new Date(updatedRecord.date) };
-          }
-          this.fecharModal();
-          this.aplicarFiltros();
-        },
-        error: (err) => console.error('Erro ao atualizar movimentação:', err)
-      });
+    if (this.movimentacaoEditada.id) {
+      // id é number na sua interface da API, mas os métodos aceitam string para id
+      this.apiService
+        .atualizarMovimentacao(
+          String(this.movimentacaoEditada.id),
+          movimentacaoToSave as BackendMovimentacao
+        )
+        .subscribe({
+          next: (updatedRecord) => {
+            const index = this.movimentacoes.findIndex(
+              (r) => r.id === updatedRecord.id
+            );
+            if (index !== -1) {
+              this.movimentacoes[index] = {
+                ...updatedRecord,
+                data: new Date(updatedRecord.data),
+              };
+            }
+            this.fecharModal();
+            this.aplicarFiltros();
+          },
+          error: (err) => console.error('Erro ao atualizar movimentação:', err),
+        });
     } else {
-      this.apiService.addFinancialRecord(recordToSave as Omit<BackendFinancialRecord, '_id' | 'owner'>).subscribe({
+      this.apiService.adicionarMovimentacao(movimentacaoToSave).subscribe({
         next: (newRecord) => {
-          this.financialRecords.push({ ...newRecord, date: new Date(newRecord.date) });
+          this.movimentacoes.push({ ...newRecord, data: new Date(newRecord.data) });
           this.fecharModal();
           this.aplicarFiltros();
         },
-        error: (err) => console.error('Erro ao adicionar movimentação:', err)
+        error: (err) => console.error('Erro ao adicionar movimentação:', err),
       });
     }
   }
 
   trackById(index: number, item: any): string {
-    return item._id;
+    return item.id; // Alterado de _id para id
   }
 }

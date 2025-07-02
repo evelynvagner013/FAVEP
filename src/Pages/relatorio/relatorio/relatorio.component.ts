@@ -4,17 +4,17 @@ import { CommonModule, DatePipe } from '@angular/common'; // Incluir DatePipe
 import { FormsModule } from '@angular/forms'; // Incluir FormsModule para ngModel
 import { Chart, registerables } from 'chart.js'; // Para criar gráficos
 
-// Importe o ApiService e as interfaces de dados do backend
-import { ApiService, UserProfile, Property, Crop, FinancialRecord as BackendFinancialRecord } from '../../../services/api.service';
+// Importe o ApiService e as interfaces de dados do backend (nomes em português)
+import { ApiService, Usuario, Propriedade, Producao, Movimentacao as BackendMovimentacao } from '../../../services/api.service';
 
 // Registra a localidade para que os pipes de number, currency, date funcionem corretamente
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 registerLocaleData(localePt);
 
-// Interface local para FinancialRecord, onde 'date' é um objeto Date
-interface FinancialRecord extends Omit<BackendFinancialRecord, 'date'> {
-  date: Date;
+// Interface local para Movimentacao, onde 'data' é um objeto Date
+interface MovimentacaoComponent extends Omit<BackendMovimentacao, 'data'> {
+  data: Date;
 }
 
 @Component({
@@ -35,16 +35,16 @@ export class RelatorioComponent implements OnInit {
   usuarioNome: string = 'Carregando...';
   usuarioFoto: string = 'https://placehold.co/40x40/aabbcc/ffffff?text=User'; // Imagem padrão
 
-  // Dados brutos do backend
-  properties: Property[] = [];
-  crops: Crop[] = [];
-  financialRecords: FinancialRecord[] = [];
+  // Dados brutos do backend (agora com nomes em português)
+  propriedades: Propriedade[] = [];
+  producoes: Producao[] = [];
+  movimentacoes: MovimentacaoComponent[] = []; // Usando a interface local adaptada
 
   // Filtros para o relatório
   selectedPropertyId: string = 'todos'; // ID da propriedade selecionada, 'todos' por padrão
   startDate: string = ''; // Data de início para o filtro de período (string para input type="date")
   endDate: string = '';   // Data de fim para o filtro de período (string para input type="date")
-  selectedCropType: string = 'todos'; // Tipo de cultura selecionada para filtro
+  selectedCropType: string = 'todos'; // Tipo de cultura selecionada para filtro (cultura na API)
   reportType: 'productivity' | 'financial' | 'crop_production' = 'productivity'; // Tipo de relatório
 
   // Opções para os filtros (preenchidas dinamicamente)
@@ -59,37 +59,39 @@ export class RelatorioComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadInitialData(); // Carrega dados iniciais (propriedades, culturas, financeiro)
+    this.carregarDadosIniciais(); // Carrega dados iniciais (propriedades, producoes, movimentacoes)
   }
 
+  // --- Métodos de Carregamento de Dados ---
+
   /**
-   * Carrega os dados iniciais do backend (propriedades, culturas, financeiro).
+   * Carrega os dados iniciais do backend (propriedades, producoes, movimentacoes).
    */
-  loadInitialData(): void {
-    this.apiService.getAllDashboardData().subscribe({
+  carregarDadosIniciais(): void {
+    this.apiService.carregarDadosDashboard().subscribe({ // Chamada ao método da ApiService
       next: (data) => {
         // Atualiza informações do usuário no cabeçalho
-        if (data.userProfile) {
-          this.usuarioNome = data.userProfile.username || 'Usuário';
-          this.usuarioFoto = data.userProfile.fotoUrl || 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
+        if (data.perfil) { // 'perfil' em vez de 'userProfile'
+          this.usuarioNome = data.perfil.nome || 'Usuário'; // 'nome' em vez de 'username'
+          this.usuarioFoto = data.perfil.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User'; // 'fotoPerfil' em vez de 'fotoUrl'
         } else {
           this.usuarioNome = 'Visitante';
         }
 
-        this.properties = data.properties;
-        this.crops = data.crops;
+        this.propriedades = data.propriedades; // 'propriedades' em vez de 'properties'
+        this.producoes = data.producoes;     // 'producoes' em vez de 'crops'
         // Converte datas para objetos Date para manipulação no frontend
-        this.financialRecords = data.financialRecords.map(rec => ({ ...rec, date: new Date(rec.date) }));
+        this.movimentacoes = data.movimentacoes.map(rec => ({ ...rec, data: new Date(rec.data) })); // 'movimentacoes' em vez de 'financialRecords', 'data' em vez de 'date'
 
         // Preenche as opções de tipo de cultura para o filtro
         const uniqueCropTypes = new Set<string>();
-        this.crops.forEach(crop => uniqueCropTypes.add(crop.name));
+        this.producoes.forEach(prod => uniqueCropTypes.add(prod.cultura)); // 'cultura' em vez de 'name'
         Array.from(uniqueCropTypes).sort().forEach(type => {
           this.availableCropTypes.push({ value: type, text: type });
         });
 
         // Gera o relatório inicial
-        this.generateReport();
+        this.gerarRelatorio();
       },
       error: (err) => {
         console.error('Erro ao carregar dados iniciais para o relatório:', err);
@@ -98,10 +100,12 @@ export class RelatorioComponent implements OnInit {
     });
   }
 
+  // --- Métodos de Geração de Relatórios ---
+
   /**
    * Gera o relatório com base nos filtros selecionados.
    */
-  generateReport(): void {
+  gerarRelatorio(): void {
     // Destrói o gráfico existente antes de criar um novo
     if (this.reportChart) {
       this.reportChart.destroy();
@@ -122,23 +126,24 @@ export class RelatorioComponent implements OnInit {
 
     // Filtra os dados brutos com base nos filtros selecionados
     const filteredProperties = this.selectedPropertyId === 'todos'
-      ? this.properties
-      : this.properties.filter(p => p._id === this.selectedPropertyId);
+      ? this.propriedades
+      : this.propriedades.filter(p => p.id === this.selectedPropertyId); // 'id' em vez de '_id'
 
-    const filteredCrops = this.crops.filter(crop => {
-      const isPropertyMatch = this.selectedPropertyId === 'todos' || crop.property === this.selectedPropertyId;
-      const isCropTypeMatch = this.selectedCropType === 'todos' || crop.name === this.selectedCropType;
+    const filteredProducoes = this.producoes.filter(prod => {
+      // Note: Sua interface Producao tem propriedadeId: number, enquanto Propriedade tem id: string.
+      // Se o ID da propriedade na Producao é um number no backend, você pode precisar ajustar a comparação.
+      const isPropertyMatch = this.selectedPropertyId === 'todos' || String(prod.propriedadeId) === this.selectedPropertyId;
+      const isCropTypeMatch = this.selectedCropType === 'todos' || prod.cultura === this.selectedCropType; // 'cultura' em vez de 'name'
       return isPropertyMatch && isCropTypeMatch;
     });
 
-    const filteredFinancialRecords = this.financialRecords.filter(record => {
-      const recordDate = record.date;
-      const isPropertyMatch = this.selectedPropertyId === 'todos' || record.property === this.selectedPropertyId;
+    const filteredMovimentacoes = this.movimentacoes.filter(mov => { 
+      const recordDate = mov.data; 
+      const isPropertyMatch = this.selectedPropertyId === 'todos' || mov.propriedade === this.selectedPropertyId; // 'propriedade' em vez de 'property'
       const isDateRangeMatch = (!this.startDate || recordDate >= new Date(this.startDate)) &&
                                (!this.endDate || recordDate <= new Date(this.endDate));
       return isPropertyMatch && isDateRangeMatch;
     });
-
 
     // Lógica para gerar dados do gráfico com base no tipo de relatório
     switch (this.reportType) {
@@ -147,14 +152,15 @@ export class RelatorioComponent implements OnInit {
         chartType = 'bar';
         const productivityData: { [key: string]: { totalYield: number, totalArea: number } } = {};
 
-        filteredCrops.forEach(crop => {
-          if (!productivityData[crop.name]) {
-            productivityData[crop.name] = { totalYield: 0, totalArea: 0 };
+        filteredProducoes.forEach(prod => { // 'filteredProducoes' em vez de 'filteredCrops'
+          if (!productivityData[prod.cultura]) { // 'cultura' em vez de 'name'
+            productivityData[prod.cultura] = { totalYield: 0, totalArea: 0 };
           }
-          productivityData[crop.name].totalYield += (crop.actualYield || 0);
+          productivityData[prod.cultura].totalYield += (prod.quantidade || 0); // 'quantidade' em vez de 'actualYield'
           // Soma a área da propriedade associada à cultura para o cálculo da produtividade
-          const propArea = this.properties.find(p => p._id === crop.property)?.area || 0;
-          productivityData[crop.name].totalArea += propArea;
+          // Convertendo prod.propriedadeId para string para a comparação, se Propriedade.id for string.
+          const propArea = this.propriedades.find(p => p.id === String(prod.propriedadeId))?.area || 0; // 'id' em vez de '_id', 'area' em vez de 'area'
+          productivityData[prod.cultura].totalArea += propArea;
         });
 
         labels = Object.keys(productivityData).sort();
@@ -174,9 +180,9 @@ export class RelatorioComponent implements OnInit {
 
       case 'financial':
         chartTitle = 'Resultado Financeiro (R$)';
-        chartType = 'bar'; // Pode ser 'bar' ou 'line'
-        const totalRevenue = filteredFinancialRecords.filter(r => r.type === 'revenue').reduce((sum, r) => sum + r.amount, 0);
-        const totalExpense = filteredFinancialRecords.filter(r => r.type === 'expense').reduce((sum, r) => sum + r.amount, 0);
+        chartType = 'bar';
+        const totalRevenue = filteredMovimentacoes.filter(r => r.tipo === 'receita').reduce((sum, r) => sum + r.valor, 0); // 'tipo' e 'valor'
+        const totalExpense = filteredMovimentacoes.filter(r => r.tipo === 'despesa').reduce((sum, r) => sum + r.valor, 0); // 'tipo' e 'valor'
         const netResult = totalRevenue - totalExpense;
 
         labels = ['Receitas', 'Despesas', 'Resultado'];
@@ -202,11 +208,11 @@ export class RelatorioComponent implements OnInit {
         chartType = 'bar';
         const cropProductionData: { [key: string]: number } = {};
 
-        filteredCrops.forEach(crop => {
-          if (!cropProductionData[crop.name]) {
-            cropProductionData[crop.name] = 0;
+        filteredProducoes.forEach(prod => { // 'filteredProducoes' em vez de 'filteredCrops'
+          if (!cropProductionData[prod.cultura]) { // 'cultura' em vez de 'name'
+            cropProductionData[prod.cultura] = 0;
           }
-          cropProductionData[crop.name] += (crop.actualYield || 0);
+          cropProductionData[prod.cultura] += (prod.quantidade || 0); // 'quantidade' em vez de 'actualYield'
         });
 
         labels = Object.keys(cropProductionData).sort();
@@ -250,13 +256,12 @@ export class RelatorioComponent implements OnInit {
               text: this.getAxisYTitle(this.reportType)
             },
             ticks: {
-              callback: (value: any) => { // <-- Use uma função de seta aqui!
+              callback: (value: any) => { // Usando função de seta para manter o 'this' contextual
                 if (this.reportType === 'financial') {
                   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
                 }
                 return new Intl.NumberFormat('pt-BR').format(value);
               }
-              // Remova o .bind(this) completamente!
             }
           },
           x: {
@@ -294,7 +299,8 @@ export class RelatorioComponent implements OnInit {
     }
   }
 
-  // Métodos do menu (mantidos do seu código original)
+  // --- Métodos de UI ---
+
   alternarMenu() {
     this.menuAberto = !this.menuAberto;
   }
