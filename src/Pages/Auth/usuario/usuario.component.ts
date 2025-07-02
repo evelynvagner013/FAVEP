@@ -31,8 +31,8 @@ export class UsuarioComponent implements OnInit {
   
   
   menuAberto = false;
-  headerUsuarioNome: string = 'Carregando...';
-  headerUsuarioFoto: string = 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
+  usuarioNome: string = 'Carregando...';
+  usuarioFoto: string = 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
 
   usuario: Usuario = {
     nome: '',
@@ -130,8 +130,8 @@ export class UsuarioComponent implements OnInit {
   }
 
   private atualizarHeaderInfo(): void {
-    this.headerUsuarioNome = this.usuario.nome;
-    this.headerUsuarioFoto = this.usuario.fotoUrl || 'assets/img/usuario.jpg';
+    this.usuarioNome = this.usuario.nome;
+    this.usuarioFoto = this.usuario.fotoUrl || 'assets/img/usuario.jpg';
   }
 
   navegarParaContato(): void {

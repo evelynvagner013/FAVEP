@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core'; 
+import { isPlatformBrowser } from '@angular/common'; 
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
@@ -9,43 +10,43 @@ import { map, catchError } from 'rxjs/operators';
 
 export interface UserProfile {
   _id: string;
-  username: string; // O nome de usuário do backend
+  username: string; 
   email: string;
-  telefone?: string; // Adicionado para corresponder ao seu frontend
+  telefone?: string;
   fotoUrl?: string;
-  plano?: string; // Adicionado para corresponder ao seu frontend
-  dataAssinatura?: string; // Adicionado, como string para vir do backend
-  dataValidade?: string; // Adicionado, como string para vir do backend
+  plano?: string;
+  dataAssinatura?: string;
+  dataValidade?: string;
 }
 
 export interface Property {
   _id: string;
   name: string;
   location: string;
-  area: number; // em hectares
-  owner: string; // userId
+  area: number; 
+  owner: string; 
 }
 
 export interface Crop {
   _id: string;
   name: string;
   type: string;
-  plantingDate: string; // String de data do backend
-  harvestDate?: string; // String de data do backend
-  expectedYield?: number; // kg
-  actualYield?: number; // kg
-  property: string; // propertyId
-  owner: string; // userId
+  plantingDate: string; 
+  harvestDate?: string; 
+  expectedYield?: number; 
+  actualYield?: number; 
+  property: string; 
+  owner: string; 
 }
 
 export interface Atividade {
   _id: string;
   description: string;
-  date: string; // String de data do backend
+  date: string; 
   type: string;
   property?: string;
   owner: string;
-  icone?: string; // Propriedade apenas do frontend, para mapear o ícone
+  icone?: string; 
 }
 
 export interface FinancialRecord {
@@ -58,19 +59,25 @@ export interface FinancialRecord {
   owner: string;
 }
 
-// ====================================================================
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  private baseUrl = 'http://localhost:5050/api'; // Base URL para os endpoints de API
+  private baseUrl = 'http://localhost:5050/api'; 
+  private isBrowser: boolean; 
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object 
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   isLoggedIn(): boolean {
-    return !!this.getToken();
+    return this.isBrowser ? !!this.getToken() : false; 
   }
 
   register(userData: any): Observable<any> {
@@ -90,25 +97,37 @@ export class ApiService {
   }
 
   setToken(token: string): void {
-    localStorage.setItem('token', token);
+    if (this.isBrowser) { 
+      localStorage.setItem('token', token);
+    }
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    if (this.isBrowser) { 
+      return localStorage.getItem('token');
+    }
+    return null; 
   }
 
   setUser(user: UserProfile): void {
-    localStorage.setItem('user', JSON.stringify(user));
+    if (this.isBrowser) { 
+      localStorage.setItem('user', JSON.stringify(user));
+    }
   }
 
   getUser(): UserProfile | null {
-    const userJson = localStorage.getItem('user');
-    return userJson ? JSON.parse(userJson) : null;
+    if (this.isBrowser) { 
+      const userJson = localStorage.getItem('user');
+      return userJson ? JSON.parse(userJson) : null;
+    }
+    return null; 
   }
 
   logout(): void {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    if (this.isBrowser) { 
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+    }
   }
 
   // ====================================================================
@@ -138,7 +157,7 @@ export class ApiService {
     return this.http.put<UserProfile>(`${this.baseUrl}/users/${userId}`, userData).pipe(
       catchError(error => {
         console.error('Erro ao atualizar perfil do usuário:', error);
-        throw error; // Re-lança o erro para ser tratado no componente
+        throw error; 
       })
     );
   }

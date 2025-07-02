@@ -1,24 +1,30 @@
-/* Estilos para o container principal do dashboard */
 .dashboard-container {
   display: grid;
-  grid-template-columns: 250px 1fr; /* Menu lateral fixo em desktop */
+  grid-template-columns: 250px 1fr;
   grid-template-rows: auto 1fr;
   min-height: 100vh;
+  overflow: hidden;
+  /* A cor de fundo do container é aplicada no .main-content agora */
 }
 
-/* Estilos do cabeçalho */
+/* ---------------------------------------------------- */
+/* CABEÇALHO DO DASHBOARD */
+/* ---------------------------------------------------- */
 .dashboard-header {
-  grid-column: 1 / -1; /* Ocupa todas as colunas */
+  grid-column: 1 / -1;
+  grid-row: 1;
   background-color: #2c3e50;
   color: white;
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adicionado sombra */
-  position: sticky; /* Fixa o cabeçalho no topo */
+  z-index: 100;
+  position: sticky;
   top: 0;
-  z-index: 1000; /* Garante que fique acima de outros elementos */
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .dashboard-header h1 {
@@ -29,81 +35,76 @@
   gap: 10px;
   font-family: 'Merriweather', serif;
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.header-logo-img {
-  height: 3.5rem;
-  width: auto;
+.header-logo-img { /* Logo no header */
+  height: 3.5rem; /* Define a altura da imagem. Ajuste este valor conforme necessário. */
+  width: auto;    /* Mantém a proporção da imagem. */
 }
+
 
 .user-info {
   display: flex;
   align-items: center;
   gap: 15px;
-  font-size: 1rem;
+  white-space: nowrap;
 }
+
 
 .user-avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #f1c40f; /* Adicionado borda amarela para destaque */
+  border: 2px solid #27ae60;
 }
 
 .menu-toggle {
-  display: none; /* Esconde em desktop */
   background: none;
   border: none;
   color: white;
-  font-size: 2rem;
+  font-size: 1.8rem;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px;
+  padding: 0.5rem;
+  display: none;
 }
 
-/* Menu lateral */
+
+/* ---------------------------------------------------- */
+/* MENU LATERAL PRINCIPAL */
+/* ---------------------------------------------------- */
 .main-menu {
-  grid-column: 1 / 2; /* Ocupa a primeira coluna em desktop */
-  grid-row: 2 / 3; /* Ocupa a segunda linha (abaixo do header) */
+  grid-column: 1;
+  grid-row: 2;
   background-color: #34495e;
   color: white;
   padding: 20px 0;
-  display: flex;
-  flex-direction: column; /* Organiza os links verticalmente */
-  gap: 10px;
-  position: sticky; /* Fixa o menu lateral na rolagem */
-  top: 0; /* Alinha ao topo do viewport */
-  height: 100vh; /* Ocupa a altura total do viewport */
-  overflow-y: auto; /* Adiciona scroll se o conteúdo for muito longo */
-  z-index: 999; /* Abaixo do header fixo */
+  overflow-y: auto;
+  transition: transform 0.3s ease-in-out;
+  z-index: 90;
 }
 
 .main-menu a {
-  display: flex; /* Para alinhar ícone e texto */
+  display: flex;
   align-items: center;
   gap: 10px;
   color: white;
   text-decoration: none;
   padding: 12px 25px;
-  transition: background-color 0.3s ease, border-left 0.3s ease;
-  font-size: 1.1rem;
+  transition: background-color 0.3s;
+  white-space: nowrap;
 }
 
 .main-menu a:hover {
   background-color: #2c3e50;
 }
 
-.main-menu a.active {
-  background-color: #2c3e50; /* Fundo mais escuro para ativo */
-  border-left: 4px solid #f1c40f; /* Borda amarela para ativo */
-  font-weight: bold;
-}
-
-.main-menu a .material-symbols-outlined {
-  font-size: 1.5rem; /* Tamanho dos ícones do Material Symbols */
+.main-menu .material-symbols-outlined {
+  font-size: 24px;
+  margin-right: 5px;
 }
 
 

@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { UserMenuComponent } from '../../components/user-menu/user-menu.component'; // Verifique o caminho
+
 
 interface Usuario {
   nome: string;
@@ -21,7 +21,7 @@ interface Usuario {
     CommonModule,
     FormsModule,
     RouterLink,
-    UserMenuComponent
+  
   ],
   providers: [DatePipe],
   templateUrl: './usuario.component.html',
@@ -29,8 +29,8 @@ interface Usuario {
 })
 export class UsuarioComponent implements OnInit {
   menuAberto = false;
-  headerUsuarioNome: string = '';
-  headerUsuarioFoto: string = '';
+  usuarioNome: string = '';
+  usuarioFoto: string = '';
 
   usuario: Usuario = {
     nome: 'Thomas Edison',
@@ -44,6 +44,7 @@ export class UsuarioComponent implements OnInit {
 
   usuarioEditavel!: Usuario;
   editModalAberto = false;
+
 
   constructor(
     private datePipe: DatePipe,
@@ -83,8 +84,8 @@ export class UsuarioComponent implements OnInit {
   }
 
   private atualizarHeaderInfo(): void {
-    this.headerUsuarioNome = this.usuario.nome;
-    this.headerUsuarioFoto = this.usuario.fotoUrl;
+    this.usuarioNome = this.usuario.nome;
+    this.usuarioFoto = this.usuario.fotoUrl;
   }
 
   navegarParaContato(): void {
