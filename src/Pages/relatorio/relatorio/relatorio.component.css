@@ -1,18 +1,24 @@
+/* Estilos para o container principal do dashboard */
 .dashboard-container {
   display: grid;
-  grid-template-columns: 250px 1fr;
+  grid-template-columns: 250px 1fr; /* Menu lateral fixo em desktop */
   grid-template-rows: auto 1fr;
   min-height: 100vh;
 }
 
+/* Estilos do cabeçalho */
 .dashboard-header {
-  grid-column: 1 / -1;
+  grid-column: 1 / -1; /* Ocupa todas as colunas */
   background-color: #2c3e50;
   color: white;
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adicionado sombra */
+  position: sticky; /* Fixa o cabeçalho no topo */
+  top: 0;
+  z-index: 1000; /* Garante que fique acima de outros elementos */
 }
 
 .dashboard-header h1 {
@@ -34,6 +40,7 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  font-size: 1rem;
 }
 
 .user-avatar {
@@ -41,51 +48,48 @@
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
+  border: 2px solid #f1c40f; /* Adicionado borda amarela para destaque */
 }
-
-/* ---------------------------------------------------- */
-/* SWITCH DE TEMA (NOVO ESTILO)                         */
-/* ---------------------------------------------------- */
-.theme-switch-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.theme-switch-wrapper .fa-sun { color: #f1c40f; font-size: 1.1rem; }
-.theme-switch-wrapper .fa-moon { color: #bdc3c7; font-size: 1.1rem; }
-.switch { position: relative; display: inline-block; width: 50px; height: 26px; }
-.switch input { opacity: 0; width: 0; height: 0; }
-.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #73869d; transition: .4s; }
-.slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; }
-input:checked + .slider { background-color: #34495e; }
-input:checked + .slider:before { transform: translateX(24px); }
-.slider.round { border-radius: 34px; }
-.slider.round:before { border-radius: 50%; }
 
 .menu-toggle {
-  display: none;
+  display: none; /* Esconde em desktop */
   background: none;
   border: none;
   color: white;
   font-size: 2rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
 }
 
+/* Menu lateral */
 .main-menu {
+  grid-column: 1 / 2; /* Ocupa a primeira coluna em desktop */
+  grid-row: 2 / 3; /* Ocupa a segunda linha (abaixo do header) */
   background-color: #34495e;
   color: white;
   padding: 20px 0;
+  display: flex;
+  flex-direction: column; /* Organiza os links verticalmente */
+  gap: 10px;
+  position: sticky; /* Fixa o menu lateral na rolagem */
+  top: 0; /* Alinha ao topo do viewport */
+  height: 100vh; /* Ocupa a altura total do viewport */
+  overflow-y: auto; /* Adiciona scroll se o conteúdo for muito longo */
+  z-index: 999; /* Abaixo do header fixo */
 }
 
 .main-menu a {
-  display: block;
+  display: flex; /* Para alinhar ícone e texto */
+  align-items: center;
+  gap: 10px;
   color: white;
   text-decoration: none;
   padding: 12px 25px;
-  transition: background-color 0.3s;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  transition: background-color 0.3s ease, border-left 0.3s ease;
+  font-size: 1.1rem;
 }
 
 .main-menu a:hover {
@@ -93,15 +97,34 @@ input:checked + .slider:before { transform: translateX(24px); }
 }
 
 .main-menu a.active {
-  background-color: #3498db;
-  border-left: 4px solid #f1c40f;
+  background-color: #2c3e50; /* Fundo mais escuro para ativo */
+  border-left: 4px solid #f1c40f; /* Borda amarela para ativo */
+  font-weight: bold;
 }
 
+.main-menu a .material-symbols-outlined {
+  font-size: 1.5rem; /* Tamanho dos ícones do Material Symbols */
+}
+
+
+/* Conteúdo principal do dashboard */
 .dashboard-content {
-  padding: 20px;
-  background-color: #f5f6fa;
-  overflow-y: auto;
-  transition: background-color 0.3s ease-in-out;
+  grid-column: 2 / 3; /* Ocupa a segunda coluna em desktop */
+  grid-row: 2 / 3; /* Ocupa a segunda linha */
+  padding: 25px;
+  background-color: #f5f7fa; /* Cor de fundo suave */
+  overflow-y: auto; /* Permite rolagem vertical se o conteúdo exceder */
+}
+
+/* Estilos específicos do container de relatório */
+.container-principal {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
 .titulo {
@@ -112,57 +135,197 @@ input:checked + .slider:before { transform: translateX(24px); }
   font-weight: 300;
   color: #000000;
   font-size: 55px;
-  transition: color 0.3s ease-in-out;
+  border-bottom: 1px solid #eee; /* Adicionado uma linha divisória */
+  padding-bottom: 15px;
 }
 
-table {
+/* Controles de filtro do relatório */
+.report-controls {
+  display: flex;
+  flex-wrap: wrap; /* Permite que os itens quebrem a linha */
+  gap: 20px;
+  align-items: flex-end; /* Alinha botões e selects na base */
+  justify-content: center; /* Centraliza os controles */
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee; /* Linha divisória */
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.control-group label {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.control-group select,
+.control-group input[type="date"] {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  min-width: 180px; /* Largura mínima para selects/inputs */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.control-group select:focus,
+.control-group input[type="date"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+.btn-generate-report {
+  background-color: #007bff; /* Azul */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-generate-report:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* Área do gráfico */
+.chart-area {
+  position: relative;
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  background: white;
-  transition: background-color 0.3s ease-in-out;
+  height: 500px; /* Altura fixa para o gráfico */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px; /* Espaçamento acima do gráfico */
 }
 
-th, td {
-  border: 1px solid #4b4b4b;
-  padding: 10px;
-  text-align: left;
-  transition: border-color 0.3s ease-in-out, color 0.3s ease-in-out;
+.chart-area canvas {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 900px; /* Limita a largura máxima do gráfico */
 }
 
-th {
-  background: #2c3e50;
-  color: rgb(255, 255, 255);
-}
+/* Media Queries para responsividade */
+@media (max-width: 1024px) {
+  .dashboard-container {
+    grid-template-columns: 200px 1fr;
+  }
 
-/* =================================================================== */
-/* ==== TEMA ESCURO PARA CONTEÚDO (SOBRESCRITAS DE ESTILO) ========= */
-/* =================================================================== */
-.content-dark-theme .dashboard-content {
-  background-color: #1e2730;
-}
+  .dashboard-header h1 {
+    font-size: 2rem;
+  }
 
-.content-dark-theme .titulo {
-  color: #e0e6eb;
-}
+  .titulo {
+    font-size: 45px;
+  }
 
-.content-dark-theme table {
-  background-color: #2c3e50;
-}
+  .main-menu a {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
 
-.content-dark-theme th,
-.content-dark-theme td {
-  border-color: #5a738f;
-  color: #e0e6eb;
-}
+  .report-controls {
+    gap: 15px;
+  }
 
-.content-dark-theme td a {
-  color: #5dade2;
+  .control-group select,
+  .control-group input[type="date"] {
+    min-width: 150px;
+  }
 }
 
 @media (max-width: 768px) {
-  .menu-toggle { display: block; }
-  .main-menu { position: absolute; top: 70px; left: 0; width: 200px; height: calc(100% - 70px); background-color: #34495e; transform: translateX(-100%); transition: transform 0.3s ease; z-index: 1000; }
-  .main-menu.open { transform: translateX(0); }
+  .dashboard-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+  }
+
+  .dashboard-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .main-menu {
+    grid-column: 1 / -1;
+    grid-row: 2 / 3;
+    position: fixed;
+    top: 65px; /* Ajuste se o header tiver outra altura */
+    left: 0;
+    width: 250px;
+    height: calc(100% - 65px);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1001;
+    padding: 20px 0;
+  }
+
+  .main-menu.open {
+    transform: translateX(0);
+  }
+
+  .dashboard-content {
+    grid-column: 1 / -1;
+    margin-left: 0;
+    padding: 15px;
+    order: 3;
+  }
+
+  .titulo {
+    font-size: 36px;
+  }
+
+  .report-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .control-group select,
+  .control-group input[type="date"],
+  .btn-generate-report {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .chart-area {
+    height: 400px;
+  }
 }
-/* ... outras media queries ... */
+
+@media (max-width: 480px) {
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .main-menu {
+    width: 100%;
+  }
+
+  .main-menu a {
+    font-size: 0.9rem;
+    padding: 8px 15px;
+  }
+
+  .dashboard-content {
+    padding: 15px;
+  }
+
+  .titulo {
+    font-size: 28px;
+  }
+}

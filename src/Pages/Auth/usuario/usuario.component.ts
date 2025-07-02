@@ -29,10 +29,10 @@ interface Usuario {
 })
 export class UsuarioComponent implements OnInit {
   
-  public contentTheme: 'light' | 'dark' = 'light';
+  
   menuAberto = false;
-  headerUsuarioNome: string = '';
-  headerUsuarioFoto: string = '';
+  headerUsuarioNome: string = 'Carregando...';
+  headerUsuarioFoto: string = 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
 
   usuario: Usuario = {
     nome: '',
@@ -69,26 +69,11 @@ export class UsuarioComponent implements OnInit {
     this.atualizarHeaderInfo();
     this.usuarioEditavel = { ...this.usuario };
 
-    this.contentTheme = localStorage.getItem('contentTheme') as 'light' | 'dark' || 'light';
-    this.applyContentTheme();
+    
   }
 
-  toggleTheme(): void {
-    this.contentTheme = this.contentTheme === 'light' ? 'dark' : 'light';
-    localStorage.setItem('contentTheme', this.contentTheme);
-    this.applyContentTheme();
-  }
 
-  private applyContentTheme(): void {
-    const container = this.document.getElementById('dashboard-container');
-    if (container) {
-      if (this.contentTheme === 'dark') {
-        this.renderer.addClass(container, 'content-dark-theme');
-      } else {
-        this.renderer.removeClass(container, 'content-dark-theme');
-      }
-    }
-  }
+  
 
   alternarMenu(): void {
     this.menuAberto = !this.menuAberto;

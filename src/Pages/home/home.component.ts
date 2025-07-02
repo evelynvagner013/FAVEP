@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from '../footer/footer.component';
 import { AssinaturaComponent } from '../assinatura/assinatura/assinatura.component';
+import { MenuCimaComponent } from '../navbar/menu-cima/menu-cima.component';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +11,7 @@ import { AssinaturaComponent } from '../assinatura/assinatura/assinatura.compone
   imports: [
     CommonModule,
     RouterLink,
-   
+    MenuCimaComponent,
     FooterComponent,
     AssinaturaComponent
   ],

@@ -250,12 +250,13 @@ export class RelatorioComponent implements OnInit {
               text: this.getAxisYTitle(this.reportType)
             },
             ticks: {
-              callback: function(value: any) {
+              callback: (value: any) => { // <-- Use uma função de seta aqui!
                 if (this.reportType === 'financial') {
                   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
                 }
                 return new Intl.NumberFormat('pt-BR').format(value);
-              }.bind(this) // Garante que 'this' dentro do callback se refira ao componente
+              }
+              // Remova o .bind(this) completamente!
             }
           },
           x: {

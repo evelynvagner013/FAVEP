@@ -6,15 +6,6 @@
     <h1><img src="../../../assets/img/FAVEP_LOGO_nobg.png" alt="Logo FAVEP" class="header-logo-img"> FAVEP - Gestão Agronômica</h1>
     <div class="user-info">
 
-      <div class="theme-switch-wrapper">
-        <i class="fas fa-sun"></i>
-        <label class="switch">
-          <input type="checkbox" [checked]="contentTheme === 'dark'" (change)="toggleTheme()">
-          <span class="slider round"></span>
-        </label>
-        <i class="fas fa-moon"></i>
-      </div>
-
       <span>Olá, {{ headerUsuarioNome }}</span>
       <img [src]="headerUsuarioFoto" [alt]="'Foto de ' + headerUsuarioNome" class="user-avatar">  
     </div>
