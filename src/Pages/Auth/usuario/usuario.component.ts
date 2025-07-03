@@ -20,27 +20,24 @@ import { ApiService, Usuario } from '../../../services/api.service';
 export class UsuarioComponent implements OnInit {
 
   menuAberto = false;
-  usuarioNome: string = 'Carregando...';
+  usuarioNome: string = '';
   usuarioFoto: string = 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
 
-  // Usa a interface Usuario importada da ApiService
+  
   
   usuario: Usuario = {
-    id: '', // ID é obrigatório se for um usuário existente
-    nome: 'Usuário Padrão', // Valor inicial
+    id: '', 
+    nome: '', 
     email: '',
     telefone: '',
-    fotoPerfil: 'assets/img/usuario.jpg',
-    senha: 'defaultPassword' // fotoPerfil em vez de fotoUrl
+    fotoPerfil: 'https://placehold.co/40x40/aabbcc/ffffff?text=User',
+    senha: 'defaultPassword' 
   };
 
-  // 'usuarioEditavel' para o modal de edição. Removidos campos de plano
+ 
   usuarioEditavel: Partial<Usuario> = {};
 
   editModalAberto = false;
-  // Removidas propriedades relacionadas ao modal de plano
-  // planoModalAberto = false;
-  // planoSelecionado: string = '';
 
   constructor(
     private datePipe: DatePipe,
@@ -51,7 +48,7 @@ export class UsuarioComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.carregarPerfilUsuario(); // Chama o método para carregar o perfil do usuário
+    this.carregarPerfilUsuario(); 
   }
 
   carregarPerfilUsuario(): void {
@@ -63,28 +60,25 @@ export class UsuarioComponent implements OnInit {
       this.apiService.getPerfilUsuario().subscribe({
         next: (userFromApi) => {
           if (userFromApi) {
-            // Atualiza o objeto 'usuario' do componente com os dados da API
+            
             this.usuario = {
               ...userFromApi,
-              fotoPerfil: userFromApi.fotoPerfil || 'assets/img/usuario.jpg', // Garante uma foto padrão
+              fotoPerfil: userFromApi.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User', 
             };
           } else {
-            // Se a API não retornou o usuário (ex: token inválido, user não encontrado)
-            // Usa os dados do localStorage como fallback e faz logout para forçar reautenticação.
             console.warn('Perfil não encontrado na API. Usando dados do localStorage e fazendo logout.');
             this.usuario = {
                 ...userLocal,
-                fotoPerfil: userLocal.fotoPerfil || 'assets/img/usuario.jpg',
+                fotoPerfil: userLocal.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User',
             };
-            this.apiService.logout(); // Sugestão: Forçar logout se o perfil da API falhar
-            this.router.navigate(['/home']);
+            this.apiService.logout(); 
           }
-          this.atualizarHeaderInfo(); // Atualiza as informações de exibição no cabeçalho
-          this.usuarioEditavel = { ...this.usuario }; // Inicializa usuarioEditavel
+          this.atualizarHeaderInfo(); 
+          this.usuarioEditavel = { ...this.usuario }; 
         },
         error: (err) => {
           console.error('Erro ao carregar perfil do usuário da API:', err);
-          // Se houver erro na API, use os dados do localStorage como fallback
+          
           this.usuario = {
               ...userLocal,
               fotoPerfil: userLocal.fotoPerfil || 'assets/img/usuario.jpg',
@@ -169,7 +163,7 @@ export class UsuarioComponent implements OnInit {
     // Garante que o usuario está definido antes de acessar suas propriedades
     if (this.usuario) {
       this.usuarioNome = this.usuario.nome;
-      this.usuarioFoto = this.usuario.fotoPerfil || 'assets/img/usuario.jpg'; // Usando fotoPerfil
+      this.usuarioFoto = this.usuario.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User'; // Usando fotoPerfil
     }
   }
 

@@ -51,8 +51,8 @@ export class GerenciamentoComponent implements OnInit {
     }
   }
 
-  usuarioNome: string = 'Carregando...';
-  headerUsuarioFoto: string = 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
+  usuarioNome: string = '';
+  usuarioFoto: string = 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
 
   abaAtiva: string = 'propriedades';
   modalAberto: boolean = false;
@@ -70,7 +70,7 @@ export class GerenciamentoComponent implements OnInit {
 
   opcoesFiltro: { valor: string; texto: string }[] = [{ valor: 'todos', texto: 'Todos' }];
 
-  usuario: Usuario | null = null;
+  
   novaSenha: string = '';
 
   propriedades: Propriedade[] = [];
@@ -92,19 +92,21 @@ export class GerenciamentoComponent implements OnInit {
   constructor(private apiService: ApiService, private datePipe: DatePipe) {}
 
   ngOnInit(): void {
+    
+    const usuarioLogado = this.apiService.getUser();
+    if (usuarioLogado && usuarioLogado.nome) {
+      this.usuarioNome = usuarioLogado.nome;
+      this.usuarioFoto = usuarioLogado.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
+    }
     this.carregarTodosDados();
   }
-
   carregarTodosDados(): void {
     this.apiService.carregarDadosDashboard().subscribe({
       next: (data) => {
-        this.usuario = data.perfil;
-        if (this.usuario) {
-          this.usuarioNome = this.usuario.nome || 'Usuário';
-          this.headerUsuarioFoto =
-            this.usuario.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
-        } else {
-          this.usuarioNome = 'Visitante';
+        const { perfil, propriedades, producoes, atividades, movimentacoes } = data;
+        if (perfil) {
+          this.usuarioNome = perfil.nome; 
+          this.usuarioFoto = perfil.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User'; 
         }
 
         this.propriedades = data.propriedades;

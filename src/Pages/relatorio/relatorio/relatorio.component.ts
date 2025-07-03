@@ -30,24 +30,24 @@ interface MovimentacaoComponent extends Omit<BackendMovimentacao, 'data'> {
   styleUrl: './relatorio.component.css'
 })
 export class RelatorioComponent implements OnInit {
-  // Propriedades do menu e usuário no cabeçalho
+ 
   menuAberto = false;
-  usuarioNome: string = 'Carregando...';
-  usuarioFoto: string = 'https://placehold.co/40x40/aabbcc/ffffff?text=User'; // Imagem padrão
+  usuarioNome: string = '';
+  usuarioFoto: string = 'https://placehold.co/40x40/aabbcc/ffffff?text=User'; 
 
-  // Dados brutos do backend (agora com nomes em português)
+ 
   propriedades: Propriedade[] = [];
   producoes: Producao[] = [];
-  movimentacoes: MovimentacaoComponent[] = []; // Usando a interface local adaptada
+  movimentacoes: MovimentacaoComponent[] = []; 
 
-  // Filtros para o relatório
+ 
   selectedPropertyId: string = 'todos'; // ID da propriedade selecionada, 'todos' por padrão
   startDate: string = ''; // Data de início para o filtro de período (string para input type="date")
   endDate: string = '';   // Data de fim para o filtro de período (string para input type="date")
   selectedCropType: string = 'todos'; // Tipo de cultura selecionada para filtro (cultura na API)
   reportType: 'productivity' | 'financial' | 'crop_production' = 'productivity'; // Tipo de relatório
 
-  // Opções para os filtros (preenchidas dinamicamente)
+ 
   availableCropTypes: { value: string, text: string }[] = [{ value: 'todos', text: 'Todas as Culturas' }];
 
   // Referência ao canvas do gráfico
@@ -59,29 +59,27 @@ export class RelatorioComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.carregarDadosIniciais(); // Carrega dados iniciais (propriedades, producoes, movimentacoes)
+    
+    const usuarioLogado = this.apiService.getUser();
+    if (usuarioLogado && usuarioLogado.nome) {
+      this.usuarioNome = usuarioLogado.nome;
+      this.usuarioFoto = usuarioLogado.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
+    }
+    this.carregarDadosIniciais();
   }
 
-  // --- Métodos de Carregamento de Dados ---
-
-  /**
-   * Carrega os dados iniciais do backend (propriedades, producoes, movimentacoes).
-   */
   carregarDadosIniciais(): void {
-    this.apiService.carregarDadosDashboard().subscribe({ // Chamada ao método da ApiService
+    this.apiService.carregarDadosDashboard().subscribe({ 
       next: (data) => {
-        // Atualiza informações do usuário no cabeçalho
-        if (data.perfil) { // 'perfil' em vez de 'userProfile'
-          this.usuarioNome = data.perfil.nome || 'Usuário'; // 'nome' em vez de 'username'
-          this.usuarioFoto = data.perfil.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User'; // 'fotoPerfil' em vez de 'fotoUrl'
-        } else {
-          this.usuarioNome = 'Visitante';
+        const { perfil, propriedades, producoes, atividades, movimentacoes } = data;
+        if (perfil) {
+          this.usuarioNome = perfil.nome; 
+          this.usuarioFoto = perfil.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User'; 
         }
 
-        this.propriedades = data.propriedades; // 'propriedades' em vez de 'properties'
-        this.producoes = data.producoes;     // 'producoes' em vez de 'crops'
-        // Converte datas para objetos Date para manipulação no frontend
-        this.movimentacoes = data.movimentacoes.map(rec => ({ ...rec, data: new Date(rec.data) })); // 'movimentacoes' em vez de 'financialRecords', 'data' em vez de 'date'
+        this.propriedades = data.propriedades; 
+        this.producoes = data.producoes;  
+        this.movimentacoes = data.movimentacoes.map(rec => ({ ...rec, data: new Date(rec.data) })); 
 
         // Preenche as opções de tipo de cultura para o filtro
         const uniqueCropTypes = new Set<string>();
@@ -90,23 +88,19 @@ export class RelatorioComponent implements OnInit {
           this.availableCropTypes.push({ value: type, text: type });
         });
 
-        // Gera o relatório inicial
+        
         this.gerarRelatorio();
       },
       error: (err) => {
         console.error('Erro ao carregar dados iniciais para o relatório:', err);
-        // TODO: Exibir mensagem de erro na UI
+        
       }
     });
   }
 
-  // --- Métodos de Geração de Relatórios ---
-
-  /**
-   * Gera o relatório com base nos filtros selecionados.
-   */
+ 
   gerarRelatorio(): void {
-    // Destrói o gráfico existente antes de criar um novo
+  
     if (this.reportChart) {
       this.reportChart.destroy();
       this.reportChart = null;

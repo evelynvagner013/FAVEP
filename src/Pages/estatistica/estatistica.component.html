@@ -68,16 +68,6 @@
       </div>
     </div>
 
-    <div class="atividades-recentes">
-      <h3>Atividades Recentes</h3>
-      <ul>
-        <li *ngFor="let atividade of atividades">
-          <i [class]="'fas ' + atividade.icone"></i>
-          <span>{{atividade.descricao}}</span>
-          <span class="data">{{atividade.data | date:'dd/MM/yyyy'}}</span>
-        </li>
-        <li *ngIf="atividades.length === 0">Nenhuma atividade recente encontrada.</li>
-      </ul>
-    </div>
+   
   </main>
 </div>

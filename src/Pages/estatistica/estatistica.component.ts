@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 registerLocaleData(localePt);
 
-// Interfaces para o componente, adaptadas da API
+
 interface AtividadeComponent extends Omit<BackendAtividade, 'data'> {
   data: Date;
 }
@@ -21,18 +21,18 @@ interface AtividadeComponent extends Omit<BackendAtividade, 'data'> {
   imports: [
     CommonModule,
     RouterLink,
-    HttpClientModule // Necessário para que o HttpClient funcione em um componente standalone
+    HttpClientModule 
   ],
   templateUrl: './estatistica.component.html',
   styleUrls: ['./estatistica.component.css']
 })
 export class EstatisticaComponent implements OnInit {
-  menuAberto = false; // Estado para o menu lateral, se usado
+  menuAberto = false; 
 
   @ViewChild('produtividadeChart', { static: true }) produtividadeChart!: ElementRef<HTMLCanvasElement>;
   @ViewChild('financeiroChart', { static: true }) financeiroChart!: ElementRef<HTMLCanvasElement>;
 
-  usuarioNome: string = 'Carregando...';
+  usuarioNome: string = '';
   usuarioFoto: string = 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
 
   totalPropriedades: number = 0;
@@ -59,20 +59,22 @@ export class EstatisticaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
+    const usuarioLogado = this.apiService.getUser();
+    if (usuarioLogado && usuarioLogado.nome) {
+      this.usuarioNome = usuarioLogado.nome;
+      this.usuarioFoto = usuarioLogado.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
+    }
     this.carregarDadosDoBackend();
   }
 
   carregarDadosDoBackend(): void {
-    this.apiService.carregarDadosDashboard().subscribe({ // Chamada ao novo método da ApiService
+    this.apiService.carregarDadosDashboard().subscribe({ 
       next: (data) => {
-        // Desestruturando os dados com os nomes em português da sua ApiService
         const { perfil, propriedades, producoes, atividades, movimentacoes } = data;
-
         if (perfil) {
-          this.usuarioNome = perfil.nome || 'Usuário'; // 'nome' em vez de 'username'
-          this.usuarioFoto = perfil.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User'; // 'fotoPerfil' em vez de 'fotoUrl'
-        } else {
-          this.usuarioNome = 'Visitante';
+          this.usuarioNome = perfil.nome; 
+          this.usuarioFoto = perfil.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User'; 
         }
 
         this.totalPropriedades = propriedades.length;
@@ -82,9 +84,9 @@ export class EstatisticaComponent implements OnInit {
         const culturasUnicas = new Set<string>();
         let totalProducao = 0;
 
-        producoes.forEach(prod => { // 'producoes' em vez de 'crops'
-          culturasUnicas.add(prod.cultura); // 'cultura' em vez de 'name'
-          if (prod.quantidade) { // 'quantidade' em vez de 'actualYield'
+        producoes.forEach(prod => { 
+          culturasUnicas.add(prod.cultura); 
+          if (prod.quantidade) { 
             totalProducao += prod.quantidade;
             producaoPorCultura[prod.cultura] = (producaoPorCultura[prod.cultura] || 0) + prod.quantidade;
           }
@@ -95,27 +97,18 @@ export class EstatisticaComponent implements OnInit {
         let totalReceitas = 0;
         let totalDespesas = 0;
 
-        movimentacoes.forEach(mov => { // 'movimentacoes' em vez de 'financialRecords'
-          if (mov.tipo === 'receita') { // 'tipo' em vez de 'type', 'receita' em vez de 'revenue'
-            totalReceitas += mov.valor; // 'valor' em vez de 'amount'
-          } else if (mov.tipo === 'despesa') { // 'tipo' em vez de 'type', 'despesa' em vez de 'expense'
-            totalDespesas += mov.valor; // 'valor' em vez de 'amount'
+        movimentacoes.forEach(mov => { 
+          if (mov.tipo === 'receita') { 
+            totalReceitas += mov.valor; 
+          } else if (mov.tipo === 'despesa') { 
+            totalDespesas += mov.valor; 
           }
         });
         this.resultadoFinanceiro = totalReceitas - totalDespesas;
         this.dadosFinanceiros.receitas = totalReceitas;
         this.dadosFinanceiros.despesas = totalDespesas;
 
-        // Mapeamento das atividades para a interface local
-        this.atividades = atividades.map(ativ => ({
-          id: ativ.id, // 'id' em vez de '_id'
-          descricao: ativ.descricao, // 'descricao' em vez de 'description'
-          data: new Date(ativ.data), // 'data' em vez de 'date'
-          tipo: ativ.tipo, // 'tipo' em vez de 'type'
-          propriedade: ativ.propriedade, // Novo campo
-          responsavel: ativ.responsavel, // Novo campo
-          icone: this.getIconForActivityType(ativ.tipo) // Usa 'tipo'
-        })).sort((a, b) => b.data.getTime() - a.data.getTime());
+      
 
         this.culturas = Object.keys(producaoPorCultura);
         this.dadosProdutividade = this.culturas.map(cultura => producaoPorCultura[cultura]);

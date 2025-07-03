@@ -83,7 +83,7 @@ export class ApiService {
   }
 
   login(email: string, senha: string): Observable<any> {
-    return this.http.post(`${this.baseUrl.replace('/api', '')}/auth/login`, { email, password: senha }).pipe(
+    return this.http.post(`${this.baseUrl.replace('/api', '')}/auth/login`, { email, senha }).pipe(
       map((response: any) => {
         if (response.token && response.user) {
           this.setToken(response.token);

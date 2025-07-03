@@ -8,7 +8,7 @@
     </h1>
     <div class="user-info">
       <span>Olá, {{ usuarioNome }}</span>
-      <img [src]="headerUsuarioFoto" [alt]="'Foto de ' + usuarioNome" class="user-avatar">
+      <img [src]="usuarioFoto" [alt]="'Foto de ' + usuarioNome" class="user-avatar">
     </div>
   </header>
 
@@ -45,20 +45,19 @@
       <button [class.active]="abaAtiva === 'financeiro'" (click)="selecionarAba('financeiro')">
         <i class="fas fa-money-bill-wave"></i> Financeiro
       </button>
-      <button [class.active]="abaAtiva === 'atividades'" (click)="selecionarAba('atividades')">
-        <i class="fas fa-clipboard-list"></i> Atividades </button>
+    
       </nav>
 
     <div class="toolbar">
       <div class="filtros">
-        <div class="filtro-group" *ngIf="abaAtiva !== 'financeiro' && abaAtiva !== 'atividades'"> <label>Filtrar:</label>
+        <div class="filtro-group" *ngIf="abaAtiva !== 'financeiro' "> <label>Filtrar:</label>
           <select [(ngModel)]="filtroAtivo" (change)="aplicarFiltros()" name="filtroTipo">
             <option value="todos">Todos</option>
             <option *ngFor="let opcao of opcoesFiltro" [value]="opcao.valor">{{opcao.texto}}</option>
           </select>
         </div>
 
-        <div class="filtro-group" *ngIf="abaAtiva === 'financeiro' || abaAtiva === 'atividades'"> <label>Período:</label>
+        <div class="filtro-group" *ngIf="abaAtiva === 'financeiro' "> <label>Período:</label>
           <select [(ngModel)]="filtroPeriodo" (change)="aplicarFiltros()" name="filtroPeriodo">
             <option value="30">Últimos 30 dias</option>
             <option value="90">Últimos 90 dias</option>
@@ -138,7 +137,7 @@
           <thead>
             <tr>
               <th>Cultura</th>
-              <th>Safra</th> <th>Data</th> <th>Quantidade (kg)</th> <th>Área (ha)</th> <th>Propriedade</th>
+              <th>Safra</th> <th>Data</th> <th>Área (ha)</th> <th>Propriedade</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -147,7 +146,6 @@
               <td>{{prod.cultura}}</td>
               <td>{{prod.safra}}</td>
               <td>{{prod.data | date:'dd/MM/yyyy':'pt-BR'}}</td>
-              <td>{{prod.quantidade | number:'1.0-0':'pt-BR'}}</td>
               <td>{{prod.area | number:'1.0-0':'pt-BR'}}</td>
               <td>{{getNomePropriedade(prod.propriedadeId)}}</td>
               <td class="actions">
@@ -251,9 +249,6 @@
             <label>Safra</label> <input type="text" [(ngModel)]="producaoEditada.safra" name="cropType" placeholder="Ex: Grão, Fruta" required>
           </div>
           <div class="form-group">
-            <label>Quantidade (kg)</label> <input type="number" step="0.01" [(ngModel)]="producaoEditada.quantidade" name="expectedYield">
-          </div>
-          <div class="form-group">
             <label>Área (ha)</label>
             <input type="number" step="0.01" [(ngModel)]="producaoEditada.area" name="producaoArea" required>
           </div>
@@ -268,27 +263,7 @@
           </div>
         </div>
 
-        <div *ngIf="tipoEdicao === 'atividades'">
-            <div class="form-group">
-                <label>Descrição</label>
-                <input type="text" [(ngModel)]="atividadeEditada.descricao" name="atividadeDescricao" required>
-            </div>
-            <div class="form-group">
-                <label>Data</label>
-                <input type="date" [(ngModel)]="atividadeEditada.data" name="atividadeData" required>
-            </div>
-            <div class="form-group">
-                <label>Tipo</label>
-                <input type="text" [(ngModel)]="atividadeEditada.tipo" name="atividadeTipo" placeholder="Ex: Plantio, Colheita" required>
-            </div>
-            <div class="form-group">
-                <label>Propriedade (Opcional)</label>
-                <select [(ngModel)]="atividadeEditada.propriedade" name="atividadePropriedade">
-                    <option [value]="''">Nenhuma</option>
-                    <option *ngFor="let prop of propriedades" [value]="prop.id">{{prop.nome}}</option>
-                </select>
-            </div>
-            </div>
+     
 
         <div *ngIf="tipoEdicao === 'financeiro'">
           <div class="form-group">
@@ -310,10 +285,9 @@
             <input type="date" [(ngModel)]="movimentacaoEditada.data" name="financialDate" required>
           </div>
           <div class="form-group">
-            <label>Propriedade (Opcional)</label>
-            <select [(ngModel)]="movimentacaoEditada.propriedade" name="financialProperty">
-              <option [value]="''">Nenhuma</option>
-              <option *ngFor="let prop of propriedades" [value]="prop.id">{{prop.nome}}</option>
+            <label>Propriedade</label>
+            <select [(ngModel)]="producaoEditada.propriedadeId" name="cropProperty" required>
+              <option [value]="0" disabled>Selecione uma propriedade</option> <option *ngFor="let prop of propriedades" [value]="prop.id">{{prop.nome}}</option>
             </select>
           </div>
           <div class="form-group" *ngIf="movimentacaoEditada.tipo === 'despesa'"> <label>Categoria (Opcional)</label>
