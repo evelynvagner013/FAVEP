@@ -94,6 +94,7 @@ export class ApiService {
     );
   }
 
+  
   setToken(token: string): void {
     if (this.isBrowser) localStorage.setItem('token', token);
   }
