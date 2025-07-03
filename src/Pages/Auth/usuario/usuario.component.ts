@@ -31,7 +31,7 @@ export class UsuarioComponent implements OnInit {
     email: '',
     telefone: '',
     fotoPerfil: 'https://placehold.co/40x40/aabbcc/ffffff?text=User',
-    senha: 'defaultPassword' 
+    senha: '' // Senha não deve ser armazenada ou manipulada no front-end
   };
 
  
@@ -52,50 +52,47 @@ export class UsuarioComponent implements OnInit {
   }
 
   carregarPerfilUsuario(): void {
-    // Busca o usuário logado do localStorage via ApiService
     const userLocal = this.apiService.getUser();
 
-    if (userLocal && userLocal.id) { // Verifica se há um usuário no localStorage e se ele tem um ID
-      // Tenta buscar o perfil completo do backend, caso haja um ID
+    if (userLocal && userLocal.id) {
+      // Pré-carrega os dados locais para uma exibição mais rápida
+      this.usuario = { ...userLocal, senha: '' };
+      this.atualizarHeaderInfo();
+
+      // Tenta buscar o perfil mais recente do backend
       this.apiService.getPerfilUsuario().subscribe({
         next: (userFromApi) => {
           if (userFromApi) {
-            
+            // Se a API retornou o usuário, atualize os dados locais
             this.usuario = {
               ...userFromApi,
               fotoPerfil: userFromApi.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User', 
+              senha: ''
             };
+            // Atualiza também o localStorage com os dados mais recentes
+            this.apiService.setUser(this.usuario);
           } else {
-            console.warn('Perfil não encontrado na API. Usando dados do localStorage e fazendo logout.');
-            this.usuario = {
-                ...userLocal,
-                fotoPerfil: userLocal.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User',
-            };
-            this.apiService.logout(); 
+            // Se a API falhou mas temos dados locais, apenas logamos o aviso
+            console.warn('Perfil não encontrado na API. Usando dados do localStorage.');
+            // Não fazemos logout aqui. O usuário continua com os dados que já tinha.
           }
           this.atualizarHeaderInfo(); 
           this.usuarioEditavel = { ...this.usuario }; 
         },
         error: (err) => {
-          console.error('Erro ao carregar perfil do usuário da API:', err);
-          
-          this.usuario = {
-              ...userLocal,
-              fotoPerfil: userLocal.fotoPerfil || 'assets/img/usuario.jpg',
-          };
+          console.error('Erro ao carregar perfil do usuário da API. Usando dados locais.', err);
+          // Em caso de erro de rede ou outro, também não deslogamos
           this.atualizarHeaderInfo();
           this.usuarioEditavel = { ...this.usuario };
         }
       });
     } else {
-      // Se não há usuário logado ou sem ID no localStorage, redireciona para o login
+      // Se não há usuário no localStorage, não há sessão ativa, redireciona.
       console.warn('Usuário não logado ou sem ID no localStorage. Redirecionando para home.');
-      this.apiService.logout(); // Garante que não há dados inconsistentes
       this.router.navigate(['/home']);
     }
   }
 
-  // Métodos do menu lateral
   alternarMenu(): void {
     this.menuAberto = !this.menuAberto;
   }
@@ -109,11 +106,7 @@ export class UsuarioComponent implements OnInit {
   }
 
   abrirModalEdicao(): void {
-    // Inicializa usuarioEditavel para edição.
-    this.usuarioEditavel = {
-      ...this.usuario,
-      // Removidas as conversões de data, pois os campos de plano foram removidos
-    };
+    this.usuarioEditavel = { ...this.usuario };
     this.editModalAberto = true;
   }
 
@@ -127,7 +120,6 @@ export class UsuarioComponent implements OnInit {
       return;
     }
 
-    // Prepara o payload para enviar à API. Removidos campos de plano
     const payload: Partial<Usuario> = {
       nome: this.usuarioEditavel.nome,
       email: this.usuarioEditavel.email,
@@ -138,32 +130,29 @@ export class UsuarioComponent implements OnInit {
     this.apiService.atualizarPerfilUsuario(this.usuarioEditavel.id, payload).subscribe({
       next: (updatedUser) => {
         console.log('Perfil atualizado com sucesso:', updatedUser);
-        // Atualiza o objeto 'usuario' local com os dados retornados pela API
         this.usuario = {
-            ...updatedUser,
-            fotoPerfil: updatedUser.fotoPerfil || 'assets/img/usuario.jpg',
+            ...this.usuario, // Mantém dados existentes
+            ...updatedUser, // Sobrescreve com os atualizados
+            fotoPerfil: updatedUser.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User',
         };
-        // Atualizar o usuário no localStorage via apiService para manter a sessão atualizada
+        // Atualiza o usuário no localStorage para manter a sessão consistente
         this.apiService.setUser(this.usuario);
 
-        this.atualizarHeaderInfo(); // Atualiza as informações de exibição
+        this.atualizarHeaderInfo(); 
         this.fecharModalEdicao();
-        alert('Perfil atualizado com sucesso!'); // Feedback para o usuário
+        alert('Perfil atualizado com sucesso!');
       },
       error: (err) => {
         console.error('Erro ao salvar alterações no perfil:', err);
-        alert('Erro ao atualizar perfil. Tente novamente.'); // Feedback de erro
+        alert('Erro ao atualizar perfil. Tente novamente.');
       }
     });
   }
 
-
-
   private atualizarHeaderInfo(): void {
-    // Garante que o usuario está definido antes de acessar suas propriedades
     if (this.usuario) {
       this.usuarioNome = this.usuario.nome;
-      this.usuarioFoto = this.usuario.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User'; // Usando fotoPerfil
+      this.usuarioFoto = this.usuario.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
     }
   }
 
