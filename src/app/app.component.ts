@@ -1,7 +1,7 @@
 import { Component } from '@angular/core'; 
 import { RouterOutlet } from '@angular/router';
 
-import { ApiService } from '../services/api.service'; 
+
 
 @Component({
   selector: 'app-root',
@@ -13,7 +13,7 @@ import { ApiService } from '../services/api.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent { 
-  constructor(private api: ApiService) {}
+  constructor() {}
 
 
 }

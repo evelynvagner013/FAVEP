@@ -5,88 +5,70 @@ import { CommonModule } from '@angular/common';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 
-import { ApiService, Usuario, Propriedade, Producao, Atividade as BackendAtividade, Movimentacao as BackendMovimentacao } from '../../services/api.service';
-import { HttpClientModule } from '@angular/common/http'; 
+// Importa o serviço de dados do dashboard
+import { DashboardDataService } from '../../services/dashboard-data.service';
 
 registerLocaleData(localePt);
-
-
-interface AtividadeComponent extends Omit<BackendAtividade, 'data'> {
-  data: Date;
-}
 
 @Component({
   selector: 'app-estatistica',
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink,
-    HttpClientModule 
+    RouterLink
   ],
   templateUrl: './estatistica.component.html',
   styleUrls: ['./estatistica.component.css']
 })
 export class EstatisticaComponent implements OnInit {
-  menuAberto = false; 
+  menuAberto = false;
 
   @ViewChild('produtividadeChart', { static: true }) produtividadeChart!: ElementRef<HTMLCanvasElement>;
   @ViewChild('financeiroChart', { static: true }) financeiroChart!: ElementRef<HTMLCanvasElement>;
 
+ 
   usuarioNome: string = '';
   usuarioFoto: string = 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
-
   totalPropriedades: number = 0;
   areaTotal: number = 0;
   producaoAtual: number = 0;
   culturasAtivas: string[] = [];
   resultadoFinanceiro: number = 0;
-
-  atividades: AtividadeComponent[] = []; // Usando a interface adaptada
-
   dadosProdutividade: number[] = [];
   culturas: string[] = [];
   meses: string[] = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
   dadosReceitasMensais: number[] = new Array(12).fill(0);
   dadosDespesasMensais: number[] = new Array(12).fill(0);
+  dadosFinanceiros = { receitas: 0, despesas: 0 };
 
-  dadosFinanceiros = {
-    receitas: 0,
-    despesas: 0
-  };
-
-  constructor(private apiService: ApiService) {
+  constructor(private dashboardDataService: DashboardDataService) {
     Chart.register(...registerables);
   }
 
   ngOnInit(): void {
-    
-    const usuarioLogado = this.apiService.getUser();
-    if (usuarioLogado && usuarioLogado.nome) {
-      this.usuarioNome = usuarioLogado.nome;
-      this.usuarioFoto = usuarioLogado.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
-    }
     this.carregarDadosDoBackend();
   }
 
   carregarDadosDoBackend(): void {
-    this.apiService.carregarDadosDashboard().subscribe({ 
+    this.dashboardDataService.carregarDadosDashboard().subscribe({
       next: (data) => {
-        const { perfil, propriedades, producoes, atividades, movimentacoes } = data;
+        const { perfil, propriedades, producoes, movimentacoes } = data;
+
         if (perfil) {
-          this.usuarioNome = perfil.nome; 
-          this.usuarioFoto = perfil.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User'; 
+          this.usuarioNome = perfil.nome;
+          this.usuarioFoto = perfil.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
         }
 
+        // Processamento dos dados para os cards e gráficos
         this.totalPropriedades = propriedades.length;
         this.areaTotal = propriedades.reduce((sum, prop) => sum + prop.area, 0);
 
         const producaoPorCultura: { [key: string]: number } = {};
         const culturasUnicas = new Set<string>();
         let totalProducao = 0;
-
-        producoes.forEach(prod => { 
-          culturasUnicas.add(prod.cultura); 
-          if (prod.quantidade) { 
+        producoes.forEach(prod => {
+          culturasUnicas.add(prod.cultura);
+          if (prod.quantidade) {
             totalProducao += prod.quantidade;
             producaoPorCultura[prod.cultura] = (producaoPorCultura[prod.cultura] || 0) + prod.quantidade;
           }
@@ -96,34 +78,30 @@ export class EstatisticaComponent implements OnInit {
 
         let totalReceitas = 0;
         let totalDespesas = 0;
-
-        movimentacoes.forEach(mov => { 
-          if (mov.tipo === 'receita') { 
-            totalReceitas += mov.valor; 
-          } else if (mov.tipo === 'despesa') { 
-            totalDespesas += mov.valor; 
+        movimentacoes.forEach(mov => {
+          if (mov.tipo === 'receita') {
+            totalReceitas += mov.valor;
+          } else if (mov.tipo === 'despesa') {
+            totalDespesas += mov.valor;
           }
         });
         this.resultadoFinanceiro = totalReceitas - totalDespesas;
         this.dadosFinanceiros.receitas = totalReceitas;
         this.dadosFinanceiros.despesas = totalDespesas;
 
-      
-
         this.culturas = Object.keys(producaoPorCultura);
         this.dadosProdutividade = this.culturas.map(cultura => producaoPorCultura[cultura]);
 
         this.dadosReceitasMensais = new Array(12).fill(0);
         this.dadosDespesasMensais = new Array(12).fill(0);
-
-        movimentacoes.forEach(mov => { // 'movimentacoes' em vez de 'financialRecords'
-          const recordDate = new Date(mov.data); // 'data' em vez de 'date'
+        movimentacoes.forEach(mov => {
+          const recordDate = new Date(mov.data);
           const month = recordDate.getMonth();
           if (month >= 0 && month < 12) {
-            if (mov.tipo === 'receita') { // 'tipo' em vez de 'type', 'receita' em vez de 'revenue'
-              this.dadosReceitasMensais[month] += mov.valor; // 'valor' em vez de 'amount'
-            } else if (mov.tipo === 'despesa') { // 'tipo' em vez de 'type', 'despesa' em vez de 'expense'
-              this.dadosDespesasMensais[month] += mov.valor; // 'valor' em vez de 'amount'
+            if (mov.tipo === 'receita') {
+              this.dadosReceitasMensais[month] += mov.valor;
+            } else if (mov.tipo === 'despesa') {
+              this.dadosDespesasMensais[month] += mov.valor;
             }
           }
         });
@@ -134,28 +112,6 @@ export class EstatisticaComponent implements OnInit {
         console.error('Erro ao carregar dados do backend:', err);
       }
     });
-  }
-
-  getIconForActivityType(type: string): string {
-    // Mantido o case original, pois a API pode retornar nomes em inglês mesmo que as interfaces sejam em português
-    // Se o backend também retornar em português para os tipos de atividade, ajuste aqui
-    switch (type.toLowerCase()) {
-      case 'planting': // Plantio
-        return 'fa-seedling';
-      case 'harvest': // Colheita
-        return 'fa-wheat-awn';
-      case 'maintenance': // Manutenção
-        return 'fa-tractor';
-      case 'payment':
-      case 'revenue': // Receita
-        return 'fa-dollar-sign';
-      case 'expense': // Despesa
-        return 'fa-money-bill-wave';
-      case 'forecast': // Previsão
-        return 'fa-cloud-rain';
-      default:
-        return 'fa-clipboard-list';
-    }
   }
 
   criarGraficos(): void {
