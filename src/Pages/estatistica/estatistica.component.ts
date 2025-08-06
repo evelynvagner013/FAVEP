@@ -1,12 +1,14 @@
-import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Chart, registerables } from 'chart.js';
 import { CommonModule } from '@angular/common';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
+import { Subscription } from 'rxjs'; // Importar Subscription
 
-// Importa o serviço de dados do dashboard
+// --- SERVIÇOS ---
 import { DashboardDataService } from '../../services/dashboard-data.service';
+import { AuthService } from '../../services/auth.service'; // 1. IMPORTAR O AUTHSERVICE
 
 registerLocaleData(localePt);
 
@@ -20,100 +22,112 @@ registerLocaleData(localePt);
   templateUrl: './estatistica.component.html',
   styleUrls: ['./estatistica.component.css']
 })
-export class EstatisticaComponent implements OnInit {
+export class EstatisticaComponent implements OnInit, OnDestroy {
   menuAberto = false;
 
   @ViewChild('produtividadeChart', { static: true }) produtividadeChart!: ElementRef<HTMLCanvasElement>;
   @ViewChild('financeiroChart', { static: true }) financeiroChart!: ElementRef<HTMLCanvasElement>;
 
- 
+  // Informações do usuário (virão do AuthService)
   usuarioNome: string = '';
   usuarioFoto: string = 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
+
+  // Demais propriedades para os cards e gráficos
   totalPropriedades: number = 0;
   areaTotal: number = 0;
   producaoAtual: number = 0;
-  culturasAtivas: string[] = [];
   resultadoFinanceiro: number = 0;
   dadosProdutividade: number[] = [];
   culturas: string[] = [];
   meses: string[] = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
   dadosReceitasMensais: number[] = new Array(12).fill(0);
   dadosDespesasMensais: number[] = new Array(12).fill(0);
-  dadosFinanceiros = { receitas: 0, despesas: 0 };
 
-  constructor(private dashboardDataService: DashboardDataService) {
+  // Variável para guardar a inscrição e limpá-la depois
+  private userSubscription: Subscription | undefined;
+
+  // 2. INJETAR O AUTHSERVICE NO CONSTRUTOR
+  constructor(
+    private dashboardDataService: DashboardDataService,
+    private authService: AuthService
+  ) {
     Chart.register(...registerables);
   }
 
+  // 3. ATUALIZAR ngOnInit PARA USAR O PADRÃO REATIVO
   ngOnInit(): void {
-    this.carregarDadosDoBackend();
+    // Inscreve-se para ouvir mudanças nos dados do usuário
+    this.userSubscription = this.authService.currentUser.subscribe(user => {
+      if (user) {
+        this.usuarioNome = user.nome;
+        this.usuarioFoto = user.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
+      }
+    });
+
+    // Carrega os dados específicos do dashboard (gráficos, cards)
+    this.carregarDadosDoDashboard();
   }
 
-  carregarDadosDoBackend(): void {
+  // 4. CRIAR ngOnDestroy PARA LIMPEZA
+  ngOnDestroy(): void {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+  }
+
+  // 5. REMOVER A LÓGICA DE PERFIL DESTE MÉTODO
+  carregarDadosDoDashboard(): void {
     this.dashboardDataService.carregarDadosDashboard().subscribe({
       next: (data) => {
-        const { perfil, propriedades, producoes, movimentacoes } = data;
+        // A informação do 'perfil' não é mais necessária aqui
+        const { propriedades, producoes, movimentacoes } = data;
 
-        if (perfil) {
-          this.usuarioNome = perfil.nome;
-          this.usuarioFoto = perfil.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
-        }
-
-        // Processamento dos dados para os cards e gráficos
+        // Processamento dos dados para os cards e gráficos (sem alterações)
         this.totalPropriedades = propriedades.length;
         this.areaTotal = propriedades.reduce((sum, prop) => sum + prop.area, 0);
 
         const producaoPorCultura: { [key: string]: number } = {};
-        const culturasUnicas = new Set<string>();
         let totalProducao = 0;
         producoes.forEach(prod => {
-          culturasUnicas.add(prod.cultura);
           if (prod.quantidade) {
             totalProducao += prod.quantidade;
             producaoPorCultura[prod.cultura] = (producaoPorCultura[prod.cultura] || 0) + prod.quantidade;
           }
         });
         this.producaoAtual = totalProducao;
-        this.culturasAtivas = Array.from(culturasUnicas);
 
         let totalReceitas = 0;
         let totalDespesas = 0;
         movimentacoes.forEach(mov => {
-          if (mov.tipo === 'receita') {
-            totalReceitas += mov.valor;
-          } else if (mov.tipo === 'despesa') {
-            totalDespesas += mov.valor;
-          }
+          if (mov.tipo === 'receita') totalReceitas += mov.valor;
+          else if (mov.tipo === 'despesa') totalDespesas += mov.valor;
         });
         this.resultadoFinanceiro = totalReceitas - totalDespesas;
-        this.dadosFinanceiros.receitas = totalReceitas;
-        this.dadosFinanceiros.despesas = totalDespesas;
 
         this.culturas = Object.keys(producaoPorCultura);
         this.dadosProdutividade = this.culturas.map(cultura => producaoPorCultura[cultura]);
 
-        this.dadosReceitasMensais = new Array(12).fill(0);
-        this.dadosDespesasMensais = new Array(12).fill(0);
+        this.dadosReceitasMensais.fill(0);
+        this.dadosDespesasMensais.fill(0);
         movimentacoes.forEach(mov => {
-          const recordDate = new Date(mov.data);
-          const month = recordDate.getMonth();
+          const month = new Date(mov.data).getMonth();
           if (month >= 0 && month < 12) {
-            if (mov.tipo === 'receita') {
-              this.dadosReceitasMensais[month] += mov.valor;
-            } else if (mov.tipo === 'despesa') {
-              this.dadosDespesasMensais[month] += mov.valor;
-            }
+            if (mov.tipo === 'receita') this.dadosReceitasMensais[month] += mov.valor;
+            else if (mov.tipo === 'despesa') this.dadosDespesasMensais[month] += mov.valor;
           }
         });
 
         this.criarGraficos();
       },
       error: (err) => {
-        console.error('Erro ao carregar dados do backend:', err);
+        console.error('Erro ao carregar dados do dashboard:', err);
       }
     });
   }
 
+  // O restante do seu código (criarGraficos, alternarMenu, etc.) permanece igual.
+  // ... (código dos gráficos e menu)
+  
   criarGraficos(): void {
     if (this.produtividadeChart && this.produtividadeChart.nativeElement) {
       const existingChart = Chart.getChart(this.produtividadeChart.nativeElement);
@@ -183,8 +197,6 @@ export class EstatisticaComponent implements OnInit {
           }
         }
       });
-    } else {
-      console.error('Elemento canvas #produtividadeChart não encontrado.');
     }
 
     if (this.financeiroChart && this.financeiroChart.nativeElement) {
@@ -261,8 +273,6 @@ export class EstatisticaComponent implements OnInit {
           }
         }
       });
-    } else {
-      console.error('Elemento canvas #financeiroChart não encontrado.');
     }
   }
 

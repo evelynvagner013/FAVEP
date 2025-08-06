@@ -2,7 +2,7 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { Usuario } from '../models/api.models';
 
 @Injectable({
@@ -12,8 +12,7 @@ export class AuthService {
   private authUrl = 'http://localhost:5050/auth';
   private isBrowser: boolean;
 
-  // --- MELHORIA DE ESTADO ---
-  // BehaviorSubject para armazenar o usuário atual.
+  // BehaviorSubject para armazenar o usuário atual. Ele é a "fonte da verdade".
   private currentUserSubject: BehaviorSubject<Usuario | null>;
   public currentUser: Observable<Usuario | null>;
 
@@ -22,12 +21,12 @@ export class AuthService {
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
-    // Inicializa o BehaviorSubject com o usuário do localStorage
+    // Inicializa o BehaviorSubject com o usuário que já pode estar no localStorage
     this.currentUserSubject = new BehaviorSubject<Usuario | null>(this.getUser());
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  // Método público para obter o valor atual do usuário
+  // Método público para obter o valor atual do usuário de forma síncrona, se necessário
   public get currentUserValue(): Usuario | null {
     return this.currentUserSubject.value;
   }
@@ -38,12 +37,11 @@ export class AuthService {
 
   login(email: string, senha: string): Observable<any> {
     return this.http.post<{ token: string; user: Usuario }>(`${this.authUrl}/login`, { email, senha }).pipe(
-      tap(response => { // Usamos 'tap' para executar uma ação sem modificar a resposta
+      tap(response => {
         if (response.token && response.user) {
           this.setToken(response.token);
+          // O método setUser agora vai cuidar de salvar e notificar os componentes
           this.setUser(response.user);
-          // Notifica todos os 'escutadores' que um novo usuário logou
-          this.currentUserSubject.next(response.user);
         }
       })
     );
@@ -62,7 +60,6 @@ export class AuthService {
     return !!this.getToken();
   }
 
-  // Métodos de localStorage (privados ou públicos conforme necessidade)
   setToken(token: string): void {
     if (this.isBrowser) localStorage.setItem('token', token);
   }
@@ -71,8 +68,17 @@ export class AuthService {
     return this.isBrowser ? localStorage.getItem('token') : null;
   }
 
+  /**
+   * ---- MÉTODO CORRIGIDO ----
+   * Agora, além de salvar no localStorage, este método também atualiza
+   * o BehaviorSubject, notificando toda a aplicação sobre a mudança.
+   */
   setUser(usuario: Usuario): void {
-    if (this.isBrowser) localStorage.setItem('user', JSON.stringify(usuario));
+    if (this.isBrowser) {
+      localStorage.setItem('user', JSON.stringify(usuario));
+      // Notifica todos os componentes que estão inscritos em 'currentUser'
+      this.currentUserSubject.next(usuario);
+    }
   }
 
   getUser(): Usuario | null {

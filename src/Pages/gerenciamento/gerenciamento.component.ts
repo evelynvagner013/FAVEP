@@ -1,14 +1,17 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core'; // Adicionado OnDestroy
 import { RouterModule } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
+import { Subscription } from 'rxjs'; // Importar Subscription
 
+// --- SERVIÇOS ---
 import { DashboardDataService } from '../../services/dashboard-data.service';
 import { PropriedadeService } from '../../services/propriedade.service';
 import { ProducaoService } from '../../services/producao.service';
 import { MovimentacaoService } from '../../services/movimentacao.service';
+import { AuthService } from '../../services/auth.service'; // 1. IMPORTAR O AUTHSERVICE
 import {
   Usuario,
   Propriedade,
@@ -26,11 +29,13 @@ registerLocaleData(localePt);
   templateUrl: './gerenciamento.component.html',
   styleUrl: './gerenciamento.component.css',
 })
-export class GerenciamentoComponent implements OnInit {
+export class GerenciamentoComponent implements OnInit, OnDestroy { // Implementar OnDestroy
 
   menuAberto = false;
+  // Informações do usuário (virão do AuthService)
   usuarioNome: string = '';
   usuarioFoto: string = 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
+
   abaAtiva: string = 'propriedades';
   modalAberto: boolean = false;
   confirmacaoAberta: boolean = false;
@@ -59,27 +64,46 @@ export class GerenciamentoComponent implements OnInit {
   todasCulturas: string[] = [];
   safras: string[] = [];
 
+  // Variável para guardar a inscrição e limpá-la depois
+  private userSubscription: Subscription | undefined;
+
+  // 2. INJETAR O AUTHSERVICE NO CONSTRUTOR
   constructor(
     private dashboardDataService: DashboardDataService,
     private propriedadeService: PropriedadeService,
     private producaoService: ProducaoService,
     private movimentacaoService: MovimentacaoService,
+    private authService: AuthService, // Adicionado
     private datePipe: DatePipe
   ) {}
 
+  // 3. ATUALIZAR ngOnInit PARA USAR O PADRÃO REATIVO
   ngOnInit(): void {
+    // Inscreve-se para ouvir mudanças nos dados do usuário
+    this.userSubscription = this.authService.currentUser.subscribe(user => {
+      if (user) {
+        this.usuarioNome = user.nome;
+        this.usuarioFoto = user.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
+      }
+    });
+    
+    // Carrega os dados específicos da página de gerenciamento
     this.carregarTodosDados();
   }
 
+  // 4. CRIAR ngOnDestroy PARA LIMPEZA
+  ngOnDestroy(): void {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+  }
+
+  // 5. REMOVER A LÓGICA DE PERFIL DESTE MÉTODO
   carregarTodosDados(): void {
     this.dashboardDataService.carregarDadosDashboard().subscribe({
       next: (data) => {
-        const { perfil, propriedades, producoes, movimentacoes } = data;
-        
-        if (perfil) {
-          this.usuarioNome = perfil.nome;
-          this.usuarioFoto = perfil.fotoPerfil || 'https://placehold.co/40x40/aabbcc/ffffff?text=User';
-        }
+        // A informação do 'perfil' não é mais necessária aqui
+        const { propriedades, producoes, movimentacoes } = data;
 
         this.propriedades = propriedades;
         this.producoes = producoes;
@@ -95,6 +119,9 @@ export class GerenciamentoComponent implements OnInit {
       error: (err) => console.error('Erro ao carregar dados:', err),
     });
   }
+
+  // O restante do seu código (filtros, CRUD, UI) permanece igual.
+  // ... (código de filtros, CRUD e UI)
 
   selecionarAba(aba: string): void {
     this.abaAtiva = aba;
@@ -141,8 +168,6 @@ export class GerenciamentoComponent implements OnInit {
     });
   }
 
-  // --- MÉTODOS DE CÁLCULO ADICIONADOS ---
-
   calcularAreaTotal(): number {
     return this.propriedades.reduce((total, prop) => total + prop.area, 0);
   }
@@ -158,7 +183,7 @@ export class GerenciamentoComponent implements OnInit {
   calcularAreaPlantada(): number {
     const propertyIds = new Set(this.producoes.map(p => String(p.propriedadeId)));
     return this.propriedades
-      .filter(p => propertyIds.has(p.id))
+      .filter(p => propertyIds.has(String(p.id)))
       .reduce((total, prop) => total + prop.area, 0);
   }
 
@@ -183,9 +208,6 @@ export class GerenciamentoComponent implements OnInit {
   calcularResultadoFinanceiro(): number {
     return this.calcularTotalReceitas() - this.calcularTotalDespesas();
   }
-
-
-  // --- MÉTODOS CRUD ---
 
   executarExclusao(): void {
     if (!this.itemParaExcluir || !this.itemParaExcluir.id) return;
@@ -227,7 +249,7 @@ export class GerenciamentoComponent implements OnInit {
     const { id, ...dados } = this.propriedadeEditada;
     const observable = id 
       ? this.propriedadeService.atualizarPropriedade(id, dados)
-      : this.propriedadeService.adicionarPropriedade(dados as Omit<Propriedade, 'id' | 'proprietario'>);
+      : this.propriedadeService.adicionarPropriedade(dados as Omit<Propriedade, 'id' | 'proprietarioId'>);
     
     observable.subscribe({
       next: () => { this.carregarTodosDados(); this.fecharModal(); },
@@ -258,8 +280,6 @@ export class GerenciamentoComponent implements OnInit {
       error: (err) => console.error('Erro ao salvar movimentação:', err),
     });
   }
-  
-  // --- MÉTODOS DE UI ---
   
   @HostListener('document:click', ['$event'])
   fecharMenuFora(event: MouseEvent) {
@@ -332,7 +352,7 @@ export class GerenciamentoComponent implements OnInit {
   }
 
   getNomePropriedade(id: string | number): string {
-    const prop = this.propriedades.find((p) => p.id === String(id));
+    const prop = this.propriedades.find((p) => String(p.id) === String(id));
     return prop ? prop.nome : 'N/A';
   }
   

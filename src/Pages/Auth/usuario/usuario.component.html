@@ -1,6 +1,7 @@
 <div class="dashboard-container">
+  <!-- O header não precisa de *ngIf, pois as variáveis usuarioNome e usuarioFoto já têm valores padrão -->
   <header class="dashboard-header">
-    <button class="menu-toggle" aria-label="Abrir menu">
+    <button class="menu-toggle" (click)="alternarMenu()" aria-label="Abrir menu">
       <i class="fas fa-bars"></i>
     </button>
     <h1>
@@ -16,25 +17,24 @@
     <a routerLink="/home" routerLinkActive="active">
       <span class="material-symbols-outlined">home</span> Home
     </a>
-
     <a routerLink="/gerenciamento" routerLinkActive="active">
       <span class="material-symbols-outlined">dashboard</span> Gerenciamento
     </a>
-
     <a routerLink="/estatistica" routerLinkActive="active">
       <span class="material-symbols-outlined">monitoring</span> Estatística
     </a>
-
     <a routerLink="/relatorio" routerLinkActive="active">
       <span class="material-symbols-outlined">overview</span> Relatório geral
     </a>
-
     <a routerLink="/usuario" routerLinkActive="active">
       <span class="material-symbols-outlined">account_circle</span> Configuração
     </a>
   </nav>
 
-  <main class="main-content-perfil">
+  <!-- ==================== CORREÇÃO APLICADA AQUI ==================== -->
+  <!-- Adicionamos *ngIf="usuario" para garantir que esta seção só seja
+       renderizada quando o objeto 'usuario' não for nulo. -->
+  <main class="main-content-perfil" *ngIf="usuario">
     <div class="container-perfil">
       <div class="profile-section">
         <div class="general-info card-perfil">
@@ -64,10 +64,10 @@
           </div>
         </div>
       </div>
-
-      </div>
+    </div>
   </main>
 
+  <!-- O modal já usa *ngIf, então não precisa de alterações. -->
   <div class="modal-overlay" [class.active]="editModalAberto" *ngIf="editModalAberto">
     <div class="modal-content">
       <div class="modal-header">
@@ -108,4 +108,4 @@
     </div>
   </div>
 
-  </div>
+</div>
