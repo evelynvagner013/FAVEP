@@ -1,71 +1,74 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-// --- Imports Corrigidos ---
-import { AuthService } from '../../../services/auth.service';
-import { Usuario } from '../../../models/api.models';
 
 
 @Component({
   selector: 'app-menu-cima',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink], // Adicionado RouterLink
+  imports: [CommonModule, FormsModule],
   templateUrl: './menu-cima.component.html',
   styleUrl: './menu-cima.component.css'
 })
 export class MenuCimaComponent implements OnInit {
   // Propriedades para o estado do usuário e controle dos modais
-  user: Usuario | null = null;
+  user: any = null;
   mostrarLoginModal = false;
   mostrarRegisterModal = false;
-  loginHeaderMessage: string | null = null;
 
-  // Propriedades para os formulários
+  // Propriedades para o formulário de Login
   loginEmail: string = '';
   loginPassword: string = '';
+  loginRememberMe: boolean = false;
   loginErrorMessage: string = '';
+
+  // Propriedades para o formulário de Registro
   registerUser: any = { username: '', email: '', password: '', telefone: '', confirmarSenha: '' };
   registerSuccessMessage: string = '';
   registerErrorMessage: string = '';
 
-  // --- Construtor Corrigido ---
-  constructor(
-    private authService: AuthService, // Usa o serviço correto
-    private router: Router,
-    private route: ActivatedRoute
-  ) { }
+   currentTheme: string = 'light-theme'; // Tema padrão
+
+  constructor(private apiService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    // Escuta as mudanças no usuário logado em tempo real
-    this.authService.currentUser.subscribe(user => {
-      this.user = user;
-    });
-
-    // A lógica para abrir o modal via URL permanece a mesma
-    this.route.queryParams.subscribe(params => {
-      if (params['openLogin'] === 'true') {
-        if (params['reason'] === 'unauthorized') {
-          this.loginHeaderMessage = 'Para acessar essa área é necessário entrar com uma conta.';
-        }
-        this.mostrarLoginModal = true;
-        this.router.navigate([], {
-          relativeTo: this.route,
-          queryParams: { openLogin: null, reason: null },
-          queryParamsHandling: 'merge',
-          replaceUrl: true
-        });
-      }
-    });
+    // Ao iniciar o componente, verifica se há um usuário logado no serviço
+    this.user = this.apiService.getUser();
   }
 
   logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/home']); // Remove o reload da página
+    // Realiza o logout, limpa os dados e recarrega a página
+    this.apiService.logout();
+    this.router.navigate(['/home']).then(() => window.location.reload());
   }
 
-  // --- Métodos de Submissão Corrigidos ---
+  // --- Métodos para controle dos Modais ---
+
+  abrirLoginModal() {
+    this.mostrarRegisterModal = false;
+    this.mostrarLoginModal = true;
+    this.loginEmail = '';
+    this.loginPassword = '';
+    this.loginErrorMessage = '';
+    this.loginRememberMe = false;
+  }
+
+  abrirRegisterModal() {
+    this.mostrarLoginModal = false;
+    this.mostrarRegisterModal = true;
+    this.registerUser = { username: '', email: '', password: '', telefone: '', confirmarSenha: '' };
+    this.registerSuccessMessage = '';
+    this.registerErrorMessage = '';
+  }
+
+  fecharModals() {
+    this.mostrarLoginModal = false;
+    this.mostrarRegisterModal = false;
+  }
+
+  // --- Métodos de Submissão dos Formulários ---
 
   onLoginSubmit() {
     if (!this.loginEmail || !this.loginPassword) {
@@ -73,13 +76,17 @@ export class MenuCimaComponent implements OnInit {
       return;
     }
 
-    // Chama o login do AuthService
-    this.authService.login(this.loginEmail, this.loginPassword).subscribe({
-      next: () => {
-        // A lógica de salvar token/usuário já está no serviço!
-        console.log('Login realizado com sucesso!');
+    this.apiService.login(this.loginEmail, this.loginPassword).subscribe({
+      next: (response) => {
+        console.log('Login realizado com sucesso!', response);
+        if (response.token && response.user) {
+          localStorage.setItem('token', response.token);
+          this.apiService.setUser(response.user);
+          this.user = response.user; // Atualiza o usuário no componente
+        }
         this.fecharModals();
-        this.router.navigate(['/gerenciamento']); // Redireciona após o login
+        // Redireciona para a página de gerenciamento ou recarrega a página atual
+        this.router.navigate(['/gerenciamento']);
       },
       error: (error) => {
         console.error('Erro no login', error);
@@ -89,56 +96,52 @@ export class MenuCimaComponent implements OnInit {
   }
 
   onRegisterSubmit() {
-    if (this.registerUser.password !== this.registerUser.confirmarSenha) {
-      this.registerErrorMessage = 'As senhas não coincidem.';
-      return;
-    }
-    // Lógica de validação...
+    // --- LÓGICA DE VALIDAÇÃO CORRIGIDA E INTEGRADA ---
 
+    // 1. Validação de campos obrigatórios
+    if (!this.registerUser.username || !this.registerUser.email || !this.registerUser.password || !this.registerUser.telefone || !this.registerUser.confirmarSenha) {
+        this.registerErrorMessage = 'Todos os campos são obrigatórios.';
+        this.registerSuccessMessage = '';
+        return;
+    }
+
+    // 2. Validação para garantir que as senhas coincidem
+    if (this.registerUser.password !== this.registerUser.confirmarSenha) {
+        this.registerErrorMessage = 'As senhas não coincidem.';
+        this.registerSuccessMessage = '';
+        return;
+    }
+
+    // Limpa a mensagem de erro se a validação passar
+    this.registerErrorMessage = '';
+
+    // 3. Mapeia os campos do formulário para o formato que o back-end espera (payload)
     const payload = {
       nome: this.registerUser.username,
       email: this.registerUser.email,
       telefone: this.registerUser.telefone,
       senha: this.registerUser.password,
+      confirmarSenha: this.registerUser.confirmarSenha // CORRIGIDO
     };
 
-    // Chama o registro do AuthService
-    this.authService.register(payload).subscribe({
-      next: () => {
+    // --- FIM DA LÓGICA DE VALIDAÇÃO ---
+
+    this.apiService.register(payload).subscribe({
+      next: (response) => {
+        console.log('Usuário cadastrado com sucesso:', response);
         this.registerSuccessMessage = 'Cadastro realizado com sucesso! Faça o login para continuar.';
         this.registerErrorMessage = '';
-        setTimeout(() => this.abrirLoginModal(), 2000);
+        setTimeout(() => {
+          this.abrirLoginModal();
+        }, 2500);
       },
       error: (error) => {
         console.error('Erro no cadastro', error);
         this.registerErrorMessage = error.error?.error || 'Erro ao cadastrar. Verifique os dados.';
+        this.registerSuccessMessage = '';
       }
     });
   }
 
-  // --- Métodos de controle dos Modais (sem alterações) ---
-  abrirLoginModal() {
-    this.mostrarRegisterModal = false;
-    this.mostrarLoginModal = true;
-    this.loginHeaderMessage = null; 
-    // Limpar campos
-    this.loginEmail = '';
-    this.loginPassword = '';
-    this.loginErrorMessage = '';
-  }
-
-  abrirRegisterModal() {
-    this.mostrarLoginModal = false;
-    this.mostrarRegisterModal = true;
-    // Limpar campos
-    this.registerUser = { username: '', email: '', password: '', telefone: '', confirmarSenha: '' };
-    this.registerSuccessMessage = '';
-    this.registerErrorMessage = '';
-  }
-
-  fecharModals() {
-    this.mostrarLoginModal = false;
-    this.mostrarRegisterModal = false;
-    this.loginHeaderMessage = null;
-  }
+  
 }
